@@ -43,28 +43,60 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 	public void draw(){
 		clear();
 		
-		
-		
 		rect(player.R.x+=player.vx,player.R.y+=player.vy,player.R.width,player.R.height);
 		
 		for(Thing t:ThingList){		//loop to display
 			fill(t.r,t.g,t.b);
 			rect(t.R.x+=t.vx,t.R.y+=t.vy,t.R.width,t.R.height);
 		}
-	
+		
+		distance_from_ground = (int) (displayy - player.R.getMaxY());
+		
+		if( !intersect && distance_from_ground>=2 && !jump_flag)
+		{
+			player.vy=2;
+			player.vx=0;
+		}
+		if(distance_from_ground==2){
+			player.vy=0;
+		}
+		
+		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){
+			player.vx=0;
+			jump_flag=false;
+		}
+		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){
+			player.vy=0;
+			jump_flag=false;
+		}
+		
 		for(Thing t:ThingList){
 			if(player.R.intersects(t.R)){
-				if(player.vy>0){
+				if(player.vy>0){	//coming down
 					direction = 4;
 				}
-				if(player.vy<0){
+				if(player.vy<0){	//going up
 					direction = 2;
+				}
+				if(player.vy<0 && player.vx>0){	//up right
+					direction = 10;
+				}
+				if(player.vy>0 && player.vx>0){	//down right
+					direction = 12;
+				}
+				if(player.vy<0 && player.vx<0){	//up left
+					direction = 3;
+				}
+				if(player.vy>0 && player.vx<0){	//down left
+					direction = 5;
 				}
 				intersect = true;
 				break;
 			}
 				intersect=false;
 		}
+		
+		System.out.println("vx:"+player.vx+" vy:"+player.vy+" direction:"+direction+" intersected:"+intersect);
 		
 		if(direction==2){
 			player.vy=2;
@@ -77,11 +109,32 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 			direction=0;
 		}
 		
-		distance_from_ground = (int) (displayy - player.R.getMaxY());
+		if(direction==12){
+			player.vy=0;
+			player.vx=0;	//rebound on side hit
+			jump_flag=false;
+			direction=0;
+		}
 		
-		if( !intersect && distance_from_ground!=0 && !jump_flag)
-		{
+		if(direction==5){
+			player.vy=0;
+			player.vx=0;	//rebound on side hit
+			jump_flag=false;
+			direction=0;
+		}
+		
+		if(direction==10){
 			player.vy=2;
+			player.vx=0;
+			jump_flag=false;
+			direction=0;
+		}
+		
+		if(direction==3){
+			player.vy=2;
+			player.vx=0;
+			jump_flag=false;
+			direction=0;
 		}
 		
 		if(jump_flag){	//main jump logic
@@ -108,15 +161,23 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 		if (key == CODED) {
 		
 			if (keyCode == RIGHT) {	//move right
+				if(intersect || jump_flag)
 					player.vx=1;
 				
 			} else if (keyCode == LEFT) {	//move left
+				if(intersect || jump_flag)
 					player.vx=-1;
 				
 			}
 			else if (keyCode == UP) {	//jump
 				jump_flag=true;
 			}
+		}
+		else if(key == 'r' ||key =='R'){	//reset
+			player.R.x=50;
+			player.R.y=550;
+			player.vx=0;
+			player.vy=0;
 		}
 	}
 	
