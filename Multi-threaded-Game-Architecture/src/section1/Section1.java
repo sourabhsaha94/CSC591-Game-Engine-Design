@@ -1,7 +1,9 @@
-package assignment1;
+package section1;
 import processing.core.PApplet;
 import java.awt.*;
 import java.util.LinkedList;
+
+import assignment1.Thing;
 
 public class Section1 extends PApplet {	//to inherit all methods provided by the Processing library
 

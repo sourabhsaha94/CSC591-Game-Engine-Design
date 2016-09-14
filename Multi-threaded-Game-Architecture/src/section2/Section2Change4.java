@@ -1,5 +1,5 @@
 /*Change 4  is creating a new thread which waits for the previous thread (which in turn is waiting for its previous thread)*/
-package assignment1;
+package section2;
 
 public class Section2Change4 implements Runnable {
 

@@ -1,13 +1,13 @@
-/*Change 2  is putting both sleep methods inside the synchronized block*/
-package assignment1;
+/*Change 1  is putting the first sleep method inside the synchronized block*/
+package section2;
 
-public class Section2Change2 implements Runnable {
+public class Section2Change1 implements Runnable {
 
 	int i;
 	boolean busy;
-	Section2Change2 other;
+	Section2Change1 other;
 
-	public Section2Change2(int i, Section2Change2 other) {
+	public Section2Change1(int i, Section2Change1 other) {
 		this.i = i;
 		if (i == 0) {
 			busy = true;
@@ -28,8 +28,8 @@ public class Section2Change2 implements Runnable {
 					Thread.sleep(2000);
 					notify();
 				}
+				Thread.sleep(2000);
 				synchronized (this) {
-					Thread.sleep(2000);
 					busy = false;
 					notify();
 				}

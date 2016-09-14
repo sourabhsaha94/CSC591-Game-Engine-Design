@@ -1,4 +1,4 @@
-package assignment1;
+package section2;
 
 
 //Demonstrating multi-threading and thread synchronization in Java

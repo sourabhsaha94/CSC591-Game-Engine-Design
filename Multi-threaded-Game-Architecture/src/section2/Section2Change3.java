@@ -1,13 +1,13 @@
-/*Change 1  is putting the first sleep method inside the synchronized block*/
-package assignment1;
+/*Change 3  is putting other.wait and notify outside the synchronized block*/
+package section2;
 
-public class Section2Change1 implements Runnable {
+public class Section2Change3 implements Runnable {
 
 	int i;
 	boolean busy;
-	Section2Change1 other;
+	Section2Change3 other;
 
-	public Section2Change1(int i, Section2Change1 other) {
+	public Section2Change3(int i, Section2Change3 other) {
 		this.i = i;
 		if (i == 0) {
 			busy = true;
@@ -24,15 +24,16 @@ public class Section2Change1 implements Runnable {
 	public void run() {
 		if (i == 0) {
 			try {
+				Thread.sleep(2000);
 				synchronized (this) {
-					Thread.sleep(2000);
-					notify();
+
 				}
+				notify();
 				Thread.sleep(2000);
 				synchronized (this) {
 					busy = false;
-					notify();
 				}
+				notify();
 
 			} catch (InterruptedException tie) {
 				tie.printStackTrace();
@@ -40,11 +41,8 @@ public class Section2Change1 implements Runnable {
 		} else {
 			while (other.isBusy()) {
 				System.out.println("Waiting!");
-
 				try {
-					synchronized (other) {
-						other.wait();
-					}
+					other.wait();
 				} catch (InterruptedException tie) {
 					tie.printStackTrace();
 				}
@@ -54,8 +52,8 @@ public class Section2Change1 implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Section2Change1 t1 = new Section2Change1(0, null);
-		Section2Change1 t2 = new Section2Change1(1, t1);
+		Section2Change3 t1 = new Section2Change3(0, null);
+		Section2Change3 t2 = new Section2Change3(1, t1);
 		(new Thread(t2)).start();
 		(new Thread(t1)).start();
 	}

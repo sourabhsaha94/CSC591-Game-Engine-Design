@@ -1,14 +1,21 @@
-package assignment1;
+package section3;
 
+import assignment1.Thing;
 import java.io.*;
 import java.net.*;
 
+import assignment1.Thing;
+
 public class Section3Server {
 
-	public static void main(String args[]) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(9000);
+	private static ServerSocket serverSocket;
 
-        while(true) {
+	public static void main(String args[]) throws Exception {
+        serverSocket = new ServerSocket(9000);
+
+        boolean stopped =true;
+        
+        while(stopped) {
             Socket connectionSocket = serverSocket.accept();
             
             ObjectOutputStream oos =  new ObjectOutputStream(connectionSocket.getOutputStream());
@@ -19,6 +26,7 @@ public class Section3Server {
             System.out.println(t.name);
             
         }
+        serverSocket.close();
     }
 
 }

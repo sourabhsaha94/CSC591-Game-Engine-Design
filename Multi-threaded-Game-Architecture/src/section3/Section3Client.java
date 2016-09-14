@@ -1,7 +1,10 @@
-package assignment1;
+package section3;
 
+import assignment1.Thing;
 import java.io.*;
 import java.net.*;
+
+import assignment1.Thing;
 
 public class Section3Client {
 
