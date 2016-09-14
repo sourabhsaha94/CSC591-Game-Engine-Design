@@ -1,9 +1,9 @@
 package section1;
+
+import assignment1.Thing;
 import processing.core.PApplet;
 import java.awt.*;
 import java.util.LinkedList;
-
-import assignment1.Thing;
 
 public class Section1 extends PApplet {	//to inherit all methods provided by the Processing library
 
@@ -25,7 +25,7 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 	
 	public static void main(String[] args) {
 
-		PApplet.main("assignment1.Section1");	//lets the PApplet know which main class to run
+		PApplet.main("section1.Section1");	//lets the PApplet know which main class to run
 	}
 
 	public void settings(){	//initial settings --must be before all other functions

@@ -1,11 +1,12 @@
-package section3;
+package section4;
 
+import assignment1.Thing;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
 
-public class Section3Client {
+public class Section4Client {
 
 	public static void main(String argv[]) throws Exception {
         
