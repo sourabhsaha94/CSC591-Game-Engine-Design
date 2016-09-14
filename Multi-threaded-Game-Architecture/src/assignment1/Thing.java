@@ -1,9 +1,14 @@
 package assignment1;
 import java.awt.*;
+import java.io.Serializable;
 
 
-public class Thing {
+public class Thing implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8768701979073409494L;
 	Rectangle R;
 	String name;
 	int vx,vy;
@@ -17,5 +22,8 @@ public class Thing {
 		this.r=r;
 		this.g=g;
 		this.b=b;
+	}
+	Thing(String name){
+		this.name = name;
 	}
 }
