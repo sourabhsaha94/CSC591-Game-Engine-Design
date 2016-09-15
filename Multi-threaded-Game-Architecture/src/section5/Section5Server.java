@@ -1,3 +1,6 @@
+/*This class is responsible for instantiating the main server and also
+ * the listener and clientWorker threads*/
+
 package section5;
 
 

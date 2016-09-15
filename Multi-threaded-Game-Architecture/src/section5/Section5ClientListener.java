@@ -1,3 +1,11 @@
+/*This client is responsible for managing the list of connected clients,
+ * managing the queue which stores the incoming and outgoing messages
+ * add and delete clients.
+ * Vector used here is part of java collections and is synchronized collection.
+ * Several methods here are synchronized to make them thread safe as they
+ * serve as critical update points.
+ * */
+
 package section5;
 
 import java.io.IOException;

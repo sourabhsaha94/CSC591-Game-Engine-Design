@@ -1,3 +1,7 @@
+/*
+ * This class is responsible for instantiating a client
+ *  and its input and output streams*/
+
 package section5;
 
 

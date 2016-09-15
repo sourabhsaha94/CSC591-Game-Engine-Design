@@ -1,3 +1,10 @@
+/*This class is responsible for accepting connections, creating a client reference, 
+ * creating i/p o/p streams and assigning it to the client ref,
+ * adding the client to the clientListener list,
+ * and finally making sure that the streams are connected to the clientListener as well
+ */
+
+
 package section5;
 
 import java.io.IOException;

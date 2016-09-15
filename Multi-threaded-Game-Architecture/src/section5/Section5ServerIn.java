@@ -1,3 +1,8 @@
+/*This class is responsible for handling the data input to the message queue of the
+ * clientListener i.e it servers as entry point of message from the client socket
+ * */
+
+
 package section5;
 
 import java.io.BufferedReader;

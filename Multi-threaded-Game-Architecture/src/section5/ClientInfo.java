@@ -1,3 +1,6 @@
+/*
+ * This class stores the info of one client*/
+
 package section5;
 
 import java.net.Socket;

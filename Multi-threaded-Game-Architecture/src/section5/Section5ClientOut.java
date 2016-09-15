@@ -1,3 +1,6 @@
+/*This class is responsible for sending message to the server
+ * */
+
 package section5;
 
 import java.io.BufferedReader;
