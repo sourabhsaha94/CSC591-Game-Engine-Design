@@ -1,52 +1,57 @@
 package section4;
 
 
-import java.awt.Rectangle;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.*;
 
 import assignment1.Thing;
 import java.util.concurrent.*;
 import java.util.*;
-public class Section4Server{
+import java.io.*;
 
+public class Section4Server {
+
+	ConcurrentHashMap<Integer,Socket> clientList;
+	int id=0;
 	
+	Section4Server(){
+		this.clientList = new ConcurrentHashMap<Integer, Socket>();
+	}
 	
-	public static void main(String args[]) throws IOException{
+	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException{
 		
-		ConcurrentHashMap<Integer,ClientWorker> clientList = new ConcurrentHashMap<Integer,ClientWorker>();
 		
-		Scanner in = new Scanner(System.in);
-		String s ="";
+		Scanner input = new Scanner(System.in);
 		
-		ServerSocket server = new ServerSocket(9000);
-		boolean stopped = true;
+		ServerSocket serverSocket = new ServerSocket(9000);
 		
-		Section4ClientListener clisten = new Section4ClientListener(server,true);
+		int count=0;
+		
+		Section4Server s = new Section4Server();
+		
+		Section4ClientListener clisten = new Section4ClientListener(s,serverSocket,true);
 		
 		Thread cl = new Thread(clisten);
+		
 		cl.start();
 		
-		clientList = clisten.clientList;
-		
-		while(!s.equals("exit")){
-			
-			s = in.nextLine();
-			if(s.equalsIgnoreCase("get list size")){
-				System.out.println(clientList.size());
-			}
-			else if(s.contains("get client at")){	//type get client at <index>
-				System.out.println(s.split(" ")[3]);
-				if(clientList.containsKey(Integer.parseInt(s.split(" ")[3]))){
-					System.out.println(clientList.get(Integer.parseInt(s.split(" ")[3])).id);
-				}
-			}
-			else{
-				System.out.println("next input or exit");
-			}
+		while(s.clientList.size()<1){
+			//wait for clients to connect
 		}
+		
+		System.out.println(s.clientList.size());
+		
+		ObjectOutputStream oos = new ObjectOutputStream(s.clientList.get(0).getOutputStream());
+		ObjectInputStream ois = new ObjectInputStream(s.clientList.get(0).getInputStream());
+		
+		oos.writeObject(0);
+		
+		String str="";
+		
+		while(!str.equals("bye")){
+			str = (String)ois.readObject();
+			System.out.println(str);
+		}
+		
+           
 	}
-
 }

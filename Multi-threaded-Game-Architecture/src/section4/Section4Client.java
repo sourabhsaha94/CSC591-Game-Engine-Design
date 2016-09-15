@@ -1,6 +1,6 @@
 package section4;
 
-import assignment1.Thing;
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
@@ -26,6 +26,8 @@ public class Section4Client {
         	     	
         	s = input.nextLine();
         	oos.writeObject(s);
+        	s = (String)ois.readObject();
+        	System.out.println(s);
         }
         
         clientSocket.close();
