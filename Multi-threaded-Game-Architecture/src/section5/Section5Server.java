@@ -35,7 +35,9 @@ public class Section5Server{
 	
 		
 		
-		while(true);
+		while(true){
+			// do whatever the server wants to do
+		}
 		
 	}
 

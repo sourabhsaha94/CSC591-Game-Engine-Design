@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Scanner;
 
+import assignment1.Thing;
+
 public class Section5ClientIn implements Runnable {
 
-	BufferedReader in;
-	String message;
+	ObjectInputStream in;
+	Thing thing;
 	
-	public Section5ClientIn(BufferedReader in){
+	public Section5ClientIn(ObjectInputStream in){
 		this.in = in;
 	}
 	
@@ -18,10 +20,13 @@ public class Section5ClientIn implements Runnable {
 	public void run() {
 		
 		try {
-			while((message=in.readLine())!=null){
-				System.out.println(message);
+			while((thing=(Thing)in.readObject())!=null){
+				//System.out.println(thing);
 			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

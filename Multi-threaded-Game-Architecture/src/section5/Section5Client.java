@@ -14,12 +14,12 @@ public class Section5Client {
 
 	public static void main(String argv[]) throws Exception {
 	
-		BufferedReader in =null;
-		PrintWriter out = null;
+		ObjectInputStream in =null;
+		ObjectOutputStream out = null;
 	
 		Socket socket = new Socket("localhost",9000);
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		in = new ObjectInputStream(socket.getInputStream());
+		out = new ObjectOutputStream(socket.getOutputStream());
 		
 		System.out.println("connected to server..");
 		

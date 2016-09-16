@@ -10,15 +10,17 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.Vector;
 
+import assignment1.Thing;
+
 public class Section5ServerOut implements Runnable {
 
-	private Vector messageQueue = new Vector();
+	private Vector<Thing> messageQueue = new Vector<Thing>();
 
 	private Section5ClientListener clientListener;
 
 	private ClientInfo c;
 
-	private PrintWriter out;
+	private ObjectOutputStream out;
 
 	public Section5ServerOut(ClientInfo c, Section5ClientListener clientListener)throws IOException{
 
@@ -28,37 +30,34 @@ public class Section5ServerOut implements Runnable {
 
 		Socket socket = c.socket;
 
-		this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		this.out = new ObjectOutputStream(socket.getOutputStream());
 
 	}
 
-	public synchronized void sendMessage(String message){
+	public synchronized void sendMessage(Thing thing){
 
-		messageQueue.add(message);
+		messageQueue.add(thing);
 
 		notify();
 
 	}
 
-	private synchronized String getNextMessageFromQueue() throws InterruptedException{
+	private synchronized Thing getNextMessageFromQueue() throws InterruptedException{
 
 		while (messageQueue.size() == 0)
-
 			wait();
 
-		String message = (String) messageQueue.get(0);
+		Thing thing = (Thing) messageQueue.get(0);
 
 		messageQueue.removeElementAt(0);
 
-		return message;
+		return thing;
 
 	}
 
-	private void sendMessageToClient(String message){
+	private void sendMessageToClient(Thing thing) throws IOException{
 
-		out.println(message);
-
-		out.flush();
+		out.writeObject(thing);
 
 	}
 
@@ -68,9 +67,9 @@ public class Section5ServerOut implements Runnable {
 
 			while (!Thread.interrupted()) {
 
-				String message = getNextMessageFromQueue();
+				Thing thing = getNextMessageFromQueue();
 
-				sendMessageToClient(message);
+				sendMessageToClient(thing);
 
 			}
 

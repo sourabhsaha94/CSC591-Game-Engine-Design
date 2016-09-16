@@ -14,10 +14,12 @@ import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
+import assignment1.Thing;
+
 public class Section5ClientListener implements Runnable {
 
-	private Vector messageQueue = new Vector();
-	private Vector clients = new Vector();
+	private Vector<Thing> messageQueue = new Vector<Thing>();
+	private Vector<ClientInfo> clients = new Vector<ClientInfo>();
 	
 	public synchronized void addClient(ClientInfo c){
 		clients.add(c);
@@ -32,36 +34,33 @@ public class Section5ClientListener implements Runnable {
 	}
 	
 	
-	public synchronized void sendMessage(ClientInfo c, String message){
-		Socket socket = c.socket;
-		message = "client "+c.id+": "+message;
-		
-		messageQueue.add(message);
+	public synchronized void sendMessage(ClientInfo c,Thing thing){
+		messageQueue.add(thing);
 		notify();
 	}
 	
-	private synchronized String getNextMessagefromQueue() throws InterruptedException{
+	private synchronized Thing getNextMessagefromQueue() throws InterruptedException{
 		while(messageQueue.size()==0)
 			wait();
 		
-		String message = (String) messageQueue.get(0);
+		Thing thing = (Thing) messageQueue.get(0);
 		messageQueue.removeElementAt(0);
-		return message;
+		return thing;
 	}
 	
 	
-	private synchronized void sendMessagetoAllClients(String message){
+	private synchronized void sendMessagetoAllClients(Thing thing){
 		for(int i=0;i<clients.size();i++){
 			ClientInfo c = (ClientInfo)clients.get(i);
-			c.out.sendMessage(message);
+			c.out.sendMessage(thing);
 		}
 	}
 	@Override
 	public void run() {
 		while(true){
 			try {
-				String message = getNextMessagefromQueue();
-				sendMessagetoAllClients(message);
+				Thing thing = getNextMessagefromQueue();
+				sendMessagetoAllClients(thing);
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
