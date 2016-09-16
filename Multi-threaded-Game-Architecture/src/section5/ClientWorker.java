@@ -39,8 +39,9 @@ public class ClientWorker implements Runnable {
 			
 			c.id=count++;
 			
-			Section5ServerIn si = new Section5ServerIn(c, scl);
 			Section5ServerOut so = new Section5ServerOut(c, scl);
+			Section5ServerIn si = new Section5ServerIn(c, scl);
+			
 			c.in = si;
 			c.out=so;
 			

@@ -65,10 +65,10 @@ public class Section5ServerOut implements Runnable {
 
 		try {
 
-			while (!Thread.interrupted()) {
+			while (true) {
 
 				Thing thing = getNextMessageFromQueue();
-
+				System.out.println(thing.name+" from server");
 				sendMessageToClient(thing);
 
 			}

@@ -27,20 +27,23 @@ public class Section5ServerIn implements Runnable {
 	@Override
 	public void run() {
 		
-		try{
-			while(!Thread.interrupted()){
-				Thing thing = (Thing)input.readObject();
-				if(thing==null)
-					break;
-				clientListener.sendMessage(c, thing);
+		boolean check=true;
+		
+			while(check){
+				Thing thing = null;
 				
+				while(check){
+				try{
+				thing = (Thing)input.readObject();
+				System.out.println(thing.name+" in server recieve");
+				}
+				catch(Exception e){
+					break;
+				}
+				clientListener.sendMessage(c, thing);
+				}
 			}
-		}catch(IOException e){
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		Thread.currentThread().interrupt();
 		clientListener.deleteClient(c);

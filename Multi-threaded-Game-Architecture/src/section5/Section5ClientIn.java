@@ -4,32 +4,49 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Scanner;
+import java.util.Vector;
 
 import assignment1.Thing;
 
 public class Section5ClientIn implements Runnable {
 
 	ObjectInputStream in;
-	Thing thing;
+	Section5Client sc;
 	
-	public Section5ClientIn(ObjectInputStream in){
+	public Section5ClientIn(Section5Client sc,ObjectInputStream in){
 		this.in = in;
+		this.sc = sc;
+	} 
+	
+	public void addToList(Thing thing){
+		
+		if(sc.thingList.contains(thing)){
+			sc.thingList.remove(thing);
+		}
+		
+		sc.thingList.add(thing);
 	}
+
 	
 	@Override
 	public void run() {
+		boolean check=true;
 		
-		try {
-			while((thing=(Thing)in.readObject())!=null){
-				//System.out.println(thing);
+		while(check){
+			Thing thing = null;
+
+			while(check){
+				try{
+					thing = (Thing)in.readObject();
+				}
+				catch(Exception e){
+					break;
+				}
+				addToList(thing);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
+
+
+		Thread.currentThread().interrupt();
 	}
 }
