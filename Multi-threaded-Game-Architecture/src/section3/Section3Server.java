@@ -22,17 +22,21 @@ public class Section3Server implements Runnable{
 	public static void main(String args[]) throws Exception {
         serverSocket = new ServerSocket(9000);
         
+        
+        System.out.println("Server started.. Waiting for connections");
         int count=0;
         boolean stopped =false;
         
         while(!stopped) {
-            Socket connectionSocket = serverSocket.accept();
+            Socket connectionSocket = serverSocket.accept();	//This part is synchronous and blocking
             
            
             Thread t = new Thread(new Section3Server(connectionSocket,count++));
-            t.start();
+            System.out.println(count+" client(s) connected");
             
-            System.out.println(1);
+            t.start();	//this is to handle synchronous communication from clients
+            
+           
         }
         serverSocket.close();
     }

@@ -10,11 +10,11 @@ import java.io.*;
 
 public class Section4Server {
 
-	ConcurrentHashMap<Integer,Socket> clientList;
+	ConcurrentHashMap<Integer,ClientWorker> clientList;
 	int id=0;
 	
 	Section4Server(){
-		this.clientList = new ConcurrentHashMap<Integer, Socket>();
+		this.clientList = new ConcurrentHashMap<Integer, ClientWorker>();
 	}
 	
 	public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException{
@@ -32,25 +32,12 @@ public class Section4Server {
 		
 		Thread cl = new Thread(clisten);
 		
-		cl.start();
+		cl.start();	//this thread handles client connection asynchronously
 		
-		while(s.clientList.size()<1){
-			//wait for clients to connect
+		while(true){
+			//do whatever server wants to do apart from communication
 		}
 		
-		System.out.println(s.clientList.size());
-		
-		ObjectOutputStream oos = new ObjectOutputStream(s.clientList.get(0).getOutputStream());
-		ObjectInputStream ois = new ObjectInputStream(s.clientList.get(0).getInputStream());
-		
-		oos.writeObject(0);
-		
-		String str="";
-		
-		while(!str.equals("bye")){
-			str = (String)ois.readObject();
-			System.out.println(str);
-		}
 		
            
 	}

@@ -30,6 +30,8 @@ public class ClientWorker implements Runnable {
 			while(!s.equals("bye")){
 				s = (String)ois.readObject();
 				System.out.println(s+" from client "+id);
+				s=s.toUpperCase();
+				oos.writeObject(s);
 			}
 			System.out.println("done with client "+id);
 			

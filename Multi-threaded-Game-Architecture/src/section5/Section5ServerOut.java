@@ -1,3 +1,4 @@
+/*This class handles outgoing communication to client*/
 package section5;
 
 import java.io.IOException;

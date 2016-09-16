@@ -27,9 +27,14 @@ public class Section4ClientListener implements Runnable {
 		
 		while(running){
 			try {
-				Socket socket = server.accept();
-				s.clientList.put(count, socket);
+				Socket socket = server.accept();	//this part waits for client to connect
+				
 				count++;
+				System.out.println(count + " client(s) connected");
+				ClientWorker cw = new ClientWorker(socket,count);	//ClientWorker handles synchronous communication
+				Thread t = new Thread(cw);
+				t.start();
+				s.clientList.put(count, cw);	//this is list of clients connected
 				
 			} catch (IOException e) {
 			

@@ -28,10 +28,12 @@ public class Section5Client {
 		t_sender.setDaemon(true);
 		t_sender.start();
 		
-		String message;
-		while((message=in.readLine())!=null){
-			System.out.println(message);
-		}
+		Section5ClientIn recieve = new Section5ClientIn(in);
+		Thread t_recieve = new Thread(recieve);
+		t_recieve.setDaemon(true);
+		t_recieve.start();
+		
+		while(true);
 	}
 
 }

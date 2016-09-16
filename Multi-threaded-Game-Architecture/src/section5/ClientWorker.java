@@ -21,7 +21,7 @@ public class ClientWorker implements Runnable {
 	public ClientWorker(ServerSocket serverSocket, Section5ClientListener scl) {
 		this.serverSocket = serverSocket;
 		this.scl = scl;
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	@Override
