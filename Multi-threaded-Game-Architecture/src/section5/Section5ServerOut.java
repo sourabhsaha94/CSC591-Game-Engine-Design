@@ -18,47 +18,38 @@ public class Section5ServerOut implements Runnable {
 
 	private ClientInfo c;
 
-	private PrintWriter out;
+	private ObjectOutputStream out;
 
 	public Section5ServerOut(ClientInfo c, Section5ClientListener clientListener)throws IOException{
 
 		this.c = c;
-
 		this.clientListener = clientListener;
-
 		Socket socket = c.socket;
-
-		this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		this.out = new ObjectOutputStream(socket.getOutputStream());
 
 	}
 
 	public synchronized void sendMessage(String message){
 
 		messageQueue.add(message);
-
 		notify();
 
 	}
 
 	private synchronized String getNextMessageFromQueue() throws InterruptedException{
 
-		while (messageQueue.size() == 0)
-
+		while(messageQueue.size() == 0)
 			wait();
 
 		String message = (String) messageQueue.get(0);
-
 		messageQueue.removeElementAt(0);
-
 		return message;
 
 	}
 
-	private void sendMessageToClient(String message){
+	private void sendMessageToClient(String message) throws IOException{
 
-		out.println(message);
-
-		out.flush();
+		out.writeObject(message);
 
 	}
 
@@ -66,12 +57,9 @@ public class Section5ServerOut implements Runnable {
 
 		try {
 
-			while (!Thread.interrupted()) {
-
+			while(!Thread.interrupted()) {
 				String message = getNextMessageFromQueue();
-
 				sendMessageToClient(message);
-
 			}
 
 		} catch (Exception e) {
@@ -83,7 +71,6 @@ public class Section5ServerOut implements Runnable {
 		// Communication is broken. Interrupt both listener and sender threads
 
 		Thread.currentThread().interrupt();
-
 		clientListener.deleteClient(c);
 
 	}

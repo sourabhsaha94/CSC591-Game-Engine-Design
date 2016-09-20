@@ -20,11 +20,13 @@ public class Section5ClientListener implements Runnable {
 	private Vector clients = new Vector();
 	
 	public synchronized void addClient(ClientInfo c){
+		
 		clients.add(c);
 	}
 	
 	
 	public synchronized void deleteClient(ClientInfo c){
+		
 		int index = clients.indexOf(c);
 		if(index != -1){
 			clients.removeElementAt(index);
@@ -33,14 +35,15 @@ public class Section5ClientListener implements Runnable {
 	
 	
 	public synchronized void sendMessage(ClientInfo c, String message){
+	
 		Socket socket = c.socket;
-		message = "client "+c.id+": "+message;
-		
+		message = socket.getRemoteSocketAddress()+" : "+message;
 		messageQueue.add(message);
 		notify();
 	}
 	
 	private synchronized String getNextMessagefromQueue() throws InterruptedException{
+		
 		while(messageQueue.size()==0)
 			wait();
 		
@@ -51,6 +54,7 @@ public class Section5ClientListener implements Runnable {
 	
 	
 	private synchronized void sendMessagetoAllClients(String message){
+		
 		for(int i=0;i<clients.size();i++){
 			ClientInfo c = (ClientInfo)clients.get(i);
 			c.out.sendMessage(message);
@@ -58,6 +62,7 @@ public class Section5ClientListener implements Runnable {
 	}
 	@Override
 	public void run() {
+		
 		while(true){
 			try {
 				String message = getNextMessagefromQueue();

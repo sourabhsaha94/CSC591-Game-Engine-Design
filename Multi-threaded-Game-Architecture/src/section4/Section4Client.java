@@ -27,7 +27,7 @@ public class Section4Client {
         	s = input.nextLine();
         	oos.writeObject(s);
         	s = (String)ois.readObject();
-        	System.out.println(s + "recieved from server");
+        	System.out.println(s + " recieved from server");
         }
         
         clientSocket.close();

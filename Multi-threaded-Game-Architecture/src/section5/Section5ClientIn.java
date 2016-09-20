@@ -7,24 +7,29 @@ import java.util.Scanner;
 
 public class Section5ClientIn implements Runnable {
 
-	BufferedReader in;
+	ObjectInputStream in;
 	String message;
 	
-	public Section5ClientIn(BufferedReader in){
+	public Section5ClientIn(ObjectInputStream in){
 		this.in = in;
 	}
 	
 	@Override
 	public void run() {
 		
-		try {
-			while((message=in.readLine())!=null){
-				System.out.println(message);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String message="";
 		
+		while(true){
+		
+			while(!message.equalsIgnoreCase(null)){
+			
+				try{
+					message=(String)in.readObject();
+				}catch(Exception e){
+					break;
+				}
+					System.out.println(message);
+			}
+		}
 	}
 }

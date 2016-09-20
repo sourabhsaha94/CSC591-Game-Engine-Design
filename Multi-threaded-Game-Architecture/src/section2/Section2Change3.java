@@ -28,12 +28,12 @@ public class Section2Change3 implements Runnable {
 				synchronized (this) {
 
 				}
-				notify();
+				notify();	//this is the change
 				Thread.sleep(2000);
 				synchronized (this) {
 					busy = false;
 				}
-				notify();
+				notify();	//this is the change
 
 			} catch (InterruptedException tie) {
 				tie.printStackTrace();
@@ -42,7 +42,7 @@ public class Section2Change3 implements Runnable {
 			while (other.isBusy()) {
 				System.out.println("Waiting!");
 				try {
-					other.wait();
+					other.wait();	//this is the change
 				} catch (InterruptedException tie) {
 					tie.printStackTrace();
 				}

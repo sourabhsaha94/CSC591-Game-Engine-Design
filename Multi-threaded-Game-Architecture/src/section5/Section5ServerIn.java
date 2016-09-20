@@ -13,33 +13,36 @@ public class Section5ServerIn implements Runnable {
 
 	Section5ClientListener clientListener;
 	ClientInfo c;
-	BufferedReader input;
+	ObjectInputStream input;
 	
 	public Section5ServerIn(ClientInfo c, Section5ClientListener cl) throws IOException {
 		this.c = c;
 		this.clientListener=cl;
 		Socket socket = c.socket;
-		input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		input = new ObjectInputStream(socket.getInputStream());
 	}
 	
 	@Override
 	public void run() {
 		
-		try{
-			while(!Thread.interrupted()){
-				String message = input.readLine();
-				if(message==null)
+		String message="";
+		
+		while(!Thread.interrupted()){
+			
+			while(!message.equalsIgnoreCase(null)){
+				try{
+					message = (String)input.readObject();
+				}
+				catch(Exception e){
 					break;
+				}
 				clientListener.sendMessage(c, message);
-				
 			}
-		}catch(IOException e){
-			e.printStackTrace();
+			
 		}
 		
 		Thread.currentThread().interrupt();
 		clientListener.deleteClient(c);
 	}
-
 
 }

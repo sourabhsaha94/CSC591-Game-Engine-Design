@@ -55,7 +55,7 @@ public class Section2Change4 implements Runnable {
 			}
 
 			System.out.println(i + " has Finished!");
-		} else {
+		} else {	//this is the change
 			while (other.isBusy()) {
 				System.out.println(i + " is Waiting!");
 				try {
@@ -73,7 +73,7 @@ public class Section2Change4 implements Runnable {
 	public static void main(String[] args) {
 		Section2Change4 t1 = new Section2Change4(0, null);
 		Section2Change4 t2 = new Section2Change4(1, t1);
-		Section2Change4 t3 = new Section2Change4(2, t2);
+		Section2Change4 t3 = new Section2Change4(2, t2);	//this is the change
 		(new Thread(t3)).start();
 		(new Thread(t2)).start();
 		(new Thread(t1)).start();

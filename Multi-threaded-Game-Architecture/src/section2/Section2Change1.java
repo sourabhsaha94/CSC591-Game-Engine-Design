@@ -17,7 +17,7 @@ public class Section2Change1 implements Runnable {
 	}
 
 	public synchronized boolean isBusy() {
-		System.out.println(busy);
+		
 		return busy;
 	}
 
@@ -25,7 +25,7 @@ public class Section2Change1 implements Runnable {
 		if (i == 0) {
 			try {
 				synchronized (this) {
-					Thread.sleep(2000);
+					Thread.sleep(2000);	//this is the change
 					notify();
 				}
 				Thread.sleep(2000);

@@ -63,11 +63,11 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 			player.vy=0;
 		}
 		
-		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){
+		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){	//dont cross the edges of the screen
 			player.vx=0;
 			jump_flag=false;
 		}
-		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){
+		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){	//dont cross the edges of the screen
 			player.vy=0;
 			jump_flag=false;
 		}
@@ -77,19 +77,19 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 				if(player.vy>0){	//coming down
 					direction = 4;
 				}
-				if(player.vy<0){	//going up
+				else if(player.vy<0){	//going up
 					direction = 2;
 				}
-				if(player.vy<0 && player.vx>0){	//up right
+				else if(player.vy<0 && player.vx>0){	//up right
 					direction = 10;
 				}
-				if(player.vy>0 && player.vx>0){	//down right
+				else if(player.vy>0 && player.vx>0){	//down right
 					direction = 12;
 				}
-				if(player.vy<0 && player.vx<0){	//up left
+				else if(player.vy<0 && player.vx<0){	//up left
 					direction = 3;
 				}
-				if(player.vy>0 && player.vx<0){	//down left
+				else if(player.vy>0 && player.vx<0){	//down left
 					direction = 5;
 				}
 				intersect = true;
@@ -100,39 +100,40 @@ public class Section1 extends PApplet {	//to inherit all methods provided by the
 		
 		System.out.println("vx:"+player.vx+" vy:"+player.vy+" direction:"+direction+" intersected:"+intersect);
 		
-		if(direction==2){
-			player.vy=2;
-			jump_flag=false;
-			direction=0;
-		}
-		if(direction==4){
-			player.vy=0;
-			jump_flag=false;
-			direction=0;
-		}
-		
-		if(direction==12){
-			player.vy=0;
-			player.vx=0;	//rebound on side hit
-			jump_flag=false;
-			direction=0;
-		}
-		
-		if(direction==5){
-			player.vy=0;
-			player.vx=0;	//rebound on side hit
-			jump_flag=false;
-			direction=0;
-		}
-		
-		if(direction==10){
+		if(direction==2){	//dont go up
 			player.vy=2;
 			player.vx=0;
 			jump_flag=false;
 			direction=0;
 		}
+		if(direction==4){	//stop downward motion while coming down
+			player.vy=0;
+			jump_flag=false;
+			direction=0;
+		}
 		
-		if(direction==3){
+		if(direction==12){	//stop motion on collision
+			player.vy=0;
+			player.vx=0;	
+			jump_flag=false;
+			direction=0;
+		}
+		
+		if(direction==5){	//stop motion on collision
+			player.vy=0;
+			player.vx=0;	
+			jump_flag=false;
+			direction=0;
+		}
+		
+		if(direction==10){	//rebound on side hit
+			player.vy=2;
+			player.vx=5;
+			jump_flag=false;
+			direction=0;
+		}
+		
+		if(direction==3){	//rebound on side hit
 			player.vy=2;
 			player.vx=0;
 			jump_flag=false;

@@ -19,6 +19,7 @@ public class ClientWorker implements Runnable {
 	Section5ClientListener scl;
 	
 	public ClientWorker(ServerSocket serverSocket, Section5ClientListener scl) {
+		
 		this.serverSocket = serverSocket;
 		this.scl = scl;
 		
@@ -39,16 +40,17 @@ public class ClientWorker implements Runnable {
 			
 			c.id=count++;
 			
-			Section5ServerIn si = new Section5ServerIn(c, scl);
 			Section5ServerOut so = new Section5ServerOut(c, scl);
-			c.in = si;
+			Section5ServerIn si = new Section5ServerIn(c, scl);
+			
 			c.out=so;
+			c.in = si;
 			
-			Thread t_si = new Thread(si);
 			Thread t_so = new Thread(so);
+			Thread t_si = new Thread(si);
 			
-			t_si.start();
 			t_so.start();
+			t_si.start();
 			
 			scl.addClient(c);
 			

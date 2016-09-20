@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 public class Section5ClientOut implements Runnable {
 	
-	private PrintWriter out;
+	private ObjectOutputStream out;
 
-	public Section5ClientOut(PrintWriter out){
+	public Section5ClientOut(ObjectOutputStream out){
 
 		this.out = out;
 
@@ -26,13 +26,10 @@ public class Section5ClientOut implements Runnable {
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-			while (!Thread.interrupted()) {
+			while(!Thread.interrupted()) {
 
 				String message = in.readLine();
-
-				out.println(message);
-
-				out.flush();
+				out.writeObject(message);
 
 			}
 

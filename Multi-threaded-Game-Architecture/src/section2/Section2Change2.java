@@ -25,11 +25,11 @@ public class Section2Change2 implements Runnable {
 		if (i == 0) {
 			try {
 				synchronized (this) {
-					Thread.sleep(2000);
+					Thread.sleep(2000);	//this is the change
 					notify();
 				}
 				synchronized (this) {
-					Thread.sleep(2000);
+					Thread.sleep(2000);	//this is the change
 					busy = false;
 					notify();
 				}
