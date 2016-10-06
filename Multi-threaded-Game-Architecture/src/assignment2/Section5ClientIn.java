@@ -42,6 +42,7 @@ public class Section5ClientIn implements Runnable {
 					}
 				}
 				
+				//System.out.println(m.socketAddress+": "+m.x);
 			} catch (Exception e) {
 				break;
 			}

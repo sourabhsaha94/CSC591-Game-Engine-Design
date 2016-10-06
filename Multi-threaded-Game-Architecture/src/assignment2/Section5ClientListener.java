@@ -10,11 +10,13 @@ package assignment2;
 
 import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientListener implements Runnable {
 
 	private Vector messageQueue = new Vector();
 	private Vector clients = new Vector();
+	ConcurrentHashMap<ClientInfo,Message> pInfo = new ConcurrentHashMap<>();
 	
 	public synchronized void addClient(ClientInfo c){
 		
@@ -60,7 +62,7 @@ public class Section5ClientListener implements Runnable {
 	@Override
 	public void run() {
 		
-		while(true){
+		while(!Thread.interrupted()){
 			try {
 				Message m = getNextMessagefromQueue();
 				sendMessagetoAllClients(m);

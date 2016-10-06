@@ -5,22 +5,23 @@ package assignment2;
 
 
 import java.io.IOException;
+import java.net.ServerSocket;
+import processing.core.PApplet;
 
-import java.net.*;
+public class Section5Server extends PApplet{
 
-import assignment1.Thing;
-import java.util.concurrent.*;
-import java.util.*;
-
-public class Section5Server{
-
+	public void settings(){
+		size(10,10);
+	}
 	
-	
-	public static void main(String args[]) throws IOException{
-		
+	public void setup(){
 		ServerSocket serverSocket = null;
 		
-		serverSocket = new ServerSocket(9000);
+		try {
+			serverSocket = new ServerSocket(9000);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		System.out.println("Server started at 9000...");
 		
 		Section5ClientListener clientListener = new Section5ClientListener();	//start client listener to manage communication b/w clients
@@ -32,11 +33,14 @@ public class Section5Server{
 		
 		Thread clientWorkerThread = new Thread(clientWorker);
 		clientWorkerThread.start();
+	}
 	
-		
-		
-		while(true);
-		
+	public void draw(){
+		//main game loop
+	}
+	
+	public static void main(String args[]){
+		PApplet.main("assignment2.Section5Server");
 	}
 
 }
