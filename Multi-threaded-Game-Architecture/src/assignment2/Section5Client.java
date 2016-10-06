@@ -48,7 +48,7 @@ public class Section5Client extends PApplet{
 		
 		Random random = new Random();
 		
-		player = new Thing(socket.getLocalSocketAddress().toString(),new Rectangle(random.nextInt(500),random.nextInt(500),50,50),0,0,255,255,0);
+		player = new Thing(socket.getLocalSocketAddress().toString(),new Rectangle(random.nextInt(500),random.nextInt(500),100,100),0,0,random.nextInt(255),random.nextInt(255),random.nextInt(255));
 		playerList.put(socket.getLocalSocketAddress().toString(), player);
 		
 		try {
@@ -66,7 +66,7 @@ public class Section5Client extends PApplet{
 		t_sender.setDaemon(true);
 		t_sender.start();
 		
-		Section5ClientIn recieve = new Section5ClientIn(in,playerList);	//start receiver thread
+		Section5ClientIn recieve = new Section5ClientIn(socket,in,playerList);	//start receiver thread
 		Thread t_recieve = new Thread(recieve);
 		t_recieve.setDaemon(true);
 		t_recieve.start();
@@ -82,12 +82,12 @@ public class Section5Client extends PApplet{
 		Iterator<Thing> list = t.iterator();
 		
 		while(list.hasNext()){
-			fill(255,0,0);
 			tempPlayer = list.next();
+			fill(tempPlayer.r,tempPlayer.g,tempPlayer.b);
 			rect(tempPlayer.R.x,tempPlayer.R.y,tempPlayer.R.width,tempPlayer.R.height);
 		}
 		
-		System.out.println("Current size of playerList "+playerList.size());
+		//System.out.println("Current size of playerList "+playerList.size());
 	}
 	
 	public static void main(String argv[]){
@@ -95,5 +95,33 @@ public class Section5Client extends PApplet{
 		//Section5Client c = new Section5Client();
 		PApplet.main("assignment2.Section5Client");		
 	}
+	
+	public void keyPressed(){
+		if (key == CODED) {
+		
+			if (keyCode == RIGHT) {	//move right
+					player.vx=1;
+					
+				
+			} else if (keyCode == LEFT) {	//move left
+					player.vx=-1;
+				
+			}
+			player.R.x+=player.vx;
+		}
+	}
+	
+	public void keyReleased() {
+		if (key == CODED) {
+			if (keyCode == RIGHT) {
+				player.vx=0;
+			} else if (keyCode == LEFT) {
+				player.vx=0;
+			}
+			player.R.x+=player.vx;
+		}
+
+	}
+
 
 }

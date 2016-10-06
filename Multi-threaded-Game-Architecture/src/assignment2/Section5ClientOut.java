@@ -9,28 +9,32 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientOut implements Runnable {
-	
-	private ObjectOutputStream out;
-	ConcurrentHashMap<String,Thing> pList;
-	Socket s=null;
-	
-	public Section5ClientOut(Socket s,ObjectOutputStream out, ConcurrentHashMap<String,Thing> pList){
 
-		this.s=s;
+	private ObjectOutputStream out;
+	ConcurrentHashMap<String, Thing> pList;
+	Socket s = null;
+
+	public Section5ClientOut(Socket s, ObjectOutputStream out, ConcurrentHashMap<String, Thing> pList) {
+
+		this.s = s;
 		this.out = out;
 		this.pList = pList;
 
 	}
 
-	public void run(){
+	public void run() {
 
 		try {
 
+			while (!Thread.interrupted()) {
 
-			while(!Thread.interrupted()) {
-				
-				Message message = new Message(s.getLocalSocketAddress().toString(),pList.get(s.getLocalSocketAddress().toString()).R.x,pList.get(s.getLocalSocketAddress().toString()).R.y);
-				
+				Message message = new Message(s.getLocalSocketAddress().toString(),
+						pList.get(s.getLocalSocketAddress().toString()).R.x,
+						pList.get(s.getLocalSocketAddress().toString()).R.y,
+						pList.get(s.getLocalSocketAddress().toString()).r,
+						pList.get(s.getLocalSocketAddress().toString()).g,
+						pList.get(s.getLocalSocketAddress().toString()).b);
+
 				out.writeObject(message);
 				out.reset();
 

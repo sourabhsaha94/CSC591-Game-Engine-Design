@@ -12,11 +12,17 @@ public class Message implements Serializable {
 	String socketAddress=null;
 	int x=0;
 	int y=0;
+	int r=0;
+	int g=0;
+	int b=0;
 	
-	Message(String s,int x,int y){
+	Message(String s,int x,int y,int r,int g,int b){
 		this.socketAddress = s;
 		this.x = x;
 		this.y = y;
+		this.r=r;
+		this.g=g;
+		this.b=b;
 	}
 	
 }
