@@ -8,11 +8,8 @@
 
 package assignment2;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientListener implements Runnable {
 
@@ -34,30 +31,30 @@ public class Section5ClientListener implements Runnable {
 	}
 	
 	
-	public synchronized void sendMessage(ClientInfo c, Integer pos){
+	public synchronized void sendMessage(ClientInfo c, Message m){
 	
 		Socket socket = c.socket;
 		//message = socket.getRemoteSocketAddress()+" : "+message;
-		messageQueue.add(pos);
+		messageQueue.add(m);
 		notify();
 	}
 	
-	private synchronized Integer getNextMessagefromQueue() throws InterruptedException{
+	private synchronized Message getNextMessagefromQueue() throws InterruptedException{
 		
 		while(messageQueue.size()==0)
 			wait();
 		
-		Integer pos = (Integer) messageQueue.get(0);
+		Message m = (Message) messageQueue.get(0);
 		messageQueue.removeElementAt(0);
-		return pos+10;
+		return m;
 	}
 	
 	
-	private synchronized void sendMessagetoAllClients(Integer pos){
+	private synchronized void sendMessagetoAllClients(Message m){
 		
 		for(int i=0;i<clients.size();i++){
 			ClientInfo c = (ClientInfo)clients.get(i);
-			c.out.sendMessage(pos);
+			c.out.sendMessage(m);
 		}
 	}
 	@Override
@@ -65,8 +62,8 @@ public class Section5ClientListener implements Runnable {
 		
 		while(true){
 			try {
-				Integer newPos = getNextMessagefromQueue();
-				sendMessagetoAllClients(newPos);
+				Message m = getNextMessagefromQueue();
+				sendMessagetoAllClients(m);
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

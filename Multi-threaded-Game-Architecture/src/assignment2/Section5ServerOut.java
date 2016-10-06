@@ -2,12 +2,8 @@
 package assignment2;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Section5ServerOut implements Runnable {
@@ -29,27 +25,28 @@ public class Section5ServerOut implements Runnable {
 
 	}
 
-	public synchronized void sendMessage(Integer message){
+	public synchronized void sendMessage(Message message){
 
 		messageQueue.add(message);
 		notify();
 
 	}
 
-	private synchronized Integer getNextMessageFromQueue() throws InterruptedException{
+	private synchronized Message getNextMessageFromQueue() throws InterruptedException{
 
 		while(messageQueue.size() == 0)
 			wait();
 
-		Integer message = (Integer) messageQueue.get(0);
+		Message message = (Message) messageQueue.get(0);
 		messageQueue.removeElementAt(0);
 		return message;
 
 	}
 
-	private void sendMessageToClient(Integer message) throws IOException{
+	private void sendMessageToClient(Message message) throws IOException{
 
 		out.writeObject(message);
+		out.reset();
 
 	}
 
@@ -58,7 +55,7 @@ public class Section5ServerOut implements Runnable {
 		try {
 
 			while(!Thread.interrupted()) {
-				Integer message = getNextMessageFromQueue();
+				Message message = getNextMessageFromQueue();
 				sendMessageToClient(message);
 			}
 

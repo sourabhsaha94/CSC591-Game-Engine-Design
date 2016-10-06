@@ -3,22 +3,22 @@
 
 package assignment2;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientOut implements Runnable {
 	
 	private ObjectOutputStream out;
-	Thing player;
+	ConcurrentHashMap<String,Thing> pList;
+	Socket s=null;
+	
+	public Section5ClientOut(Socket s,ObjectOutputStream out, ConcurrentHashMap<String,Thing> pList){
 
-	public Section5ClientOut(ObjectOutputStream out, Thing t){
-
+		this.s=s;
 		this.out = out;
-		this.player = t;
+		this.pList = pList;
 
 	}
 
@@ -26,12 +26,13 @@ public class Section5ClientOut implements Runnable {
 
 		try {
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
 			while(!Thread.interrupted()) {
-
-				Integer oldPos = player.R.x;//in.readLine();
-				out.writeObject(oldPos);
+				
+				Message message = new Message(s.getLocalSocketAddress().toString(),pList.get(s.getLocalSocketAddress().toString()).R.x,pList.get(s.getLocalSocketAddress().toString()).R.y);
+				
+				out.writeObject(message);
+				out.reset();
 
 			}
 

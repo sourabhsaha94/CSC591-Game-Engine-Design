@@ -25,19 +25,18 @@ public class Section5ServerIn implements Runnable {
 	@Override
 	public void run() {
 		
-		Integer pos=0;
+		Message m;
 		
 		while(!Thread.interrupted()){
 			
-			while(!pos.equals(null)){
+			
 				try{
-					pos = (Integer)input.readObject();
+					m = (Message)input.readObject();
 				}
 				catch(Exception e){
 					break;
 				}
-				clientListener.sendMessage(c, pos);
-			}
+				clientListener.sendMessage(c, m);
 			
 		}
 		
