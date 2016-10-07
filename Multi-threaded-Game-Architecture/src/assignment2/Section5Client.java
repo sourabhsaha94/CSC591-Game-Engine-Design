@@ -89,7 +89,7 @@ public class Section5Client extends PApplet {
 			tempPlayer = list.next();
 			fill(tempPlayer.r, tempPlayer.g, tempPlayer.b);
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
-			System.out.println(tempPlayer.id+":"+tempPlayer.r+" "+tempPlayer.g+" "+tempPlayer.b);
+			//System.out.println(tempPlayer.id+":"+tempPlayer.r+" "+tempPlayer.g+" "+tempPlayer.b);
 		}
 		// System.out.println("Current size of playerList "+playerList.size());
 	}
@@ -110,17 +110,36 @@ public class Section5Client extends PApplet {
 				player.vx = -1;
 
 			}
+			if (keyCode == UP) { // move up
+					player.vy = -1;
+
+				}
+			 else if (keyCode == DOWN) { // move down
+					player.vy = 1;
+
+				}
 			player.R.x += player.vx;
+			player.R.y += player.vy;
 		}
 	}
 
 	public void keyReleased() {
 		if (key == CODED) {
-			if (keyCode == RIGHT) {
+			if (keyCode == RIGHT) { // move right
 				player.vx = 0;
-			} else if (keyCode == LEFT) {
+
+			} else if (keyCode == LEFT) { // move left
 				player.vx = 0;
+
 			}
+			if (keyCode == UP) { // move up
+					player.vy = 0;
+
+				}
+			 else if (keyCode == DOWN) { // move down
+					player.vy = 0;
+
+				}
 			player.R.x += player.vx;
 		}
 
