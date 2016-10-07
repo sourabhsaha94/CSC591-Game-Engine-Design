@@ -5,18 +5,17 @@ package assignment2;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientOut implements Runnable {
 
 	private ObjectOutputStream out;
-	ConcurrentHashMap<String, Thing> pList;
-	Socket s = null;
+	ConcurrentHashMap<Integer, Thing> pList;
+	int playerID=0;;
 
-	public Section5ClientOut(Socket s, ObjectOutputStream out, ConcurrentHashMap<String, Thing> pList) {
+	public Section5ClientOut(int id, ObjectOutputStream out, ConcurrentHashMap<Integer, Thing> pList) {
 
-		this.s = s;
+		this.playerID = id;
 		this.out = out;
 		this.pList = pList;
 
@@ -25,19 +24,27 @@ public class Section5ClientOut implements Runnable {
 	public void run() {
 
 		try {
-
+			Message message;
+			boolean first_run=true;
+			
+			
 			while (!Thread.interrupted()) {
 
-				Message message = new Message(s.getLocalSocketAddress().toString(),
-						pList.get(s.getLocalSocketAddress().toString()).R.x,
-						pList.get(s.getLocalSocketAddress().toString()).R.y,
-						pList.get(s.getLocalSocketAddress().toString()).r,
-						pList.get(s.getLocalSocketAddress().toString()).g,
-						pList.get(s.getLocalSocketAddress().toString()).b);
-
+				if(first_run){
+					message = new Message(playerID,999,0,0,0,0);
+					first_run=false;
+				}
+				else{
+				
+					message = new Message(playerID,
+						pList.get(playerID).R.x,
+						pList.get(playerID).R.y,
+						pList.get(playerID).r,
+						pList.get(playerID).g,
+						pList.get(playerID).b);
+				}
 				out.writeObject(message);
 				out.reset();
-
 			}
 
 		} catch (IOException ioe) {

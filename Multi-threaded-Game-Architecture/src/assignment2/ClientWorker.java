@@ -38,8 +38,6 @@ public class ClientWorker implements Runnable {
 			ClientInfo c = new ClientInfo();
 			c.socket = socket;
 			
-			c.id=count++;
-			
 			Section5ServerOut so = new Section5ServerOut(c, scl);
 			Section5ServerIn si = new Section5ServerIn(c, scl);
 			

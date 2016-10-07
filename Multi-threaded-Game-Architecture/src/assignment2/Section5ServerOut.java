@@ -57,6 +57,7 @@ public class Section5ServerOut implements Runnable {
 			while(!Thread.interrupted()) {
 				Message message = getNextMessageFromQueue();
 				sendMessageToClient(message);
+				//System.out.println("sending to");
 			}
 
 		} catch (Exception e) {

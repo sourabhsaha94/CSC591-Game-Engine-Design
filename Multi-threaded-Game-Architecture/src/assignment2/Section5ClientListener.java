@@ -8,15 +8,18 @@
 
 package assignment2;
 
-import java.net.Socket;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Section5ClientListener implements Runnable {
 
 	private Vector messageQueue = new Vector();
 	private Vector clients = new Vector();
-	ConcurrentHashMap<ClientInfo,Message> pInfo = new ConcurrentHashMap<>();
+	Set<Integer> tempSet = null;
+	CopyOnWriteArrayList<Integer> allPlayerList = new CopyOnWriteArrayList<>();
+	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
 	
 	public synchronized void addClient(ClientInfo c){
 		
@@ -35,7 +38,7 @@ public class Section5ClientListener implements Runnable {
 	
 	public synchronized void sendMessage(ClientInfo c, Message m){
 	
-		Socket socket = c.socket;
+		//Socket socket = c.socket;
 		//message = socket.getRemoteSocketAddress()+" : "+message;
 		messageQueue.add(m);
 		notify();
@@ -56,19 +59,31 @@ public class Section5ClientListener implements Runnable {
 		
 		for(int i=0;i<clients.size();i++){
 			ClientInfo c = (ClientInfo)clients.get(i);
-			c.out.sendMessage(m);
+			if(c.id!=m.id)
+				c.out.sendMessage(m);
 		}
 	}
+	
+	/*private synchronized void sendMessagetoRelatedClients(Message m){
+		
+		
+		for(int i=0;i<clients.size();i++){
+			ClientInfo c = (ClientInfo)clients.get(i);
+			if(c.id!=m.id)
+				c.out.sendMessage(m);
+		}
+	}*/
 	@Override
 	public void run() {
 		
 		while(!Thread.interrupted()){
+			
 			try {
 				Message m = getNextMessagefromQueue();
 				sendMessagetoAllClients(m);
+				//System.out.println(((ClientInfo)clients.lastElement()).id);
 				
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

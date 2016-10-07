@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Set;
 
 public class Section5ServerIn implements Runnable {
 
@@ -36,6 +37,14 @@ public class Section5ServerIn implements Runnable {
 				catch(Exception e){
 					break;
 				}
+				//System.out.println("receiving from "+m.id+" :"+m.x);
+				//clientListener.pInfo.put(c, m);
+				
+				if(m.x==999){
+					c.id=m.id;
+					clientListener.allPlayerList.add(m.id);	//add player id to main list
+				}
+				else
 				clientListener.sendMessage(c, m);
 			
 		}
