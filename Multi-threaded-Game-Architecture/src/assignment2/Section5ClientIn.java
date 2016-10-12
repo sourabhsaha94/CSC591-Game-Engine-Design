@@ -37,7 +37,7 @@ public class Section5ClientIn implements Runnable {
 					}
 					else{
 						System.out.println(true);
-						player = new Thing(m.id,new Rectangle(m.x,m.y,100,100),0,0,m.r,m.g,m.b);	//create a new player
+						player = new Player(m.id,new Rectangle(m.x,m.y,50,50),0,0,m.r,m.g,m.b);	//create a new player
 						pList.put(m.id, player);
 					}
 				}

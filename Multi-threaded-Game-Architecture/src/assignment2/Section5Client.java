@@ -59,7 +59,7 @@ public class Section5Client extends PApplet {
 
 		int playerID = random.nextInt(1000);
 
-		player = new Thing(playerID, new Rectangle(random.nextInt(500), random.nextInt(500), 100, 100), 0, 0,
+		player = new Player(playerID, new Rectangle(random.nextInt(500), random.nextInt(500), 50, 50), 0, 0,
 				random.nextInt(255), random.nextInt(255), random.nextInt(255)); // create a new player
 
 		playerList.put(playerID, player);	//put the player in the list of players
@@ -90,10 +90,10 @@ public class Section5Client extends PApplet {
 		t_recieve.setDaemon(true);
 		t_recieve.start();
 
-		ThingList = new LinkedList<Thing>();
-		ThingList.add(new Thing(1,new Rectangle(50,600,200,50),0,0,0,0,255));	//(width,height);width means height;height means width
-		ThingList.add(new Thing(2,new Rectangle(150,500,350,50),0,0,0,255,0));
-		ThingList.add(new Thing(3,new Rectangle(500,400,150,50),0,0,255,0,0));
+	//	ThingList = new LinkedList<Thing>();
+	//	ThingList.add(new Thing(1,new Rectangle(50,600,200,50),0,0,0,0,255));	//(width,height);width means height;height means width
+		//ThingList.add(new Thing(2,new Rectangle(150,500,350,50),0,0,0,255,0));
+		//ThingList.add(new Thing(3,new Rectangle(500,400,150,50),0,0,255,0,0));
 		
 		distance_from_ground = 200;	//800-600
 
@@ -111,10 +111,10 @@ public class Section5Client extends PApplet {
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
 
 		}
-		for(Thing t:ThingList){		//loop to display
+		/*for(Thing t:ThingList){		//loop to display
 			fill(t.r,t.g,t.b);
 			rect(t.R.x+=t.vx,t.R.y+=t.vy,t.R.width,t.R.height);
-		}
+		}*/
 		
 		player.R.x+=player.vx;
 		player.R.y+=player.vy;
@@ -139,7 +139,7 @@ public class Section5Client extends PApplet {
 			jump_flag=false;
 		}
 
-		for(Thing t:ThingList){
+		/*for(Thing t:ThingList){
 			if(player.R.intersects(t.R)){
 				if(player.vy>0){	//coming down
 					direction = 4;
@@ -163,13 +163,13 @@ public class Section5Client extends PApplet {
 				break;
 			}
 			intersect=false;
-		}
+		}*/
 
 		System.out.println("vx:"+player.vx+" vy:"+player.vy+" direction:"+direction+" intersected:"+intersect);
 
 		if(direction==2){	//dont go up
 			player.vy=2;
-			player.vx=0;
+			player.vx=-5;
 			jump_flag=false;
 			direction=0;
 		}
@@ -195,14 +195,14 @@ public class Section5Client extends PApplet {
 
 		if(direction==10){	//rebound on side hit
 			player.vy=2;
-			player.vx=5;
+			player.vx=-5;
 			jump_flag=false;
 			direction=0;
 		}
 
 		if(direction==3){	//rebound on side hit
 			player.vy=2;
-			player.vx=0;
+			player.vx=5;
 			jump_flag=false;
 			direction=0;
 		}

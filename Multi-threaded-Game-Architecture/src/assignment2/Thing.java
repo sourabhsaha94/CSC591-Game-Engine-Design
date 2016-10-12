@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 
-public class Thing implements Serializable {	//class encapsulating a game object i.e. a rectangle and its velocity and position
+public abstract class Thing implements Serializable {	//class encapsulating a game object i.e. a rectangle and its velocity and position
 	
 	/**
 	 * 
@@ -22,8 +22,5 @@ public class Thing implements Serializable {	//class encapsulating a game object
 		this.r=r;
 		this.g=g;
 		this.b=b;
-	}
-	public Thing(int id){
-		this.id = id;
 	}
 }
