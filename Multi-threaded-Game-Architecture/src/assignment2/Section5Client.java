@@ -72,6 +72,8 @@ public class Section5Client extends PApplet {
 			e.printStackTrace();
 		}
 
+		platformList = new LinkedList<Platform>();
+		
 		System.out.println(playerID + " connected to server.."); // print unique
 		// client
 		// identifier

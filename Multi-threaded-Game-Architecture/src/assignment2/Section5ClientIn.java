@@ -30,6 +30,10 @@ public class Section5ClientIn implements Runnable {
 			try {
 				m = (Message) in.readObject();
 				
+				if(m.id==9999){
+					this.platformList.addAll(m.platformInfo.values());
+				}
+				
 				if((m.id!=playerID))		//update only for other players
 				{
 					if(pList.containsKey(m.id)){	//check if player exists
@@ -38,9 +42,7 @@ public class Section5ClientIn implements Runnable {
 						player.R.y=m.y;
 						pList.put(m.id, player);
 					}
-					else if(m.id==9999){
-						this.platformList.addAll(m.platformInfo.values());
-					}
+					
 					else{
 						System.out.println(true);
 						player = new Player(m.id,new Rectangle(m.x,m.y,50,50),0,0,m.r,m.g,m.b);	//create a new player

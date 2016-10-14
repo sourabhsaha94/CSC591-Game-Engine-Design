@@ -50,6 +50,7 @@ public class ClientWorker implements Runnable {
 			t_so.start();
 			t_si.start();
 			
+			c.out.sendMessage(new Message(9999,scl.allPlatformInfo));
 			scl.addClient(c);
 			
 		} catch (IOException e) {

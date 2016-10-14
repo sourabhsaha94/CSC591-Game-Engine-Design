@@ -78,21 +78,16 @@ public class Section5ClientListener implements Runnable {
 	@Override
 	public void run() {
 		
-		boolean first_run = true;
+	
 		
 		while(!Thread.interrupted()){
 			
 			try {
 				
-				if(first_run){
-					Message m = new Message(9999,this.allPlatformInfo);
-					sendMessagetoAllClients(m);
-				}
-				else{
+			
 					Message m = getNextMessagefromQueue();
 					sendMessagetoAllClients(m);
-					
-				}
+				
 				//System.out.println(((ClientInfo)clients.lastElement()).id);
 				
 			} catch (InterruptedException e) {
