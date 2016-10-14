@@ -21,7 +21,7 @@ import processing.core.PApplet;
 public class Section5Client extends PApplet {
 
 	Thing player, tempPlayer;
-	LinkedList<Thing> ThingList;
+	LinkedList<Platform> platformList;
 	ConcurrentHashMap<Integer, Thing> playerList;
 
 	int distance_from_ground;
@@ -83,18 +83,13 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, platformList); // start
 		// receiver
 		// thread
 		Thread t_recieve = new Thread(recieve);
 		t_recieve.setDaemon(true);
 		t_recieve.start();
 
-	//	ThingList = new LinkedList<Thing>();
-	//	ThingList.add(new Thing(1,new Rectangle(50,600,200,50),0,0,0,0,255));	//(width,height);width means height;height means width
-		//ThingList.add(new Thing(2,new Rectangle(150,500,350,50),0,0,0,255,0));
-		//ThingList.add(new Thing(3,new Rectangle(500,400,150,50),0,0,255,0,0));
-		
 		distance_from_ground = 200;	//800-600
 
 	}
@@ -111,10 +106,10 @@ public class Section5Client extends PApplet {
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
 
 		}
-		/*for(Thing t:ThingList){		//loop to display
+		for(Platform t:platformList){		//loop to display
 			fill(t.r,t.g,t.b);
 			rect(t.R.x+=t.vx,t.R.y+=t.vy,t.R.width,t.R.height);
-		}*/
+		}
 		
 		player.R.x+=player.vx;
 		player.R.y+=player.vy;
@@ -139,7 +134,7 @@ public class Section5Client extends PApplet {
 			jump_flag=false;
 		}
 
-		/*for(Thing t:ThingList){
+		for(Platform t:platformList){
 			if(player.R.intersects(t.R)){
 				if(player.vy>0){	//coming down
 					direction = 4;
@@ -163,7 +158,7 @@ public class Section5Client extends PApplet {
 				break;
 			}
 			intersect=false;
-		}*/
+		}
 
 		System.out.println("vx:"+player.vx+" vy:"+player.vy+" direction:"+direction+" intersected:"+intersect);
 

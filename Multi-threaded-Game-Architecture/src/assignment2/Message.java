@@ -1,6 +1,7 @@
 package assignment2;
 
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Message implements Serializable {
 
@@ -15,6 +16,8 @@ public class Message implements Serializable {
 	int r=0;
 	int g=0;
 	int b=0;
+	ConcurrentHashMap<Integer,Platform> platformInfo;
+	
 	
 	Message(int id,int x,int y,int r,int g,int b){
 		this.id = id;
@@ -23,6 +26,11 @@ public class Message implements Serializable {
 		this.r=r;
 		this.g=g;
 		this.b=b;
+	}
+	
+	Message(int id,ConcurrentHashMap<Integer,Platform> platformInfo){
+		this.id = id;
+		this.platformInfo = platformInfo;
 	}
 	
 }

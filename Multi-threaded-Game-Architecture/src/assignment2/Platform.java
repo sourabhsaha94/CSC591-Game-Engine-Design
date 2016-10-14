@@ -2,9 +2,9 @@ package assignment2;
 
 import java.awt.Rectangle;
 
-public class StaticPlatform extends Thing {
+public class Platform extends Thing {
 
-	public StaticPlatform(int id, Rectangle R, int vx, int vy, int r2, int g, int b) {
+	public Platform(int id, Rectangle R, int vx, int vy, int r2, int g, int b) {
 		super(id, R, vx, vy, r2, g, b);
 		// TODO Auto-generated constructor stub
 	}

@@ -4,8 +4,11 @@
 package assignment2;
 
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Random;
+
 import processing.core.PApplet;
 
 public class Section5Server extends PApplet{
@@ -28,6 +31,15 @@ public class Section5Server extends PApplet{
 		
 		Thread cL = new Thread(clientListener);
 		cL.start();
+		
+		Random r = new Random();
+		
+		int id = r.nextInt(1000)+1500;
+		clientListener.allPlatformInfo.put(id, new Platform(id,new Rectangle(50,600,200,50),0,0,0,0,255));
+		id = r.nextInt(1000)+1500;
+		clientListener.allPlatformInfo.put(id, new Platform(id,new Rectangle(150,500,350,50),0,0,0,255,0));
+		id = r.nextInt(1000)+1500;
+		clientListener.allPlatformInfo.put(id, new Platform(id,new Rectangle(500,400,150,50),0,0,255,0,0));
 		
 		ClientWorker clientWorker = new ClientWorker(serverSocket,clientListener);	//manage client connections
 		

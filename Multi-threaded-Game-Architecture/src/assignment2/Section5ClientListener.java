@@ -21,6 +21,8 @@ public class Section5ClientListener implements Runnable {
 	CopyOnWriteArrayList<Integer> allPlayerList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
 	
+	ConcurrentHashMap<Integer,Platform> allPlatformInfo = new ConcurrentHashMap<>();
+	
 	public synchronized void addClient(ClientInfo c){
 		
 		clients.add(c);
@@ -76,11 +78,21 @@ public class Section5ClientListener implements Runnable {
 	@Override
 	public void run() {
 		
+		boolean first_run = true;
+		
 		while(!Thread.interrupted()){
 			
 			try {
-				Message m = getNextMessagefromQueue();
-				sendMessagetoAllClients(m);
+				
+				if(first_run){
+					Message m = new Message(9999,this.allPlatformInfo);
+					sendMessagetoAllClients(m);
+				}
+				else{
+					Message m = getNextMessagefromQueue();
+					sendMessagetoAllClients(m);
+					
+				}
 				//System.out.println(((ClientInfo)clients.lastElement()).id);
 				
 			} catch (InterruptedException e) {

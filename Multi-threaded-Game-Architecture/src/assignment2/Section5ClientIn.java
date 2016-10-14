@@ -2,6 +2,7 @@ package assignment2;
 
 import java.awt.Rectangle;
 import java.io.ObjectInputStream;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientIn implements Runnable {
@@ -9,12 +10,14 @@ public class Section5ClientIn implements Runnable {
 	ObjectInputStream in;
 	Thing player;
 	ConcurrentHashMap<Integer, Thing> pList;
+	LinkedList<Platform> platformList;
 	int playerID=0;
 	
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Thing> pList) {
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Thing> pList,LinkedList<Platform> platformList) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
+		this.platformList = platformList;
 	}
 
 	@Override
@@ -34,6 +37,9 @@ public class Section5ClientIn implements Runnable {
 						player.R.x=m.x;
 						player.R.y=m.y;
 						pList.put(m.id, player);
+					}
+					else if(m.id==9999){
+						this.platformList.addAll(m.platformInfo.values());
 					}
 					else{
 						System.out.println(true);
