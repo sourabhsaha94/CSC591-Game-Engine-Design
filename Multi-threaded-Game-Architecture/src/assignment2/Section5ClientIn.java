@@ -31,9 +31,12 @@ public class Section5ClientIn implements Runnable {
 				
 				if((m.id!=playerID))		//update only for other players
 				{
+					if(m.id>=1000 && m.id<=2000){
+						System.out.println();
+					}
 				
 
-					if(pList.containsKey(m.id)){	//check if player exists
+					else if(pList.containsKey(m.id)){	//check if player exists
 						player = pList.get(m.id);
 						player.R.x=m.x;
 						player.R.y=m.y;

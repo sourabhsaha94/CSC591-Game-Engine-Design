@@ -8,6 +8,7 @@
 
 package assignment2;
 
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +21,10 @@ public class Section5ClientListener implements Runnable {
 	Set<Integer> tempSet = null;
 	CopyOnWriteArrayList<Integer> allPlayerList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
+	
+	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
+	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
+	LinkedList<DeathZone> dzList = new LinkedList<>();
 	
 	public synchronized void addClient(ClientInfo c){
 		
