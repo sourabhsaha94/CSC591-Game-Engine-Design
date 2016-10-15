@@ -20,18 +20,16 @@ import processing.core.PApplet;
 
 public class Section5Client extends PApplet {
 
-	Thing player, tempPlayer;
-	LinkedList<Platform> platformList;
-	ConcurrentHashMap<Integer, Thing> playerList;
+	Player tempPlayer;
+	Player player;
+	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
+	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
+	ConcurrentHashMap<Integer, Player> playerList;
 
 	int distance_from_ground;
 	int direction=1; //Left 1 Up 2 Down 3 Right 4
 	int displayx=800;
 	int displayy=800;
-	
-	boolean jump_flag = false;
-	int jump_start=0;
-	int init_pos=0;
 	
 	boolean intersect=false;
 	
@@ -54,14 +52,15 @@ public class Section5Client extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		Random random = new Random();
 
-		int playerID = random.nextInt(1000);
+		int playerID = random.nextInt(100);
 
-		player = new Player(playerID, new Rectangle(random.nextInt(500), random.nextInt(500), 50, 50), 0, 0,
-				random.nextInt(255), random.nextInt(255), random.nextInt(255)); // create a new player
-
+		player = new Player(playerID); // create a new player
+		player.R = new Rectangle(50,50,50,50);
+		player.setPlayerColor(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+		
 		playerList.put(playerID, player);	//put the player in the list of players
 
 		try {
@@ -72,8 +71,6 @@ public class Section5Client extends PApplet {
 			e.printStackTrace();
 		}
 
-		platformList = new LinkedList<Platform>();
-		
 		System.out.println(playerID + " connected to server.."); // print unique
 		// client
 		// identifier
@@ -85,139 +82,136 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, platformList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, sPlatformList, mPlatformList); // start
 		// receiver
 		// thread
+		
 		Thread t_recieve = new Thread(recieve);
 		t_recieve.setDaemon(true);
 		t_recieve.start();
 
 		distance_from_ground = 200;	//800-600
+		
 
 	}
 
 	public void draw() {
 		clear();
 
-		Collection<Thing> pList = playerList.values();
-		Iterator<Thing> list = pList.iterator();
+		Collection<Player> pList = playerList.values();
+		Iterator<Player> list = pList.iterator();
 
 		while (list.hasNext()) {
 			tempPlayer = list.next();
-			fill(tempPlayer.r, tempPlayer.g, tempPlayer.b);
+			fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
 
 		}
-		for(Platform t:platformList){		//loop to display
-			fill(t.r,t.g,t.b);
-			rect(t.R.x+=t.vx,t.R.y+=t.vy,t.R.width,t.R.height);
+		
+		System.out.println(playerList.size());
+		/*for(StaticPlatform t:sPlatformList){		//loop to display
+			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
+			rect(t.R.x,t.R.y,t.R.width,t.R.height);
 		}
 		
-		player.R.x+=player.vx;
-		player.R.y+=player.vy;
+		for(MovingPlatform t:mPlatformList){
+			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
+			rect(t.R.x+=t.motionComponent.getVx(),t.R.y+t.motionComponent.getVy(),t.R.width,t.R.height);
+		}*/	
+		
+		
+		player.R.x+=player.motionComponent.getVx();
+		player.R.y+=player.motionComponent.getVy();
 
 		distance_from_ground = (int) (displayy - player.R.getMaxY());
 
-		if( !intersect && distance_from_ground>=2 && !jump_flag)
+		if( !intersect && distance_from_ground>=2 && !player.jumpComponent.jump_flag)
 		{
-			player.vy=2;
-			player.vx=0;
+			player.motionComponent.setVy(2);
+			player.motionComponent.setVx(0);;
 		}
 		if(distance_from_ground==2){
-			player.vy=0;
+			player.motionComponent.setVy(0);
 		}
 
 		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){	//dont cross the edges of the screen
-			player.vx=0;
-			jump_flag=false;
+			player.motionComponent.setVx(0);;
+			player.jumpComponent.jump_flag=false;
 		}
 		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){	//dont cross the edges of the screen
-			player.vy=0;
-			jump_flag=false;
+			player.motionComponent.setVy(0);;
+			player.jumpComponent.jump_flag=false;
 		}
 
-		for(Platform t:platformList){
+		/*for(Platform t:platformList){
 			if(player.R.intersects(t.R)){
-				if(player.vy>0){	//coming down
+				if(player.motionComponent.getVy()>0){	//coming down
 					direction = 4;
 				}
-				else if(player.vy<0){	//going up
+				else if(player.motionComponent.getVy()<0){	//going up
 					direction = 2;
 				}
-				else if(player.vy<0 && player.vx>0){	//up right
+				else if(player.motionComponent.getVy()<0 && player.motionComponent.getVx()>0){	//up right
 					direction = 10;
 				}
-				else if(player.vy>0 && player.vx>0){	//down right
+				else if(player.motionComponent.getVy()>0 && player.motionComponent.getVx()>0){	//down right
 					direction = 12;
 				}
-				else if(player.vy<0 && player.vx<0){	//up left
+				else if(player.motionComponent.getVy()<0 && player.motionComponent.getVx()<0){	//up left
 					direction = 3;
 				}
-				else if(player.vy>0 && player.vx<0){	//down left
+				else if(player.motionComponent.getVy()>0 && player.motionComponent.getVx()<0){	//down left
 					direction = 5;
 				}
 				intersect = true;
 				break;
 			}
 			intersect=false;
-		}
-
-		System.out.println("vx:"+player.vx+" vy:"+player.vy+" direction:"+direction+" intersected:"+intersect);
+		}*/
 
 		if(direction==2){	//dont go up
-			player.vy=2;
-			player.vx=-5;
-			jump_flag=false;
+			player.motionComponent.setVy(2);
+			player.motionComponent.setVx(-5);
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 		if(direction==4){	//stop downward motion while coming down
-			player.vy=0;
-			jump_flag=false;
+			player.motionComponent.setVy(0);
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 
 		if(direction==12){	//stop motion on collision
-			player.vy=0;
-			player.vx=0;	
-			jump_flag=false;
+			player.motionComponent.setVy(0);
+			player.motionComponent.setVx(0);	
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 
 		if(direction==5){	//stop motion on collision
-			player.vy=0;
-			player.vx=0;	
-			jump_flag=false;
+			player.motionComponent.setVy(0);
+			player.motionComponent.setVx(0);	
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 
 		if(direction==10){	//rebound on side hit
-			player.vy=2;
-			player.vx=-5;
-			jump_flag=false;
+			player.motionComponent.setVy(2);
+			player.motionComponent.setVx(-5);
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 
 		if(direction==3){	//rebound on side hit
-			player.vy=2;
-			player.vx=5;
-			jump_flag=false;
+			player.motionComponent.setVy(2);
+			player.motionComponent.setVx(5);
+			player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 
-		if(jump_flag){	//main jump logic
+		if(player.jumpComponent.jump_flag){	//main jump logic
 
-			if(player.vy==0){
-				player.vy=-2;
-				init_pos=player.R.y;
-				jump_start=frameCount;
-			}
-			else if(frameCount-jump_start == 100){
-				player.vy=2;
-			}
-			else if(frameCount-jump_start==200){
-				player.vy=0;
-				jump_flag=false;
-			}
+			player.jumpComponent.jump(frameCount);
 		}
 
 	}
@@ -229,40 +223,10 @@ public class Section5Client extends PApplet {
 	}
 
 	public void keyPressed(){
-		if (key == CODED) {
-		
-			if (keyCode == RIGHT) {	//move right
-				if(intersect || jump_flag)
-					player.vx=1;
-				
-			} else if (keyCode == LEFT) {	//move left
-				if(intersect || jump_flag)
-					player.vx=-1;
-				
-			}
-			else if (keyCode == UP) {	//jump
-				jump_flag=true;
-			}
-			
-			player.R.x+=player.vx;
-		}
-		else if(key == 'r' ||key =='R'){	//reset
-			player.R.x=50;
-			player.R.y=550;
-			player.vx=0;
-			player.vy=0;
-		}
+		player.hidComponent.keyPressed();
 	}
 	
 	public void keyReleased() {
-		if (key == CODED) {
-			if (keyCode == RIGHT) {
-				player.vx=0;
-			} else if (keyCode == LEFT) {
-				player.vx=0;
-			}
-			player.R.x+=player.vx;
-		}
-
+		player.hidComponent.keyReleased();	
 	}
 }

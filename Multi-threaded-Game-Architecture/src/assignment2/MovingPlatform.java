@@ -1,31 +1,25 @@
 package assignment2;
 
-public class Player extends Thing{
-	
-	public Player(int id) {
+public class MovingPlatform extends Thing{
+
+	public MovingPlatform(int id) {
 		super(id);
 		this.collisionComponent = new CollisionComponent(null);
 		this.colorComponent = new ColorComponent(0,0,0);
-		this.jumpComponent = new JumpComponent(this);
 		this.motionComponent = new MotionComponent();
-		this.hidComponent = new HIDComponent(this);
-		// TODO Auto-generated constructor stub
 	}
-
 	
-	public void setPlayerColor(int r,int g,int b){
+	public void setPlatformColor(int r,int g,int b){
 		this.colorComponent.update(r,g,b);
 	}
 	
-	public void setPlayerVelocity(int vx,int vy){
+	public void setPlatformVelocity(int vx,int vy){
 		this.motionComponent.setVelocity(vx, vy);
 	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-
 
 }

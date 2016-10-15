@@ -8,8 +8,6 @@
 package assignment2;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -28,8 +26,7 @@ public class ClientWorker implements Runnable {
 	@Override
 	public void run() {
 		
-		int count=0;
-		
+	
 		while(true){
 		try {
 			
@@ -50,7 +47,6 @@ public class ClientWorker implements Runnable {
 			t_so.start();
 			t_si.start();
 			
-			c.out.sendMessage(new Message(9999,scl.allPlatformInfo));
 			scl.addClient(c);
 			
 		} catch (IOException e) {

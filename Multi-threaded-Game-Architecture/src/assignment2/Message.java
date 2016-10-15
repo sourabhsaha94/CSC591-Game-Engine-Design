@@ -16,7 +16,8 @@ public class Message implements Serializable {
 	int r=0;
 	int g=0;
 	int b=0;
-	ConcurrentHashMap<Integer,Platform> platformInfo;
+	ConcurrentHashMap<Integer,StaticPlatform> splatformInfo;
+	ConcurrentHashMap<Integer,MovingPlatform> mplatformInfo;
 	
 	
 	Message(int id,int x,int y,int r,int g,int b){
@@ -28,9 +29,10 @@ public class Message implements Serializable {
 		this.b=b;
 	}
 	
-	Message(int id,ConcurrentHashMap<Integer,Platform> platformInfo){
+	Message(int id,ConcurrentHashMap<Integer,StaticPlatform> splatformInfo,ConcurrentHashMap<Integer,MovingPlatform> mplatformInfo){
 		this.id = id;
-		this.platformInfo = platformInfo;
+		this.splatformInfo = splatformInfo;
+		this.mplatformInfo = mplatformInfo;
 	}
 	
 }

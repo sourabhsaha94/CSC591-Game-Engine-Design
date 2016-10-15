@@ -8,16 +8,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Section5ClientIn implements Runnable {
 
 	ObjectInputStream in;
-	Thing player;
-	ConcurrentHashMap<Integer, Thing> pList;
-	LinkedList<Platform> platformList;
+	Player player;
+	ConcurrentHashMap<Integer, Player> pList;
+	LinkedList<StaticPlatform> sPlatformList;
+	LinkedList<MovingPlatform> mPlatformList;
 	int playerID=0;
-	
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Thing> pList,LinkedList<Platform> platformList) {
+
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList, LinkedList<StaticPlatform> sPlatformList, LinkedList<MovingPlatform> mPlatformList) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
-		this.platformList = platformList;
+		this.sPlatformList = sPlatformList;
+		this.mPlatformList = mPlatformList;
 	}
 
 	@Override
@@ -26,14 +28,17 @@ public class Section5ClientIn implements Runnable {
 		Message m;
 
 		while (!Thread.interrupted()) {
-
+			
 			try {
 				m = (Message) in.readObject();
 				
-				if(m.id==9999){
-					this.platformList.addAll(m.platformInfo.values());
-				}
-				
+				/*if(m.id==9999){
+					this.sPlatformList.addAll(m.splatformInfo.values());
+					this.mPlatformList.addAll(m.mplatformInfo.values());
+					System.out.println("received from server");
+					
+				}*/
+
 				if((m.id!=playerID))		//update only for other players
 				{
 					if(pList.containsKey(m.id)){	//check if player exists
@@ -42,14 +47,18 @@ public class Section5ClientIn implements Runnable {
 						player.R.y=m.y;
 						pList.put(m.id, player);
 					}
-					
+
 					else{
 						System.out.println(true);
-						player = new Player(m.id,new Rectangle(m.x,m.y,50,50),0,0,m.r,m.g,m.b);	//create a new player
+						player = new Player(m.id);	//create a new player
+						player.R = new Rectangle(m.x,m.y,50,50);
+						player.setPlayerVelocity(0, 0);
+						player.setPlayerColor(m.r, m.g, m.b);
 						pList.put(m.id, player);
+						System.out.println("received from server");
 					}
 				}
-				
+
 				//System.out.println(m.id+": "+m.x);
 			} catch (Exception e) {
 				break;

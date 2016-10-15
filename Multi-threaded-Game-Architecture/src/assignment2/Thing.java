@@ -9,18 +9,26 @@ public abstract class Thing implements Serializable {	//class encapsulating a ga
 	 * 
 	 */
 	private static final long serialVersionUID = -8768701979073409494L;
-	public Rectangle R;
-	public int id;
-	public int vx,vy;
-	public int r,g,b;
+	protected Rectangle R;
+	protected int id;
+	protected int x;
+	protected int y;
+	protected int z;
 	
-	public Thing(int id,Rectangle R,int vx,int vy,int r,int g,int b){
+	protected CollisionComponent collisionComponent;
+	protected HIDComponent hidComponent;
+	protected MotionComponent motionComponent;
+	protected JumpComponent jumpComponent;
+	protected VisibleComponent visibleComponent;
+	protected ColorComponent colorComponent;
+	
+	public Thing(int id){
 		this.id = id;
-		this.R= R;
-		this.vx = vx;
-		this.vy = vy;
-		this.r=r;
-		this.g=g;
-		this.b=b;
+		collisionComponent = null;
+		hidComponent = null;
+		motionComponent = null;
+		jumpComponent = null;
+		colorComponent = null;
+		visibleComponent = null;
 	}
 }

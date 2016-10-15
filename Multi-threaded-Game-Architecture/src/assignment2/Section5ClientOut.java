@@ -10,10 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Section5ClientOut implements Runnable {
 
 	private ObjectOutputStream out;
-	ConcurrentHashMap<Integer, Thing> pList;
+	ConcurrentHashMap<Integer, Player> pList;
 	int playerID=0;;
 
-	public Section5ClientOut(int id, ObjectOutputStream out, ConcurrentHashMap<Integer, Thing> pList) {
+	public Section5ClientOut(int id, ObjectOutputStream out, ConcurrentHashMap<Integer, Player> pList) {
 
 		this.playerID = id;
 		this.out = out;
@@ -39,9 +39,9 @@ public class Section5ClientOut implements Runnable {
 					message = new Message(playerID,
 						pList.get(playerID).R.x,
 						pList.get(playerID).R.y,
-						pList.get(playerID).r,
-						pList.get(playerID).g,
-						pList.get(playerID).b);
+						pList.get(playerID).colorComponent.getR(),
+						pList.get(playerID).colorComponent.getG(),
+						pList.get(playerID).colorComponent.getB());
 				}
 				out.writeObject(message);
 				out.reset();

@@ -21,7 +21,8 @@ public class Section5ClientListener implements Runnable {
 	CopyOnWriteArrayList<Integer> allPlayerList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
 	
-	ConcurrentHashMap<Integer,Platform> allPlatformInfo = new ConcurrentHashMap<>();
+	ConcurrentHashMap<Integer,StaticPlatform> sPlatformInfo = new ConcurrentHashMap<>();
+	ConcurrentHashMap<Integer,MovingPlatform> mPlatformInfo = new ConcurrentHashMap<>();
 	
 	public synchronized void addClient(ClientInfo c){
 		
@@ -81,7 +82,7 @@ public class Section5ClientListener implements Runnable {
 	
 		
 		while(!Thread.interrupted()){
-			
+			System.out.println(allPlayerList.size());
 			try {
 				
 			
