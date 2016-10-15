@@ -43,7 +43,6 @@ public class Section5ServerIn implements Runnable {
 				if(m.x==999){
 					c.id=m.id;
 					clientListener.allPlayerList.add(m.id);	//add player id to main list
-					//clientListener.sendMessage(c, new Message(9999,clientListener.sPlatformInfo,clientListener.mPlatformInfo));
 				}
 				else
 				clientListener.sendMessage(c, m);

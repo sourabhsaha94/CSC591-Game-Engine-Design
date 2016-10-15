@@ -26,6 +26,11 @@ public class Section5Client extends PApplet {
 	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
 	ConcurrentHashMap<Integer, Player> playerList;
 
+	SpawnPoint sp = new SpawnPoint(1);
+	DeathZone downDZ = new DeathZone(1);
+	DeathZone leftDZ = new DeathZone(1);
+	DeathZone rightDZ = new DeathZone(1);
+	
 	int distance_from_ground;
 	int direction=1; //Left 1 Up 2 Down 3 Right 4
 	int displayx=800;
@@ -52,17 +57,58 @@ public class Section5Client extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		/***********************************************world init*************************************************************/
 		Random random = new Random();
 
 		int playerID = random.nextInt(100);
 
 		player = new Player(playerID); // create a new player
-		player.R = new Rectangle(50,50,50,50);
+		player.R = new Rectangle(50,400,50,50);
 		player.setPlayerColor(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+
 		
 		playerList.put(playerID, player);	//put the player in the list of players
+		
+		
+		Random r = new Random();
+		int id; 
+		
+		id = r.nextInt(1000)+1500;
+		StaticPlatform s1 = new StaticPlatform(id);
+		s1.setPlatformColor(255, 0, 0);
+		s1.R = new Rectangle(50,600,200,50);
+		
+		sPlatformList.add(s1);
+		
+		id = r.nextInt(1000)+1500;
+		StaticPlatform s2 = new StaticPlatform(id);
+		s2.setPlatformColor(0, 0, 255);
+		s2.R = new Rectangle(500,400,150,50);
+		
+		sPlatformList.add(s2);
+		
+		id = r.nextInt(1000)+1500;
+		MovingPlatform m1 = new MovingPlatform(id);
+		m1.setPlatformColor(0, 255, 0);
+		m1.setPlatformVelocity(1, 0);
+		m1.R = new Rectangle(150,500,350,50);
 
+		mPlatformList.add(m1);
+
+		player.collisionComponent.addPlatforms(sPlatformList, mPlatformList);
+		
+		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
+		
+		sp.reset(player);
+		
+		downDZ.setDeathZoneXY(0, displayy-10);
+		leftDZ.setDeathZoneXY(0, 0);
+		leftDZ.setDeathZoneWH(10, displayy);
+		rightDZ.setDeathZoneXY(displayx-10, 0);
+		rightDZ.setDeathZoneWH(10, displayy);
+		
+		/*******************************************************************************************************************/
+		
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -82,7 +128,7 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, sPlatformList, mPlatformList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList); // start
 		// receiver
 		// thread
 		
@@ -108,112 +154,33 @@ public class Section5Client extends PApplet {
 
 		}
 		
-		System.out.println(playerList.size());
-		/*for(StaticPlatform t:sPlatformList){		//loop to display
+		
+		for(StaticPlatform t:sPlatformList){		//loop to display
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 			rect(t.R.x,t.R.y,t.R.width,t.R.height);
 		}
 		
 		for(MovingPlatform t:mPlatformList){
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-			rect(t.R.x+=t.motionComponent.getVx(),t.R.y+t.motionComponent.getVy(),t.R.width,t.R.height);
-		}*/	
+			rect(t.R.x+=t.motionComponent.vx,t.R.y+t.motionComponent.vy,t.R.width,t.R.height);
+			t.motionComponent.update();
+		}	
 		
 		
-		player.R.x+=player.motionComponent.getVx();
-		player.R.y+=player.motionComponent.getVy();
+		player.R.x+=player.motionComponent.vx;
+		player.R.y+=player.motionComponent.vy;
 
 		distance_from_ground = (int) (displayy - player.R.getMaxY());
 
-		if( !intersect && distance_from_ground>=2 && !player.jumpComponent.jump_flag)
-		{
-			player.motionComponent.setVy(2);
-			player.motionComponent.setVx(0);;
-		}
-		if(distance_from_ground==2){
-			player.motionComponent.setVy(0);
-		}
-
-		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){	//dont cross the edges of the screen
-			player.motionComponent.setVx(0);;
-			player.jumpComponent.jump_flag=false;
-		}
-		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){	//dont cross the edges of the screen
-			player.motionComponent.setVy(0);;
-			player.jumpComponent.jump_flag=false;
-		}
-
-		/*for(Platform t:platformList){
-			if(player.R.intersects(t.R)){
-				if(player.motionComponent.getVy()>0){	//coming down
-					direction = 4;
-				}
-				else if(player.motionComponent.getVy()<0){	//going up
-					direction = 2;
-				}
-				else if(player.motionComponent.getVy()<0 && player.motionComponent.getVx()>0){	//up right
-					direction = 10;
-				}
-				else if(player.motionComponent.getVy()>0 && player.motionComponent.getVx()>0){	//down right
-					direction = 12;
-				}
-				else if(player.motionComponent.getVy()<0 && player.motionComponent.getVx()<0){	//up left
-					direction = 3;
-				}
-				else if(player.motionComponent.getVy()>0 && player.motionComponent.getVx()<0){	//down left
-					direction = 5;
-				}
-				intersect = true;
-				break;
-			}
-			intersect=false;
-		}*/
-
-		if(direction==2){	//dont go up
-			player.motionComponent.setVy(2);
-			player.motionComponent.setVx(-5);
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-		if(direction==4){	//stop downward motion while coming down
-			player.motionComponent.setVy(0);
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-
-		if(direction==12){	//stop motion on collision
-			player.motionComponent.setVy(0);
-			player.motionComponent.setVx(0);	
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-
-		if(direction==5){	//stop motion on collision
-			player.motionComponent.setVy(0);
-			player.motionComponent.setVx(0);	
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-
-		if(direction==10){	//rebound on side hit
-			player.motionComponent.setVy(2);
-			player.motionComponent.setVx(-5);
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-
-		if(direction==3){	//rebound on side hit
-			player.motionComponent.setVy(2);
-			player.motionComponent.setVx(5);
-			player.jumpComponent.jump_flag=false;
-			direction=0;
-		}
-
+		player.collisionComponent.update(distance_from_ground,displayx,displayy);
+		
+		
 		if(player.jumpComponent.jump_flag){	//main jump logic
 
 			player.jumpComponent.jump(frameCount);
 		}
 
+		
 	}
 
 	public static void main(String argv[]) {
@@ -221,12 +188,48 @@ public class Section5Client extends PApplet {
 		// Section5Client c = new Section5Client();
 		PApplet.main("assignment2.Section5Client");
 	}
-
 	public void keyPressed(){
+		if (key == CODED) {
+		
+			if (keyCode == RIGHT) {	//move right
+				player.motionComponent.vx=1;
+				
+			
+			
+			} else if (keyCode == LEFT) {	//move left
+				player.motionComponent.vx=-1;
+						
+			}
+			else if (keyCode == UP) {	//jump
+				player.jumpComponent.jump_flag=true;
+			}
+			
+			
+			player.R.x+=player.motionComponent.vx;
+		}
+		else if(key == 'r' ||key =='R'){	//reset
+			sp.reset(player);
+		}
+	}
+	
+	public void keyReleased() {
+		if (key == CODED) {
+			if (keyCode == RIGHT) {
+				player.motionComponent.vx=0;
+				
+				
+			} else if (keyCode == LEFT) {
+				player.motionComponent.vx=0;
+			}
+			player.R.x+=player.motionComponent.vx;
+		}
+
+	}
+	/*public void keyPressed(){
 		player.hidComponent.keyPressed();
 	}
 	
 	public void keyReleased() {
 		player.hidComponent.keyReleased();	
-	}
+	}*/
 }

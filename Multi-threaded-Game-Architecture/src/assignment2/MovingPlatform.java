@@ -4,9 +4,8 @@ public class MovingPlatform extends Thing{
 
 	public MovingPlatform(int id) {
 		super(id);
-		this.collisionComponent = new CollisionComponent(null);
 		this.colorComponent = new ColorComponent(0,0,0);
-		this.motionComponent = new MotionComponent();
+		this.motionComponent = new MotionComponent(this);
 	}
 	
 	public void setPlatformColor(int r,int g,int b){

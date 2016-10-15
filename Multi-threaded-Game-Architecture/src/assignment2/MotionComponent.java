@@ -2,11 +2,14 @@ package assignment2;
 
 public class MotionComponent {
 	
+	
+	Thing t;
 	int vx,vy;
 	
-	public MotionComponent(){
+	public MotionComponent(Thing t){
 		vx=0;
 		vy=0;
+		this.t=t;
 	}
 	
 	public void setVelocity(int vx,int vy){
@@ -24,9 +27,18 @@ public class MotionComponent {
 	
 	public void setVx(int vx){
 		this.vx=vx;
+		
+		
 	}
 	
 	public void setVy(int vy){
 		this.vy=vy;
+		
+	}
+	
+	public void update(){
+		if(t.R.getMaxX()==800 || t.R.x==0){
+			vx=-vx;
+		}
 	}
 }

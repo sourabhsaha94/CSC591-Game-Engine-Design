@@ -25,12 +25,18 @@ public class Section5ClientOut implements Runnable {
 
 		try {
 			Message message;
-			boolean first_run=true;
+			boolean first_run=false,get_platform_info=true;;
 			
 			
 			while (!Thread.interrupted()) {
 
-				if(first_run){
+				if(get_platform_info){
+					message = new Message(10000,0,0,0,0,0);
+					first_run=true;
+					get_platform_info = false;
+				}
+				
+				else if(first_run){
 					message = new Message(playerID,999,0,0,0,0);
 					first_run=false;
 				}

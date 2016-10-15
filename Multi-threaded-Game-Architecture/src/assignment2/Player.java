@@ -4,10 +4,10 @@ public class Player extends Thing{
 	
 	public Player(int id) {
 		super(id);
-		this.collisionComponent = new CollisionComponent(null);
+		this.collisionComponent = new CollisionComponent(this);
 		this.colorComponent = new ColorComponent(0,0,0);
 		this.jumpComponent = new JumpComponent(this);
-		this.motionComponent = new MotionComponent();
+		this.motionComponent = new MotionComponent(this);
 		this.hidComponent = new HIDComponent(this);
 		// TODO Auto-generated constructor stub
 	}

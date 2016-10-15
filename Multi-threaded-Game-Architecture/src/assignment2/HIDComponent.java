@@ -6,7 +6,6 @@ public class HIDComponent extends PApplet{
 
 	Player player;
 
-	boolean intersect = true;
 	
 	HIDComponent(Player player){
 		this.player = player;
@@ -17,13 +16,16 @@ public class HIDComponent extends PApplet{
 		if (key == CODED) {
 		
 			if (keyCode == RIGHT) {	//move right
-				if(intersect || player.jumpComponent.jump_flag)
+				if(player.collisionComponent.m_int || player.collisionComponent.s_int || player.jumpComponent.jump_flag)
 					player.motionComponent.setVx(1);
 				
+				System.out.println("right");
+				
 			} else if (keyCode == LEFT) {	//move left
-				if(intersect || player.jumpComponent.jump_flag)
+				if(player.collisionComponent.m_int || player.collisionComponent.s_int || player.jumpComponent.jump_flag)
 					player.motionComponent.setVx(-1);
 				
+				System.out.println("left");
 			}
 			else if (keyCode == UP) {	//jump
 				player.jumpComponent.jump_flag=true;

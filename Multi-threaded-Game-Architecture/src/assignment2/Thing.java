@@ -11,15 +11,11 @@ public abstract class Thing implements Serializable {	//class encapsulating a ga
 	private static final long serialVersionUID = -8768701979073409494L;
 	protected Rectangle R;
 	protected int id;
-	protected int x;
-	protected int y;
-	protected int z;
 	
 	protected CollisionComponent collisionComponent;
 	protected HIDComponent hidComponent;
 	protected MotionComponent motionComponent;
 	protected JumpComponent jumpComponent;
-	protected VisibleComponent visibleComponent;
 	protected ColorComponent colorComponent;
 	
 	public Thing(int id){
@@ -29,6 +25,5 @@ public abstract class Thing implements Serializable {	//class encapsulating a ga
 		motionComponent = null;
 		jumpComponent = null;
 		colorComponent = null;
-		visibleComponent = null;
 	}
 }

@@ -10,16 +10,12 @@ public class Section5ClientIn implements Runnable {
 	ObjectInputStream in;
 	Player player;
 	ConcurrentHashMap<Integer, Player> pList;
-	LinkedList<StaticPlatform> sPlatformList;
-	LinkedList<MovingPlatform> mPlatformList;
 	int playerID=0;
 
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList, LinkedList<StaticPlatform> sPlatformList, LinkedList<MovingPlatform> mPlatformList) {
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
-		this.sPlatformList = sPlatformList;
-		this.mPlatformList = mPlatformList;
 	}
 
 	@Override
@@ -32,15 +28,11 @@ public class Section5ClientIn implements Runnable {
 			try {
 				m = (Message) in.readObject();
 				
-				/*if(m.id==9999){
-					this.sPlatformList.addAll(m.splatformInfo.values());
-					this.mPlatformList.addAll(m.mplatformInfo.values());
-					System.out.println("received from server");
-					
-				}*/
-
+				
 				if((m.id!=playerID))		//update only for other players
 				{
+				
+
 					if(pList.containsKey(m.id)){	//check if player exists
 						player = pList.get(m.id);
 						player.R.x=m.x;
@@ -49,13 +41,12 @@ public class Section5ClientIn implements Runnable {
 					}
 
 					else{
-						System.out.println(true);
+					
 						player = new Player(m.id);	//create a new player
 						player.R = new Rectangle(m.x,m.y,50,50);
 						player.setPlayerVelocity(0, 0);
 						player.setPlayerColor(m.r, m.g, m.b);
 						pList.put(m.id, player);
-						System.out.println("received from server");
 					}
 				}
 
