@@ -2,6 +2,8 @@ package assignment2;
 
 public class Player extends Thing{
 	
+	SpawnPoint s;
+	
 	public Player(int id) {
 		super(id);
 		this.collisionComponent = new CollisionComponent(this);
@@ -12,6 +14,13 @@ public class Player extends Thing{
 		// TODO Auto-generated constructor stub
 	}
 
+	public void addSpawnPoint(SpawnPoint s){
+		this.s =s;
+	}
+	
+	public void Spawn(){
+		s.reset(this);
+	}
 	
 	public void setPlayerColor(int r,int g,int b){
 		this.colorComponent.update(r,g,b);

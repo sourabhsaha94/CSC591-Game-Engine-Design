@@ -11,6 +11,7 @@ public class CollisionComponent {
 	
 	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
 	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
+	LinkedList<DeathZone> dzones = new LinkedList<>();
 	
 	CollisionComponent(Player p){
 		direction =1;
@@ -20,6 +21,10 @@ public class CollisionComponent {
 	public void addPlatforms(LinkedList<StaticPlatform> sPlatformList, LinkedList<MovingPlatform> mPlatformList){
 		this.sPlatformList = sPlatformList;
 		this.mPlatformList = mPlatformList;
+	}
+	
+	public void addDeathZone(DeathZone d){
+		dzones.add(d);
 	}
 	
 	public void update(int distance_from_ground,int displayx,int displayy){
@@ -36,13 +41,10 @@ public class CollisionComponent {
 			player.motionComponent.setVy(0);
 		}
 
-		if(player.R.x<=2||player.R.getMaxX()>=displayx-2){	//dont cross the edges of the screen
-			player.motionComponent.setVx(0);;
-			player.jumpComponent.jump_flag=false;
-		}
-		if(player.R.y<=2||player.R.getMaxY()>=displayy-2){	//dont cross the edges of the screen
-			player.motionComponent.setVy(0);;
-			player.jumpComponent.jump_flag=false;
+		for(DeathZone d:dzones){
+			if(player.R.intersects(d.R)){
+				player.Spawn();
+			}
 		}
 		
 		if(!m_int)
@@ -56,6 +58,8 @@ public class CollisionComponent {
 					else if(player.motionComponent.getVy()<0){	//going up
 						direction = 2;
 					}
+					
+					
 					s_int=true;
 					m_int=false;
 					break;
@@ -66,12 +70,19 @@ public class CollisionComponent {
 			if(!s_int)
 			for(MovingPlatform t:mPlatformList){
 				if(player.R.intersects(t.R)){
-					System.out.println(true+" moving");
+					
 					if(player.motionComponent.getVy()>0){	//coming down
 						direction = 4;
 					}
 					else if(player.motionComponent.getVy()<0){	//going up
 						direction = 2;
+					}
+					
+					if(player.R.y>t.R.y && player.motionComponent.getVy()<0){	//going up.. hit on side
+						player.Spawn();
+					}
+					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going up.. hit on side
+						player.Spawn();
 					}
 					m_int=true;
 					s_int=false;

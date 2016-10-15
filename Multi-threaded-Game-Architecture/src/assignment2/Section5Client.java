@@ -99,13 +99,19 @@ public class Section5Client extends PApplet {
 		
 		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
 		
-		sp.reset(player);
+		player.addSpawnPoint(sp);
+		player.Spawn();
 		
 		downDZ.setDeathZoneXY(0, displayy-10);
 		leftDZ.setDeathZoneXY(0, 0);
 		leftDZ.setDeathZoneWH(10, displayy);
 		rightDZ.setDeathZoneXY(displayx-10, 0);
 		rightDZ.setDeathZoneWH(10, displayy);
+		
+		player.collisionComponent.addDeathZone(downDZ);
+		player.collisionComponent.addDeathZone(leftDZ);
+		player.collisionComponent.addDeathZone(rightDZ);
+		
 		
 		/*******************************************************************************************************************/
 		
@@ -208,7 +214,7 @@ public class Section5Client extends PApplet {
 			player.R.x+=player.motionComponent.vx;
 		}
 		else if(key == 'r' ||key =='R'){	//reset
-			sp.reset(player);
+			player.Spawn();
 		}
 	}
 	
@@ -225,11 +231,4 @@ public class Section5Client extends PApplet {
 		}
 
 	}
-	/*public void keyPressed(){
-		player.hidComponent.keyPressed();
-	}
-	
-	public void keyReleased() {
-		player.hidComponent.keyReleased();	
-	}*/
 }
