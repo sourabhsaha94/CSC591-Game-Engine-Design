@@ -3,8 +3,9 @@
 
 package assignment2;
 
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CollisionComponent {
 
@@ -14,22 +15,33 @@ public class CollisionComponent {
 	
 	boolean s_int=false,m_int=false;
 	
-	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
-	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
-	LinkedList<DeathZone> dzones = new LinkedList<>();
+	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<DeathZone> dzList = new CopyOnWriteArrayList<>();
 	
 	CollisionComponent(Player p){
 		direction =1;
 		this.player= p;
 	}
 	
-	public void addPlatforms(LinkedList<StaticPlatform> sPlatformList, LinkedList<MovingPlatform> mPlatformList){
-		this.sPlatformList = sPlatformList;
-		this.mPlatformList = mPlatformList;
+	public void addPlatforms(Collection<StaticPlatform> sPlatformList, Collection<MovingPlatform> mPlatformList){
+		this.sPlatformList.addAll(sPlatformList);
+		this.mPlatformList.addAll(mPlatformList);
+	}
+	
+	public void addSPlatform(StaticPlatform s){
+		if(!this.sPlatformList.contains(s))
+			this.sPlatformList.add(s);
+	}
+	
+	public void addMPlatform(MovingPlatform m){
+		if(!this.mPlatformList.contains(m))
+			this.mPlatformList.add(m);
 	}
 	
 	public void addDeathZone(DeathZone d){
-		dzones.add(d);
+		if(!this.dzList.contains(d))
+			this.dzList.add(d);
 	}
 	
 	public void update(int distance_from_ground,int displayx,int displayy){
@@ -45,7 +57,7 @@ public class CollisionComponent {
 			player.motionComponent.setVy(0);
 		}
 
-		for(DeathZone d:dzones){
+		for(DeathZone d:dzList){
 			if(player.R.intersects(d.R)){
 				
 				player.jumpComponent.jump_flag=false;

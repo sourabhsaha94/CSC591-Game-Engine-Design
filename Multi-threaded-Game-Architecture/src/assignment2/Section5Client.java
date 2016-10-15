@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,14 +21,11 @@ public class Section5Client extends PApplet {
 
 	Player tempPlayer;
 	Player player;
-	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
-	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
+	
 	ConcurrentHashMap<Integer, Player> playerList;
 
 	SpawnPoint sp = new SpawnPoint(1);
-	DeathZone downDZ = new DeathZone(1);
-	DeathZone leftDZ = new DeathZone(1);
-	DeathZone rightDZ = new DeathZone(1);
+	
 	
 	int distance_from_ground;
 	int direction=1; //Left 1 Up 2 Down 3 Right 4
@@ -57,6 +53,14 @@ public class Section5Client extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+			out = new ObjectOutputStream(socket.getOutputStream());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		/***********************************************world init*************************************************************/
 		Random random = new Random();
 
@@ -70,58 +74,10 @@ public class Section5Client extends PApplet {
 		playerList.put(playerID, player);	//put the player in the list of players
 		
 		
-		Random r = new Random();
-		int id; 
-		
-		id = r.nextInt(1000)+1500;
-		StaticPlatform s1 = new StaticPlatform(id);
-		s1.setPlatformColor(255, 0, 0);
-		s1.R = new Rectangle(50,600,200,50);
-		
-		sPlatformList.add(s1);
-		
-		id = r.nextInt(1000)+1500;
-		StaticPlatform s2 = new StaticPlatform(id);
-		s2.setPlatformColor(0, 0, 255);
-		s2.R = new Rectangle(500,400,150,50);
-		
-		sPlatformList.add(s2);
-		
-		id = r.nextInt(1000)+1500;
-		MovingPlatform m1 = new MovingPlatform(id);
-		m1.setPlatformColor(0, 255, 0);
-		m1.setPlatformVelocity(1, 0);
-		m1.R = new Rectangle(150,500,350,50);
-
-		mPlatformList.add(m1);
-
-		player.collisionComponent.addPlatforms(sPlatformList, mPlatformList);
-		
-		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
-		
-		player.addSpawnPoint(sp);
-		player.Spawn();
-		
-		downDZ.setDeathZoneXY(0, displayy-10);
-		leftDZ.setDeathZoneXY(0, 0);
-		leftDZ.setDeathZoneWH(10, displayy);
-		rightDZ.setDeathZoneXY(displayx-10, 0);
-		rightDZ.setDeathZoneWH(10, displayy);
-		
-		player.collisionComponent.addDeathZone(downDZ);
-		player.collisionComponent.addDeathZone(leftDZ);
-		player.collisionComponent.addDeathZone(rightDZ);
 		
 		
 		/*******************************************************************************************************************/
 		
-		try {
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		System.out.println(playerID + " connected to server.."); // print unique
 		// client
@@ -134,14 +90,21 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, this); // start
 		// receiver
 		// thread
 		
 		Thread t_recieve = new Thread(recieve);
 		t_recieve.setDaemon(true);
 		t_recieve.start();
-
+		
+		Random r = new Random();
+	
+		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
+		
+		player.addSpawnPoint(sp);
+		player.Spawn();
+		
 		distance_from_ground = 200;	//800-600
 		
 
@@ -149,7 +112,7 @@ public class Section5Client extends PApplet {
 
 	public void draw() {
 		clear();
-
+	
 		Collection<Player> pList = playerList.values();
 		Iterator<Player> list = pList.iterator();
 
@@ -160,13 +123,13 @@ public class Section5Client extends PApplet {
 
 		}
 		
-		
-		for(StaticPlatform t:sPlatformList){		
+				
+		for(StaticPlatform t:player.collisionComponent.sPlatformList){		
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 			rect(t.R.x,t.R.y,t.R.width,t.R.height);
 		}
 		
-		for(MovingPlatform t:mPlatformList){
+		for(MovingPlatform t:player.collisionComponent.mPlatformList){
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 			rect(t.R.x+=t.motionComponent.vx,t.R.y+t.motionComponent.vy,t.R.width,t.R.height);
 			t.motionComponent.update();

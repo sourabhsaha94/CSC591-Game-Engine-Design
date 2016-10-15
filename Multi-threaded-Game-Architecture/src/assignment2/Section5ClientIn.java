@@ -9,13 +9,15 @@ public class Section5ClientIn implements Runnable {
 
 	ObjectInputStream in;
 	Player player;
+	Section5Client c;
 	ConcurrentHashMap<Integer, Player> pList;
 	int playerID=0;
 
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList) {
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList, Section5Client c) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
+		this.c =c;
 	}
 
 	@Override
@@ -32,7 +34,36 @@ public class Section5ClientIn implements Runnable {
 				if((m.id!=playerID))		//update only for other players
 				{
 					if(m.id>=1000 && m.id<=2000){
-						System.out.println();
+						System.out.println("rec sp");
+						StaticPlatform t = new StaticPlatform(m.id);
+						t.R.x = m.x;
+						t.R.y = m.y;
+						t.R.width = m.width;
+						t.R.height = m.height;
+						t.setPlatformColor(m.r, m.g, m.b);
+						c.player.collisionComponent.addSPlatform(t);
+						
+					}
+					else if(m.id>=3000 && m.id<=4000){
+						System.out.println("rec mp");
+						MovingPlatform t = new MovingPlatform(m.id);
+						t.R.x = m.x;
+						t.R.y = m.y;
+						t.R.width = m.width;
+						t.R.height = m.height;
+						t.setPlatformColor(m.r, m.g, m.b);
+						t.motionComponent.vx=m.vx;
+						c.player.collisionComponent.addMPlatform(t);
+					}
+					
+					else if(m.id>=5000 && m.id<=6000){
+						System.out.println("rec dz");
+						DeathZone t = new DeathZone(m.id);
+						t.R.x = m.x;
+						t.R.y = m.y;
+						t.R.width = m.width;
+						t.R.height = m.height;
+						c.player.collisionComponent.addDeathZone(t);
 					}
 				
 

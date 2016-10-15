@@ -49,9 +49,31 @@ public class ClientWorker implements Runnable {
 					Message m = new Message(s.id, s.R.x,
 							s.R.y, s.colorComponent.getR(),
 							s.colorComponent.getG(), s.colorComponent.getB());
-
+					m.width = s.R.width;
+					m.height = s.R.height;
+					System.out.println("sent sp");
 					c.out.sendMessage(m);
 
+				}
+				for(MovingPlatform s:scl.mPlatformList){
+					Message m = new Message(s.id, s.R.x,
+							s.R.y, s.colorComponent.getR(),
+							s.colorComponent.getG(), s.colorComponent.getB());
+					m.width = s.R.width;
+					m.height = s.R.height;
+					m.vx=s.motionComponent.getVx();
+					System.out.println("sent mp");
+					c.out.sendMessage(m);
+
+				}
+				for(DeathZone s:scl.dzList){
+					Message m = new Message(s.id, s.R.x,
+							s.R.y, 0,
+							0, 0);
+					m.width = s.R.width;
+					m.height = s.R.height;
+					System.out.println("sent dz");
+					c.out.sendMessage(m);
 				}
 				
 				scl.addClient(c);
