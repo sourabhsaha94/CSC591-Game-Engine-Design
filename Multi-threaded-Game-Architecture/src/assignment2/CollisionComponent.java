@@ -1,11 +1,16 @@
+
+//collision with death zones or sides of platforms will cause immediate re-spawn
+
 package assignment2;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class CollisionComponent {
 
 	Player player;
 	int direction;
+	Random r = new Random();
 	
 	boolean s_int=false,m_int=false;
 	
@@ -31,7 +36,6 @@ public class CollisionComponent {
 		
 		
 		
-		
 		if( !m_int && !s_int && distance_from_ground>=2 && !player.jumpComponent.jump_flag)
 		{
 			player.motionComponent.setVy(2);
@@ -43,6 +47,9 @@ public class CollisionComponent {
 
 		for(DeathZone d:dzones){
 			if(player.R.intersects(d.R)){
+				
+				player.jumpComponent.jump_flag=false;
+				player.s.setSpawnPoint(r.nextInt(800), 200);
 				player.Spawn();
 			}
 		}
@@ -59,7 +66,12 @@ public class CollisionComponent {
 						direction = 2;
 					}
 					
-					
+					if(player.R.y>t.R.y && player.motionComponent.getVy()<0){	//going up.. hit on side
+						player.Spawn();
+					}
+					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going down.. hit on side
+						player.Spawn();
+					}
 					s_int=true;
 					m_int=false;
 					break;
@@ -81,7 +93,7 @@ public class CollisionComponent {
 					if(player.R.y>t.R.y && player.motionComponent.getVy()<0){	//going up.. hit on side
 						player.Spawn();
 					}
-					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going up.. hit on side
+					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going down.. hit on side
 						player.Spawn();
 					}
 					m_int=true;

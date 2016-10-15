@@ -153,7 +153,7 @@ public class Section5Client extends PApplet {
 		Collection<Player> pList = playerList.values();
 		Iterator<Player> list = pList.iterator();
 
-		while (list.hasNext()) {
+		while (list.hasNext()) {		//loops to display
 			tempPlayer = list.next();
 			fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
@@ -161,7 +161,7 @@ public class Section5Client extends PApplet {
 		}
 		
 		
-		for(StaticPlatform t:sPlatformList){		//loop to display
+		for(StaticPlatform t:sPlatformList){		
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 			rect(t.R.x,t.R.y,t.R.width,t.R.height);
 		}
@@ -181,7 +181,7 @@ public class Section5Client extends PApplet {
 		player.collisionComponent.update(distance_from_ground,displayx,displayy);
 		
 		
-		if(player.jumpComponent.jump_flag){	//main jump logic
+		if(player.jumpComponent.jump_flag){	
 
 			player.jumpComponent.jump(frameCount);
 		}
@@ -190,10 +190,9 @@ public class Section5Client extends PApplet {
 	}
 
 	public static void main(String argv[]) {
-
-		// Section5Client c = new Section5Client();
 		PApplet.main("assignment2.Section5Client");
 	}
+	
 	public void keyPressed(){
 		if (key == CODED) {
 		
