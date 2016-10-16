@@ -10,6 +10,7 @@ package assignment2;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 
 public class ClientWorker implements Runnable {
 
@@ -47,6 +48,11 @@ public class ClientWorker implements Runnable {
 			t_so.start();
 			t_si.start();
 			
+			Message m = new Message(9090,0,0,0,0,0);
+			m.sp = new LinkedList<>();
+			m.sp.add(new StaticPlatform(100));
+			
+			c.out.sendMessageToClient(m);
 			scl.addClient(c);
 			
 		} catch (IOException e) {

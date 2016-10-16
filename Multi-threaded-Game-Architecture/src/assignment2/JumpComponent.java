@@ -1,6 +1,12 @@
 package assignment2;
 
-public class JumpComponent {
+import java.io.Serializable;
+
+public class JumpComponent implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Player player;
 	boolean jump_flag;
 	int init_pos;

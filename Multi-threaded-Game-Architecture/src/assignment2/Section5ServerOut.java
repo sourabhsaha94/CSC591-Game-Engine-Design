@@ -43,7 +43,7 @@ public class Section5ServerOut implements Runnable {
 
 	}
 
-	private void sendMessageToClient(Message message) throws IOException{
+	public void sendMessageToClient(Message message) throws IOException{
 
 		out.writeObject(message);
 		out.reset();

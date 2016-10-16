@@ -3,11 +3,16 @@
 
 package assignment2;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class CollisionComponent {
+public class CollisionComponent implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Player player;
 	int direction;
 	Random r = new Random();

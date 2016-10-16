@@ -1,7 +1,7 @@
 package assignment2;
 
 import java.io.Serializable;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedList;
 
 public class Message implements Serializable {
 
@@ -16,7 +16,8 @@ public class Message implements Serializable {
 	int r=0;
 	int g=0;
 	int b=0;
-
+	LinkedList<StaticPlatform> sp;
+	
 	Message(int id,int x,int y,int r,int g,int b){
 		this.id = id;
 		this.x = x;

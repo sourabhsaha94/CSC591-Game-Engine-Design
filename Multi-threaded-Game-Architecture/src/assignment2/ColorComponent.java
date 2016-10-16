@@ -1,7 +1,13 @@
 package assignment2;
 
-public class ColorComponent {
+import java.io.Serializable;
+
+public class ColorComponent implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int r,g,b;
 	
 	public ColorComponent(int r,int g,int b) {

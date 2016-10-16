@@ -1,9 +1,15 @@
 package assignment2;
 
+import java.io.Serializable;
+
 import processing.core.PApplet;
 
-public class HIDComponent extends PApplet{
+public class HIDComponent extends PApplet implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Player player;
 
 	

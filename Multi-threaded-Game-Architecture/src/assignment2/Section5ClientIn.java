@@ -31,6 +31,9 @@ public class Section5ClientIn implements Runnable {
 				
 				if((m.id!=playerID))		//update only for other players
 				{
+					if(m.id==9090){
+						System.out.println(m.sp.get(0).id);
+					}
 				
 
 					if(pList.containsKey(m.id)){	//check if player exists

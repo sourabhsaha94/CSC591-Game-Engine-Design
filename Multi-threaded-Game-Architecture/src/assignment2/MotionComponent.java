@@ -1,8 +1,14 @@
 package assignment2;
 
-public class MotionComponent {
+import java.io.Serializable;
+
+public class MotionComponent implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Thing t;
 	int vx,vy;
 	
