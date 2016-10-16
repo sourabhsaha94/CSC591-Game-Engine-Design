@@ -19,6 +19,9 @@ public class Section5ClientListener implements Runnable {
 	private Vector clients = new Vector();
 	Set<Integer> tempSet = null;
 	CopyOnWriteArrayList<Integer> allPlayerList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<StaticPlatform> spList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<MovingPlatform> mpList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<DeathZone> dzList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
 	
 	public synchronized void addClient(ClientInfo c){

@@ -22,14 +22,11 @@ public class Section5Client extends PApplet {
 
 	Player tempPlayer;
 	Player player;
-	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();
+	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();	//clients copy of platforms and players
 	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
 	ConcurrentHashMap<Integer, Player> playerList;
 
 	SpawnPoint sp = new SpawnPoint(1);
-	DeathZone downDZ = new DeathZone(1);
-	DeathZone leftDZ = new DeathZone(1);
-	DeathZone rightDZ = new DeathZone(1);
 	
 	int distance_from_ground;
 	int direction=1; //Left 1 Up 2 Down 3 Right 4
@@ -71,47 +68,13 @@ public class Section5Client extends PApplet {
 		
 		
 		Random r = new Random();
-		int id; 
 		
-		id = r.nextInt(1000)+1500;
-		StaticPlatform s1 = new StaticPlatform(id);
-		s1.setPlatformColor(255, 0, 0);
-		s1.R = new Rectangle(50,600,200,50);
-		
-		sPlatformList.add(s1);
-		
-		id = r.nextInt(1000)+1500;
-		StaticPlatform s2 = new StaticPlatform(id);
-		s2.setPlatformColor(0, 0, 255);
-		s2.R = new Rectangle(500,400,150,50);
-		
-		sPlatformList.add(s2);
-		
-		id = r.nextInt(1000)+1500;
-		MovingPlatform m1 = new MovingPlatform(id);
-		m1.setPlatformColor(0, 255, 0);
-		m1.setPlatformVelocity(1, 0);
-		m1.R = new Rectangle(150,500,350,50);
-
-		mPlatformList.add(m1);
-
 		player.collisionComponent.addPlatforms(sPlatformList, mPlatformList);
 		
 		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
 		
 		player.addSpawnPoint(sp);
 		player.Spawn();
-		
-		downDZ.setDeathZoneXY(0, displayy-10);
-		leftDZ.setDeathZoneXY(0, 0);
-		leftDZ.setDeathZoneWH(10, displayy);
-		rightDZ.setDeathZoneXY(displayx-10, 0);
-		rightDZ.setDeathZoneWH(10, displayy);
-		
-		player.collisionComponent.addDeathZone(downDZ);
-		player.collisionComponent.addDeathZone(leftDZ);
-		player.collisionComponent.addDeathZone(rightDZ);
-		
 		
 		/*******************************************************************************************************************/
 		
@@ -134,7 +97,7 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, this); // start
 		// receiver
 		// thread
 		

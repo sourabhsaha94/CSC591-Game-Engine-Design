@@ -50,8 +50,11 @@ public class ClientWorker implements Runnable {
 			
 			Message m = new Message(9090,0,0,0,0,0);
 			m.sp = new LinkedList<>();
-			m.sp.add(new StaticPlatform(100));
-			
+			m.sp.addAll(scl.spList);
+			m.mp = new LinkedList<>();
+			m.mp.addAll(scl.mpList);
+			m.dz = new LinkedList<>();
+			m.dz.addAll(scl.dzList);
 			c.out.sendMessageToClient(m);
 			scl.addClient(c);
 			

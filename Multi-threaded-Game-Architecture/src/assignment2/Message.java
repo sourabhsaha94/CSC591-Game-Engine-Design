@@ -17,6 +17,8 @@ public class Message implements Serializable {
 	int g=0;
 	int b=0;
 	LinkedList<StaticPlatform> sp;
+	LinkedList<MovingPlatform> mp;
+	LinkedList<DeathZone> dz;
 	
 	Message(int id,int x,int y,int r,int g,int b){
 		this.id = id;

@@ -11,11 +11,14 @@ public class Section5ClientIn implements Runnable {
 	Player player;
 	ConcurrentHashMap<Integer, Player> pList;
 	int playerID=0;
+	
+	Section5Client c;
 
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList) {
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList, Section5Client c1) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
+		this.c=c1;
 	}
 
 	@Override
@@ -32,7 +35,10 @@ public class Section5ClientIn implements Runnable {
 				if((m.id!=playerID))		//update only for other players
 				{
 					if(m.id==9090){
-						System.out.println(m.sp.get(0).id);
+						System.out.println(m.sp.size());
+						c.sPlatformList.addAll(m.sp);
+						c.mPlatformList.addAll(m.mp);
+						c.player.collisionComponent.dzones.addAll(m.dz);
 					}
 				
 
