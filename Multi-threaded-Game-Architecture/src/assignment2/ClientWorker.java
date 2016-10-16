@@ -7,9 +7,11 @@
 
 package assignment2;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 public class ClientWorker implements Runnable {
 
@@ -46,6 +48,19 @@ public class ClientWorker implements Runnable {
 			
 			t_so.start();
 			t_si.start();
+			
+			Random r = new Random();
+			int id; 
+			
+			id = r.nextInt(1000)+1500;
+			StaticPlatform s1 = new StaticPlatform(id);
+			s1.setPlatformColor(255, 0, 0);
+			s1.R = new Rectangle(50,600,200,50);
+			
+			InitialMessage m = new InitialMessage(s1);
+			
+			c.out.sendiMessage(m);
+			System.out.println("sent from client");
 			
 			scl.addClient(c);
 			

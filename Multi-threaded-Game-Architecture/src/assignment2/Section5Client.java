@@ -134,7 +134,7 @@ public class Section5Client extends PApplet {
 		t_sender.setDaemon(true);
 		t_sender.start();
 
-		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList); // start
+		Section5ClientIn recieve = new Section5ClientIn(playerID, in, playerList, this); // start
 		// receiver
 		// thread
 		
@@ -143,7 +143,6 @@ public class Section5Client extends PApplet {
 		t_recieve.start();
 
 		distance_from_ground = 200;	//800-600
-		
 
 	}
 

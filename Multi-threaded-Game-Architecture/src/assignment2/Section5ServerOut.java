@@ -31,6 +31,13 @@ public class Section5ServerOut implements Runnable {
 		notify();
 
 	}
+	
+	public synchronized void sendiMessage(InitialMessage message){
+
+		messageQueue.add(message);
+		notify();
+
+	}
 
 	private synchronized Message getNextMessageFromQueue() throws InterruptedException{
 

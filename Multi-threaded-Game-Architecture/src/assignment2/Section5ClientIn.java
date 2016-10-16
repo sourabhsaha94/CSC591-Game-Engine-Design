@@ -11,21 +11,32 @@ public class Section5ClientIn implements Runnable {
 	Player player;
 	ConcurrentHashMap<Integer, Player> pList;
 	int playerID=0;
+	Section5Client c;
 
-	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList) {
+	boolean world_loaded=false;
+	
+	public Section5ClientIn(int id,ObjectInputStream in, ConcurrentHashMap<Integer, Player> pList, Section5Client c) {
 		this.in = in;
 		this.pList = pList;
 		this.playerID = id;
+		this.c =c;
 	}
 
 	@Override
 	public void run() {
 
+		InitialMessage im;
 		Message m;
 
 		while (!Thread.interrupted()) {
 			
 			try {
+				while(!world_loaded){
+					im = (InitialMessage) in.readObject();
+					System.out.println(im.s.id+" rec");
+					world_loaded = true;
+				}
+				
 				m = (Message) in.readObject();
 				
 				
