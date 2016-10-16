@@ -10,7 +10,6 @@ public class SpawnPoint extends Thing{
 		super(id);
 		this.colorComponent = new ColorComponent(0,0,0);
 		this.R = new Rectangle(0,0,1,1);
-		// TODO Auto-generated constructor stub
 	}
 
 	
