@@ -6,6 +6,7 @@
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CollisionComponent implements Serializable{
 
@@ -28,9 +29,9 @@ public class CollisionComponent implements Serializable{
 		this.player= p;
 	}
 	
-	public void addPlatforms(LinkedList<StaticPlatform> sPlatformList, LinkedList<MovingPlatform> mPlatformList){
-		this.sPlatformList = sPlatformList;
-		this.mPlatformList = mPlatformList;
+	public void addPlatforms(CopyOnWriteArrayList<StaticPlatform> sPlatformList, CopyOnWriteArrayList<MovingPlatform> mPlatformList){
+		this.sPlatformList.addAll(sPlatformList);
+		this.mPlatformList.addAll(mPlatformList);
 	}
 	
 	public void addDeathZone(DeathZone d){

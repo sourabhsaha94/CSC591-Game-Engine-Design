@@ -5,6 +5,7 @@
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Section5ClientOut implements Runnable {
@@ -12,12 +13,14 @@ public class Section5ClientOut implements Runnable {
 	private ObjectOutputStream out;
 	ConcurrentHashMap<Integer, Player> pList;
 	int playerID = 0;;
-
-	public Section5ClientOut(int id, ObjectOutputStream out, ConcurrentHashMap<Integer, Player> pList) {
+	Section5Client c;
+	
+	public Section5ClientOut(int id, ObjectOutputStream out, ConcurrentHashMap<Integer, Player> pList, Section5Client c) {
 
 		this.playerID = id;
 		this.out = out;
 		this.pList = pList;
+		this.c=c;
 
 	}
 
@@ -27,7 +30,7 @@ public class Section5ClientOut implements Runnable {
 			Message message = new Message(playerID, pList.get(playerID).R.x, pList.get(playerID).R.y,
 					pList.get(playerID).colorComponent.getR(), pList.get(playerID).colorComponent.getG(),
 					pList.get(playerID).colorComponent.getB());
-			
+			message.mp = new LinkedList<>();
 			boolean first_run = false;
 
 			Message player_info_message;

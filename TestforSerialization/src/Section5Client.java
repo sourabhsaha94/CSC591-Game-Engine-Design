@@ -14,7 +14,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import processing.core.PApplet;
 
@@ -22,8 +24,8 @@ public class Section5Client extends PApplet {
 
 	Player tempPlayer;
 	Player player;
-	LinkedList<StaticPlatform> sPlatformList = new LinkedList<>();	//clients copy of platforms and players
-	LinkedList<MovingPlatform> mPlatformList = new LinkedList<>();
+	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>(); 	//clients copy of platforms and players
+	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer, Player> playerList;
 
 	SpawnPoint sp = new SpawnPoint(1);
@@ -69,7 +71,7 @@ public class Section5Client extends PApplet {
 		
 		Random r = new Random();
 		
-		player.collisionComponent.addPlatforms(sPlatformList, mPlatformList);
+		
 		
 		sp.setSpawnPoint(r.nextInt(100)+50,r.nextInt(100)+50);
 		
@@ -90,7 +92,7 @@ public class Section5Client extends PApplet {
 		// client
 		// identifier
 
-		Section5ClientOut sender = new Section5ClientOut(playerID, out, playerList); // start
+		Section5ClientOut sender = new Section5ClientOut(playerID, out, playerList,this); // start
 		// sender
 		// thread
 		Thread t_sender = new Thread(sender);
@@ -107,9 +109,16 @@ public class Section5Client extends PApplet {
 
 		distance_from_ground = 200;	//800-600
 		
+		player.collisionComponent.addPlatforms(sPlatformList, mPlatformList);
+		
 
 	}
 
+	public void updateMovingPlatformList(LinkedList<MovingPlatform> mp){
+		this.mPlatformList.clear();
+		this.mPlatformList.addAll(mp);
+	}
+	
 	public void draw() {
 		clear();
 
@@ -123,7 +132,6 @@ public class Section5Client extends PApplet {
 
 		}
 		
-		
 		for(StaticPlatform t:sPlatformList){		
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 			rect(t.R.x,t.R.y,t.R.width,t.R.height);
@@ -131,8 +139,7 @@ public class Section5Client extends PApplet {
 		
 		for(MovingPlatform t:mPlatformList){
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-			rect(t.R.x+=t.motionComponent.vx,t.R.y+t.motionComponent.vy,t.R.width,t.R.height);
-			t.motionComponent.update();
+			rect(t.R.x,t.R.y,t.R.width,t.R.height);
 		}	
 		
 		

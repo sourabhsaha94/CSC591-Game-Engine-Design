@@ -35,18 +35,20 @@ public class Section5ClientIn implements Runnable {
 				if((m.id!=playerID))		//update only for other players
 				{
 					if(m.id==9090){
-						System.out.println(m.sp.size());
+						System.out.println(true);
 						c.sPlatformList.addAll(m.sp);
 						c.mPlatformList.addAll(m.mp);
 						c.player.collisionComponent.dzones.addAll(m.dz);
 					}
-				
-
+					else if(m.id==0){
+						c.updateMovingPlatformList(m.mp);
+					}
 					else if(pList.containsKey(m.id)){	//check if player exists
 						player = pList.get(m.id);
 						player.R.x=m.x;
 						player.R.y=m.y;
 						pList.put(m.id, player);
+						c.updateMovingPlatformList(m.mp);
 						//System.out.println("server update for player"+m.id);
 					}
 

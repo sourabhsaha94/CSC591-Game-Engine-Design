@@ -49,14 +49,14 @@ public class ClientWorker implements Runnable {
 			t_so.start();
 			t_si.start();
 			
-			Message m = new Message(9090,0,0,0,0,0);
+			/*Message m = new Message(9090,0,0,0,0,0);
 			m.sp = new LinkedList<>();
 			m.sp.addAll(scl.spList);
 			m.mp = new LinkedList<>();
 			m.mp.addAll(scl.mpList);
 			m.dz = new LinkedList<>();
-			m.dz.addAll(scl.dzList);
-			c.out.sendMessageToClient(m);
+			m.dz.addAll(scl.dzList);*/
+			//c.out.sendMessageToClient(m);
 			scl.addClient(c);
 			
 		} catch (IOException e) {

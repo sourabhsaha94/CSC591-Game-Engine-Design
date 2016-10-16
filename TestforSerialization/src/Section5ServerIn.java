@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Set;
 
 public class Section5ServerIn implements Runnable {
@@ -43,9 +44,26 @@ public class Section5ServerIn implements Runnable {
 				if(m.x==999){
 					c.id=m.id;
 					clientListener.allPlayerList.add(m.id);	//add player id to main list
+					m.id=9090;
+					m.sp = new LinkedList<>();
+					m.sp.addAll(clientListener.spList);
+					m.mp = new LinkedList<>();
+					m.mp.addAll(clientListener.mpList);
+					m.dz = new LinkedList<>();
+					m.dz.addAll(clientListener.dzList);
+					clientListener.sendMessage(c, m);
 				}
-				else
-				clientListener.sendMessage(c, m);
+				if(clientListener.allPlayerList.size()<2){
+					m.id = 0;
+					m.mp.clear();
+					m.mp.addAll(clientListener.mpList);
+					clientListener.sendMessage(c, m);
+				}
+				else{
+					m.mp.clear();
+					m.mp.addAll(clientListener.mpList);
+					clientListener.sendMessage(c, m);
+				}
 			
 		}
 		

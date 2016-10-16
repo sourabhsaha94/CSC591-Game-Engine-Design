@@ -30,33 +30,12 @@ public class Section5Server extends PApplet{
 		System.out.println("Server started at 9000...");
 		
 		Section5ClientListener clientListener = new Section5ClientListener();	//start client listener to manage communication b/w clients
-		
+		this.scl = clientListener;
 		Thread cL = new Thread(clientListener);
 		cL.start();
 		
 		int displayx=800,displayy=800; //dimensions of client screen
-		/*
-		ThingFactory thingFactory = new ThingFactory();
 		
-		Random x = new Random();
-		Random y = new Random();
-		
-		for(int i=0;i<2;i++){
-			clientListener.spList.add(thingFactory.getSP(x.nextInt(700),y.nextInt(600)));
-		}
-		
-		for(int i=0;i<2;i++){
-			clientListener.mpList.add(thingFactory.getMP(x.nextInt(700),y.nextInt(600)));
-		}
-		
-		DeathZone downDZ = thingFactory.getDZ(0, displayy-10, displayx, 10);
-		DeathZone leftDZ = thingFactory.getDZ(0, 0, 10, displayy);
-		DeathZone rightDZ = thingFactory.getDZ(displayx-10, 0, 10, displayy);
-		
-		clientListener.dzList.add(leftDZ);
-		clientListener.dzList.add(downDZ);
-		clientListener.dzList.add(rightDZ);
-		*/
 		Random r = new Random();
 		int id; 
 		
@@ -116,11 +95,12 @@ public class Section5Server extends PApplet{
 		Thread clientWorkerThread = new Thread(clientWorker);
 		clientWorkerThread.start();
 		
-		this.scl = clientListener;
+		
 		
 	}
 	
 	public void draw(){
+		System.out.println(scl.mpList.size());
 		for(MovingPlatform t: scl.mpList){		//maintain the position of the moving platform and send updated loc info to new clients
 			rect(t.R.x+=t.motionComponent.vx,t.R.y+t.motionComponent.vy,t.R.width,t.R.height);
 			t.motionComponent.update();

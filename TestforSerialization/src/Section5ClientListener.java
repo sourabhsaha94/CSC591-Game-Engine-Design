@@ -64,7 +64,6 @@ public class Section5ClientListener implements Runnable {
 			ClientInfo c = (ClientInfo)clients.get(i);
 			if(c.id!=m.id)
 			{
-				System.out.println("sending to client "+c.id);
 				c.out.sendMessage(m);
 			}
 		}
