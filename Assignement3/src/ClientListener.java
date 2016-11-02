@@ -48,16 +48,15 @@ public class ClientListener implements Runnable {
 		//message = socket.getRemoteSocketAddress()+" : "+message;
 		
 		messageQueue.add(m);
-		notify();
+		
 	}
 	
 	private synchronized Message getNextMessagefromQueue() throws InterruptedException{
-		
-		while(messageQueue.size()==0)
-			wait();
-		
-		Message m = (Message) messageQueue.poll();
-		return m;
+	
+		if(!messageQueue.isEmpty())
+		{Message m = (Message) messageQueue.poll();
+		return m;}
+		return null;
 	}
 	
 	
@@ -78,6 +77,7 @@ public class ClientListener implements Runnable {
 			try {
 					
 					Message m = getNextMessagefromQueue();
+					if(m!=null)
 					sendMessagetoAllClients(m);
 				
 			} catch (InterruptedException e) {

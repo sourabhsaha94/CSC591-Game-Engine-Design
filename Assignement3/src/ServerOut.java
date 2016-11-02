@@ -31,17 +31,16 @@ public class ServerOut implements Runnable {
 	public synchronized void sendMessage(Message message){
 
 		messageQueue.add(message);
-		notify();
+		
 
 	}
 
 	private synchronized Message getNextMessageFromQueue() throws InterruptedException{
 
-		while(messageQueue.size() == 0)
-			wait();
-
-		Message m = (Message) messageQueue.poll();
-		return m;
+		if(!messageQueue.isEmpty())
+		{Message m = (Message) messageQueue.poll();
+		return m;}
+		return null;
 
 	}
 
@@ -59,6 +58,7 @@ public class ServerOut implements Runnable {
 			while(!Thread.interrupted()) {
 				
 				Message message = getNextMessageFromQueue();
+				if(message!=null)
 				sendMessageToClient(message);
 			
 			}
