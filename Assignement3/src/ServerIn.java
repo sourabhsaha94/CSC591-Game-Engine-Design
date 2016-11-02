@@ -50,7 +50,7 @@ public class ServerIn implements Runnable {
 				p.R = new Rectangle(random.nextInt(800),random.nextInt(100),50,50);
 				p.setPlayerColor(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 				SpawnPoint s = new SpawnPoint(1);
-				s.setSpawnPoint(400, 400);
+				s.setSpawnPoint(500, 10);
 				p.addSpawnPoint(s);
 				p.collisionComponent.addPlatforms(clientListener.spList, clientListener.mpList);
 				p.collisionComponent.dzones.addAll(clientListener.dzList);

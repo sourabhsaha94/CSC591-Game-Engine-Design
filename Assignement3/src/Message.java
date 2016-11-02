@@ -17,6 +17,7 @@ public class Message implements Serializable {
 	int r=0;
 	int g=0;
 	int b=0;
+	MessagePriority messagePriority = MessagePriority.LOW;
 	ArrayList<Player> pList=new ArrayList<>();
 	ArrayList<StaticPlatform> spList=new ArrayList<>();
 	ArrayList<MovingPlatform> mpList=new ArrayList<>();

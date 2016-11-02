@@ -27,6 +27,10 @@ public class Server extends PApplet {
 		}
 		System.out.println("Server started at 9000...");
 
+
+		Thread eM = new Thread(EventManager.getInstance());
+		eM.start();
+		
 		ClientListener clientListener = new ClientListener(); 
 
 		Thread cL = new Thread(clientListener);
@@ -79,7 +83,7 @@ public class Server extends PApplet {
 		clientListener.dzList.add(rightDZ);
 		
 		ClientWorker clientWorker = new ClientWorker(serverSocket, clientListener); 
-
+		
 		Thread clientWorkerThread = new Thread(clientWorker);
 		clientWorkerThread.start();
 

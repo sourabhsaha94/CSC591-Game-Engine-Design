@@ -33,6 +33,7 @@ public class ClientOut implements Runnable {
 
 				if (first_run) {
 					first_run = false;
+					player_info_message.messagePriority = MessagePriority.HIGH;
 					out.writeObject(player_info_message);
 					out.reset();
 				} else {

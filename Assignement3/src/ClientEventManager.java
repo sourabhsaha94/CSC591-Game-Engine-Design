@@ -1,7 +1,7 @@
 import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class EventManager implements Runnable{
+public class ClientEventManager implements Runnable{
 	Comparator<Event> comparator = new EventComparator();
 	private PriorityBlockingQueue<Event> eventQueue = new PriorityBlockingQueue<>(100, comparator);
 	
@@ -9,18 +9,6 @@ public class EventManager implements Runnable{
 	//every event will have list of subscribers
 	//on event raise, list is iterated
 
-	private static EventManager em;
-	
-	private EventManager(){
-		
-	}
-	
-	public static EventManager getInstance(){
-		if(em == null)
-			em = new EventManager();
-		
-		return em;
-	}
 	public synchronized void addEvent(Event e){
 		
 		//Socket socket = c.socket;

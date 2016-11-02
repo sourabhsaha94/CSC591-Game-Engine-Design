@@ -4,17 +4,11 @@
 
 
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import processing.core.PApplet;
@@ -56,6 +50,11 @@ public class Client extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		ClientEventManager clientEventManager = new ClientEventManager();
+		Thread t_em = new Thread(clientEventManager);
+		t_em.setDaemon(true);
+		t_em.start();
 
 	
 		ClientOut sender = new ClientOut(out, playerList); // start
