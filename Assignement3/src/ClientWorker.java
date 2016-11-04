@@ -37,6 +37,7 @@ public class ClientWorker implements Runnable {
 			ClientInfo c = new ClientInfo();
 			c.socket = socket;
 			c.id = this.count;
+			System.out.println("Client "+c.id+" connected..");
 			ServerOut so = new ServerOut(c, scl);
 			ServerIn si = new ServerIn(c, scl);
 			

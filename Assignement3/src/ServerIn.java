@@ -70,6 +70,9 @@ public class ServerIn implements Runnable {
 				m.mpList.addAll(clientListener.mpList);
 				clientListener.sendMessage(c, m);
 				break;
+			case 9100:
+				EventManager.getInstance().addEvent(new HIDEvent(System.nanoTime(), clientListener.allPlayerList.get(c.id-1),m.x));
+				break;
 			default:
 				//do nothing
 				break;

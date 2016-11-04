@@ -11,9 +11,9 @@ public abstract class Event implements Serializable {
 	MovingPlatform m;
 	DeathZone d;	
 	int id;
-	long timestamp;
+	long timestamp=0;
 	EventPriority priority;
-	
+	int x;
 	Event(int id){
 		this.id = id;
 	}

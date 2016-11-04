@@ -127,7 +127,7 @@ public class CollisionComponent implements Serializable{
 				}
 				m_int=false;
 			}
-		
+			
 		if(direction==2){	//stop downward motion while coming down
 			player.motionComponent.setVy(0);
 			player.jumpComponent.jump_flag=false;

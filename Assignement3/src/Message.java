@@ -44,13 +44,10 @@ public class Message implements Serializable {
 		this.id = id;
 	}
 
-	void putValues(int id,int x,int y,int r,int g,int b){
+	void putValues(int id,int x,int y){
 		this.id = id;
 		this.x = x;
 		this.y = y;
-		this.r=r;
-		this.g=g;
-		this.b=b;
 	}
 	
 }

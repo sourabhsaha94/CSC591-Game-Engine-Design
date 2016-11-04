@@ -2,8 +2,11 @@ import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class EventManager implements Runnable{
+	
+	int id;
+	
 	Comparator<Event> comparator = new EventComparator();
-	private PriorityBlockingQueue<Event> eventQueue = new PriorityBlockingQueue<>(100, comparator);
+	PriorityBlockingQueue<Event> eventQueue = new PriorityBlockingQueue<>(100, comparator);
 	
 	//list of events recognized
 	//every event will have list of subscribers
@@ -12,7 +15,7 @@ public class EventManager implements Runnable{
 	private static EventManager em;
 	
 	private EventManager(){
-		
+		this.id=1234;
 	}
 	
 	public static EventManager getInstance(){
@@ -93,6 +96,32 @@ public class EventManager implements Runnable{
 			e.p.Spawn();
 			break;
 		case HID:
+			
+			switch (e.x) {
+			case 0:
+				e.p.motionComponent.vx=0;
+				e.p.move();
+				break;
+			case 1:
+				e.p.motionComponent.vx=2;
+				e.p.move();
+				e.p.motionComponent.vx=0;
+				e.p.move();
+				break;
+			case -1:
+			
+				e.p.motionComponent.vx=-2;
+				e.p.move();
+				e.p.motionComponent.vx=0;
+				e.p.move();
+				break;
+			case 101:
+				e.p.jumpComponent.jump_flag=true;
+				e.p.move();
+				break;
+			default:
+				break;
+			}
 			break;
 		case SPAWN:
 			break;
