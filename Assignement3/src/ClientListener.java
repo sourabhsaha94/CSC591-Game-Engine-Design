@@ -26,65 +26,64 @@ public class ClientListener implements Runnable {
 	CopyOnWriteArrayList<Player> allPlayerList = new CopyOnWriteArrayList<>();
 	CopyOnWriteArrayList<DeathZone> dzList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
-	
+
 	public synchronized void addClient(ClientInfo c){
-		
+
 		clients.add(c);
 	}
-	
-	
+
+
 	public synchronized void deleteClient(ClientInfo c){
-		
+
 		int index = clients.indexOf(c);
 		if(index != -1){
 			clients.removeElementAt(index);
 		}
 	}
-	
-	
+
+
 	public synchronized void sendMessage(ClientInfo c, Message m){
-	
+
 		//Socket socket = c.socket;
 		//message = socket.getRemoteSocketAddress()+" : "+message;
-		
+
 		messageQueue.add(m);
-		
+
 	}
-	
+
 	private synchronized Message getNextMessagefromQueue() throws InterruptedException{
-	
+
 		if(!messageQueue.isEmpty())
 		{Message m = (Message) messageQueue.poll();
 		return m;}
 		return null;
 	}
-	
-	
+
+
 	private synchronized void sendMessagetoAllClients(Message m){
-		
+
 		for(int i=0;i<clients.size();i++){
 			ClientInfo c = (ClientInfo)clients.get(i);
 			c.out.sendMessage(m);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void run() {
-		
+
 		while(!Thread.interrupted()){
-			
-			try {
-					
+		
+				try {
+
 					Message m = getNextMessagefromQueue();
 					if(m!=null)
-					sendMessagetoAllClients(m);
-				
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+						sendMessagetoAllClients(m);
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			
-		}
 	}
 
 

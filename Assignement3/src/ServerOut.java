@@ -31,7 +31,7 @@ public class ServerOut implements Runnable {
 	public synchronized void sendMessage(Message message){
 
 		messageQueue.add(message);
-		
+
 
 	}
 
@@ -57,10 +57,10 @@ public class ServerOut implements Runnable {
 
 			while(!Thread.interrupted()) {
 				
-				Message message = getNextMessageFromQueue();
-				if(message!=null)
-				sendMessageToClient(message);
-			
+					Message message = getNextMessageFromQueue();
+					if(message!=null)
+						sendMessageToClient(message);
+				
 			}
 
 		} catch (Exception e) {

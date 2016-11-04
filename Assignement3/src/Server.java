@@ -4,6 +4,7 @@
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.sql.Time;
 import java.util.Random;
 
 import processing.core.PApplet;
@@ -35,6 +36,9 @@ public class Server extends PApplet {
 
 		Thread cL = new Thread(clientListener);
 		cL.start();
+
+		Thread timeline = new Thread(Timeline.getInstance());
+		timeline.start();
 
 		Random r = new Random();
 		int id;
@@ -92,21 +96,23 @@ public class Server extends PApplet {
 	}
 
 	public void draw() {
-		for (MovingPlatform t : scl.mpList) { // maintain the position of the
-			// moving platform and send
-			// updated loc info to new
-			// clients
-			rect(t.R.x += t.motionComponent.vx, t.R.y + t.motionComponent.vy, t.R.width, t.R.height);
-			t.motionComponent.update();
-		}
-		for(Player player:scl.allPlayerList){
-			player.move();
+		if(Timeline.getInstance().rightTime()){
+			for (MovingPlatform t : scl.mpList) { // maintain the position of the
+				// moving platform and send
+				// updated loc info to new
+				// clients
+				rect(t.R.x += t.motionComponent.vx, t.R.y + t.motionComponent.vy, t.R.width, t.R.height);
+				t.motionComponent.update();
+			}
+			for(Player player:scl.allPlayerList){
+				player.move();
 
-			distance_from_ground = (int) (800 - player.R.getMaxY());
+				distance_from_ground = (int) (800 - player.R.getMaxY());
 
-			player.collisionComponent.update(distance_from_ground,800,800);
-			if(player.jumpComponent.jump_flag){	
-				player.jumpComponent.jump(frameCount);
+				player.collisionComponent.update(distance_from_ground,800,800);
+				if(player.jumpComponent.jump_flag){	
+					player.jumpComponent.jump(frameCount);
+				}
 			}
 		}
 		

@@ -19,14 +19,14 @@ public class Client extends PApplet {
 	Player player;
 
 	Message eventMessage = new Message(9100);
-	
+
 	ClientOut sender;
 	ClientIn recieve;
-	
+
 	CopyOnWriteArrayList<Player> playerList;
 	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();	//clients copy of platforms and players
 	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
-	
+
 	public void settings() {
 		size(800, 800);
 	}
@@ -46,8 +46,8 @@ public class Client extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
@@ -61,7 +61,7 @@ public class Client extends PApplet {
 		t_em.setDaemon(true);
 		t_em.start();*/
 
-	
+
 		this.sender = new ClientOut(out, playerList); // start
 		// sender
 		// thread
@@ -72,46 +72,47 @@ public class Client extends PApplet {
 		this.recieve = new ClientIn(in, playerList, this); // start
 		// receiver
 		// thread
-		
+
 		Thread t_recieve = new Thread(recieve);
 		t_recieve.setDaemon(true);
 		t_recieve.start();
 
-		
-		
+
+
 
 	}
 
 	public void draw() {
-		clear();
+	
+			clear();
 
-		for(Player tempPlayer:playerList) {		//loops to display
-			fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
-			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
-		}
-		for(StaticPlatform t:sPlatformList){		
-			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-			rect(t.R.x,t.R.y,t.R.width,t.R.height);
-		}
-		
-		for(MovingPlatform t:mPlatformList){
-			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-			rect(t.R.x,t.R.y,t.R.width,t.R.height);
-		}
+			for(Player tempPlayer:playerList) {		//loops to display
+				fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
+				rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
+			}
+			for(StaticPlatform t:sPlatformList){		
+				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
+				rect(t.R.x,t.R.y,t.R.width,t.R.height);
+			}
+
+			for(MovingPlatform t:mPlatformList){
+				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
+				rect(t.R.x,t.R.y,t.R.width,t.R.height);
+			}
 	}
 
 	public static void main(String argv[]) {
 		PApplet.main("Client");
 	}
-	
+
 	public void keyPressed(){
 		if (key == CODED) {
-		
+
 			if (keyCode == RIGHT) {	//move right
 				eventMessage.putValues(9100, 1, 0);
 				eventMessage.messagePriority=MessagePriority.EVENT;
 				this.sender.sendMessage(eventMessage);
-				
+
 			} else if (keyCode == LEFT) {	//move left
 				eventMessage.putValues(9100, -1, 0);
 				eventMessage.messagePriority=MessagePriority.EVENT;
@@ -124,9 +125,16 @@ public class Client extends PApplet {
 				this.sender.sendMessage(eventMessage);
 			}
 		}
-		/*else if(key == 'r' ||key =='R'){	//reset
-			player.Spawn();
-		}*/
+		else if(key == 's' ||key =='S'){	//reset
+			eventMessage.putValues(9100, 666, 0);
+			eventMessage.messagePriority=MessagePriority.EVENT;
+			this.sender.sendMessage(eventMessage);
+		}
+		else if(key == 'f' ||key =='F'){	//reset
+			eventMessage.putValues(9100, 777, 0);
+			eventMessage.messagePriority=MessagePriority.EVENT;
+			this.sender.sendMessage(eventMessage);
+		}
 	}
 	/*
 	public void keyReleased() {
@@ -136,7 +144,7 @@ public class Client extends PApplet {
 				eventMessage.messagePriority=MessagePriority.EVENT;
 				this.sender.sendMessage(eventMessage);
 				System.out.println("Event sent");
-				
+
 			} else if (keyCode == LEFT) {
 				eventMessage.putValues(9100, 0, 0);
 				eventMessage.messagePriority=MessagePriority.EVENT;
