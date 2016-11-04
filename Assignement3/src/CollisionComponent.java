@@ -54,8 +54,6 @@ public class CollisionComponent implements Serializable{
 
 		for(DeathZone d:dzones){
 			if(player.R.intersects(d.R)){
-				/*player.jumpComponent.jump_flag=false;
-				player.Spawn();*/
 				EventManager.getInstance().addEvent(new DeathEvent(System.nanoTime(), player, d));
 			}
 		}
@@ -65,25 +63,6 @@ public class CollisionComponent implements Serializable{
 			
 				if(player.R.intersects(t.R)){
 					
-					/*if(player.motionComponent.getVy()>0){	//coming down
-						direction = 2;
-					}
-					else if(player.motionComponent.getVy()<0){	//going up
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}
-					
-					if(player.R.y>t.R.y && player.motionComponent.getVy()<0){	//going up.. hit on side
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}
-					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going down.. hit on side
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}*/
 					EventManager.getInstance().addEvent(new CollisionEvent(System.nanoTime(), player, t));
 					s_int=true;
 					m_int=false;
@@ -95,31 +74,7 @@ public class CollisionComponent implements Serializable{
 			if(!s_int)
 			for(MovingPlatform t:mPlatformList){
 				if(player.R.intersects(t.R)){
-				/*	
-					if(player.motionComponent.getVy()>0){	//coming down
-						direction = 2;
-					}
-					else if(player.motionComponent.getVy()<0){	//going up
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}
-					
-					if(player.R.y>t.R.y && player.motionComponent.getVy()<0){	//going up.. hit on side
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}
-					if((player.R.y<t.R.getMaxY() && player.R.x<t.R.x) && player.motionComponent.getVy()>0){	//going down.. hit on side
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}
-					else if((player.R.y<t.R.getMaxY() && player.R.x>=t.R.getMaxX()) && player.motionComponent.getVy()>0){	//going down.. hit on side
-						player.Spawn();
-						player.jumpComponent.jump_flag=false;
-						direction=0;
-					}*/
+				
 					EventManager.getInstance().addEvent(new CollisionEvent(System.nanoTime(), player, t));
 					m_int=true;
 					s_int=false;
@@ -130,7 +85,7 @@ public class CollisionComponent implements Serializable{
 			
 		if(direction==2){	//stop downward motion while coming down
 			player.motionComponent.setVy(0);
-			player.jumpComponent.jump_flag=false;
+			//player.jumpComponent.jump_flag=false;
 			direction=0;
 		}
 

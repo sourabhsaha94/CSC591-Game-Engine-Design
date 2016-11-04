@@ -24,6 +24,7 @@ public class Player extends Thing{
 	public void move(){
 		this.R.x+=this.motionComponent.vx;
 		this.R.y+=this.motionComponent.vy;
+		
 	}
 	
 	public void setPlayerColor(int r,int g,int b){

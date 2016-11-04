@@ -88,7 +88,6 @@ public class Client extends PApplet {
 		for(Player tempPlayer:playerList) {		//loops to display
 			fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
 			rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
-
 		}
 		for(StaticPlatform t:sPlatformList){		
 			fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());

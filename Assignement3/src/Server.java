@@ -12,7 +12,7 @@ public class Server extends PApplet {
 
 	ClientListener scl;
 	int distance_from_ground;
-	
+
 	public void settings() {
 		size(10, 10);
 	}
@@ -30,7 +30,7 @@ public class Server extends PApplet {
 
 		Thread eM = new Thread(EventManager.getInstance());
 		eM.start();
-		
+
 		ClientListener clientListener = new ClientListener(); 
 
 		Thread cL = new Thread(clientListener);
@@ -81,9 +81,9 @@ public class Server extends PApplet {
 		clientListener.dzList.add(leftDZ);
 		clientListener.dzList.add(downDZ);
 		clientListener.dzList.add(rightDZ);
-		
+
 		ClientWorker clientWorker = new ClientWorker(serverSocket, clientListener); 
-		
+
 		Thread clientWorkerThread = new Thread(clientWorker);
 		clientWorkerThread.start();
 
@@ -105,7 +105,11 @@ public class Server extends PApplet {
 			distance_from_ground = (int) (800 - player.R.getMaxY());
 
 			player.collisionComponent.update(distance_from_ground,800,800);
+			if(player.jumpComponent.jump_flag){	
+				player.jumpComponent.jump(frameCount);
+			}
 		}
+		
 	}
 
 	public static void main(String args[]) {

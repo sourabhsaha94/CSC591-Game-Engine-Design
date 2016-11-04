@@ -46,22 +46,23 @@ public class EventManager implements Runnable{
 			case 1:
 				
 				if(e.p.motionComponent.getVy()>0){	//coming down
+					e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction = 2;
 				}
 				else if(e.p.motionComponent.getVy()<0){	//going up
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				
 				if(e.p.R.y>e.s.R.y && e.p.motionComponent.getVy()<0){	//going up.. hit on side
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				if((e.p.R.y<e.s.R.getMaxY() && e.p.R.x<e.s.R.x) && e.p.motionComponent.getVy()>0){	//going down.. hit on side
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				
@@ -72,19 +73,19 @@ public class EventManager implements Runnable{
 					e.p.collisionComponent.direction = 2;
 				}
 				else if(e.p.motionComponent.getVy()<0){	//going up
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				
 				if(e.p.R.y>e.m.R.y && e.p.motionComponent.getVy()<0){	//going up.. hit on side
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				else if((e.p.R.y<e.m.R.getMaxY() && e.p.R.x<e.m.R.x) && e.p.motionComponent.getVy()>0){	//going down.. hit on side
-					e.p.Spawn();
-					e.p.jumpComponent.jump_flag=false;
+					//e.p.Spawn();
+					//e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction=0;
 				}
 				
@@ -93,7 +94,7 @@ public class EventManager implements Runnable{
 			break;
 		case DEATH:
 			e.p.jumpComponent.jump_flag=false;
-			e.p.Spawn();
+			EventManager.getInstance().addEvent(new SpawnEvent(System.nanoTime(), e.p));
 			break;
 		case HID:
 			
@@ -124,6 +125,7 @@ public class EventManager implements Runnable{
 			}
 			break;
 		case SPAWN:
+			e.p.Spawn();
 			break;
 		default:
 			break;
