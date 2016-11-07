@@ -1,8 +1,9 @@
 
 
-import java.awt.Rectangle;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientIn implements Runnable {
@@ -11,7 +12,6 @@ public class ClientIn implements Runnable {
 	Player player;
 	CopyOnWriteArrayList<Player> pList;
 	int playerID=0;
-
 	Client c;
 
 	public ClientIn(ObjectInputStream in, CopyOnWriteArrayList<Player> pList, Client c1) {
@@ -41,11 +41,26 @@ public class ClientIn implements Runnable {
 						System.out.println("got 9090");
 						break;
 					case 9000:
-						c.playerList.clear();
-						c.playerList.addAll(m.pList);
-						c.mPlatformList.clear();
-						c.mPlatformList.addAll(m.mpList);
-
+						if(!ClientReplayManager.getInstance().start_replay && ClientReplayManager.getInstance().stop_replay)
+						{
+							if(ClientReplayManager.getInstance().running){
+								ClientReplayManager.getInstance().running=false;
+								ClientReplayManager.getInstance().bufferedWriter.close();
+							}
+							c.playerList.clear();
+							c.playerList.addAll(m.pList);
+							c.mPlatformList.clear();
+							c.mPlatformList.addAll(m.mpList);
+						}
+						else{
+							ClientReplayManager.getInstance().running=true;
+							c.playerList.clear();
+							c.playerList.addAll(m.pList);
+							c.mPlatformList.clear();
+							c.mPlatformList.addAll(m.mpList);
+							ClientReplayManager.getInstance().bufferedWriter.write(m.toString());
+							
+						}
 						break;
 					default:
 						//do nothing

@@ -110,6 +110,8 @@ public class Server extends PApplet {
 				distance_from_ground = (int) (800 - player.R.getMaxY());
 
 				player.collisionComponent.update(distance_from_ground,800,800);
+				
+				
 				if(player.jumpComponent.jump_flag){	
 					player.jumpComponent.jump();
 				}

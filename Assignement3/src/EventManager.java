@@ -44,7 +44,7 @@ public class EventManager implements Runnable{
 		case COLLISION:
 			switch(e.id){
 			case 1:
-
+				
 				if(e.p.motionComponent.getVy()>0){	//coming down
 					e.p.jumpComponent.jump_flag=false;
 					e.p.collisionComponent.direction = 2;
@@ -94,6 +94,7 @@ public class EventManager implements Runnable{
 			break;
 		case DEATH:
 			e.p.jumpComponent.jump_flag=false;
+			e.p.collided=false;
 			EventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), e.p));
 			//System.out.println("spawn: "+Timeline.getInstance().getTime());
 			break;
@@ -156,9 +157,11 @@ public class EventManager implements Runnable{
 				try {
 
 					Event e = getNextEventfromQueue();
-					if(e!=null)
+					if(e!=null){
 						handleEvent(e);
-
+						System.out.println(e.priority);
+					}
+						
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

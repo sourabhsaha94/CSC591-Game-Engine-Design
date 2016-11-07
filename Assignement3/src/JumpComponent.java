@@ -20,6 +20,7 @@ public class JumpComponent implements Serializable{
 	}
 	
 	public void jump(){
+		player.collided=false;
 		if(player.motionComponent.getVy()==0){
 			init_pos=player.R.y;
 			jump_start=System.currentTimeMillis();

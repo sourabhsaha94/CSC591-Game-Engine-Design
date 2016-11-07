@@ -3,6 +3,7 @@
 public class Player extends Thing{
 	
 	SpawnPoint s;
+	boolean collided = false;
 	
 	public Player(int id) {
 		super(id);
@@ -10,6 +11,7 @@ public class Player extends Thing{
 		this.colorComponent = new ColorComponent(0,0,0);
 		this.jumpComponent = new JumpComponent(this);
 		this.motionComponent = new MotionComponent(this);
+		this.collided=false;
 		// TODO Auto-generated constructor stub
 	}
 

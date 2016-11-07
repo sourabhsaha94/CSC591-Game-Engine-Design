@@ -135,6 +135,14 @@ public class Client extends PApplet {
 			eventMessage.messagePriority=MessagePriority.EVENT;
 			this.sender.sendMessage(eventMessage);
 		}
+		else if(key == 'r' || key == 'R'){
+			ClientReplayManager.getInstance().start_replay=true;
+			ClientReplayManager.getInstance().stop_replay=false;
+		}
+		else if(key == 'p' || key == 'P'){
+			ClientReplayManager.getInstance().start_replay=false;
+			ClientReplayManager.getInstance().stop_replay=true;
+		}
 	}
 	/*
 	public void keyReleased() {
