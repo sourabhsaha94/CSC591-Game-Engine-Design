@@ -101,7 +101,7 @@ public class Server extends PApplet {
 				// moving platform and send
 				// updated loc info to new
 				// clients
-				rect(t.R.x += t.motionComponent.vx, t.R.y + t.motionComponent.vy, t.R.width, t.R.height);
+				rect(t.R.x += t.motionComponent.vx, t.R.y += t.motionComponent.vy, t.R.width, t.R.height);
 				t.motionComponent.update();
 			}
 			for(Player player:scl.allPlayerList){
@@ -111,7 +111,7 @@ public class Server extends PApplet {
 
 				player.collisionComponent.update(distance_from_ground,800,800);
 				if(player.jumpComponent.jump_flag){	
-					player.jumpComponent.jump(frameCount);
+					player.jumpComponent.jump();
 				}
 			}
 		}

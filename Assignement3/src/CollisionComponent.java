@@ -22,7 +22,7 @@ public class CollisionComponent implements Serializable{
 	boolean s_int=false,m_int=false;
 	
 	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();
-	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList();
+	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
 	LinkedList<DeathZone> dzones = new LinkedList<>();
 	
 	CollisionComponent(Player p){
@@ -54,7 +54,8 @@ public class CollisionComponent implements Serializable{
 
 		for(DeathZone d:dzones){
 			if(player.R.intersects(d.R)){
-				EventManager.getInstance().addEvent(new DeathEvent(System.nanoTime(), player, d));
+				EventManager.getInstance().addEvent(new DeathEvent(Timeline.getInstance().getTime(), player, d));
+				//System.out.println("death: "+Timeline.getInstance().getTime());
 			}
 		}
 		
@@ -63,7 +64,8 @@ public class CollisionComponent implements Serializable{
 			
 				if(player.R.intersects(t.R)){
 					
-					EventManager.getInstance().addEvent(new CollisionEvent(System.nanoTime(), player, t));
+					EventManager.getInstance().addEvent(new CollisionEvent(Timeline.getInstance().getTime(), player, t));
+					//System.out.println("collision: "+Timeline.getInstance().getTime());
 					s_int=true;
 					m_int=false;
 					break;
@@ -75,7 +77,8 @@ public class CollisionComponent implements Serializable{
 			for(MovingPlatform t:mPlatformList){
 				if(player.R.intersects(t.R)){
 				
-					EventManager.getInstance().addEvent(new CollisionEvent(System.nanoTime(), player, t));
+					EventManager.getInstance().addEvent(new CollisionEvent(Timeline.getInstance().getTime(), player, t));
+					//System.out.println("collision: "+Timeline.getInstance().getTime());
 					m_int=true;
 					s_int=false;
 					break;

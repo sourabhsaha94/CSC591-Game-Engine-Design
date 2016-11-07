@@ -35,5 +35,9 @@ public class Timeline implements Runnable{
 		}
 		else return false;
 	}
+	
+	public long getTime(){
+		return origin;
+	}
 
 }

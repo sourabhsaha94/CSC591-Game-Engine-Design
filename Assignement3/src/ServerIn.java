@@ -70,7 +70,8 @@ public class ServerIn implements Runnable {
 					clientListener.sendMessage(c, m);
 					break;
 				case 9100:
-					EventManager.getInstance().addEvent(new HIDEvent(System.nanoTime(), clientListener.allPlayerList.get(c.id-1),m.x));
+					EventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), clientListener.allPlayerList.get(c.id-1),m.x));
+					//System.out.println("HID: "+Timeline.getInstance().getTime());
 					break;
 				default:
 					//do nothing
