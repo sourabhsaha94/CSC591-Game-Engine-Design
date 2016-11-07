@@ -136,12 +136,24 @@ public class Client extends PApplet {
 			this.sender.sendMessage(eventMessage);
 		}
 		else if(key == 'r' || key == 'R'){
-			ClientReplayManager.getInstance().start_replay=true;
-			ClientReplayManager.getInstance().stop_replay=false;
+			if(!ClientReplayManager.getInstance().running)
+			{
+				ClientReplayManager.getInstance().start_replay=true;
+				ClientReplayManager.getInstance().stop_replay=false;
+			}
+			else{
+				ClientReplayManager.getInstance().start_replay=false;
+				ClientReplayManager.getInstance().stop_replay=true;
+			}
 		}
 		else if(key == 'p' || key == 'P'){
-			ClientReplayManager.getInstance().start_replay=false;
-			ClientReplayManager.getInstance().stop_replay=true;
+			if(!ClientReplayManager.getInstance().playing){
+				ClientReplayManager.getInstance().playing = true;
+			}
+			else{
+				ClientReplayManager.getInstance().playing = false;
+			}
+				
 		}
 	}
 	/*

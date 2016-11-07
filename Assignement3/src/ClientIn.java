@@ -53,6 +53,7 @@ public class ClientIn implements Runnable {
 							c.mPlatformList.addAll(m.mpList);
 						}
 						else{
+							System.out.println("Recording started");
 							ClientReplayManager.getInstance().running=true;
 							c.playerList.clear();
 							c.playerList.addAll(m.pList);

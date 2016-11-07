@@ -41,6 +41,9 @@ public class Player extends Thing{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public String toString(){
+		return "Player"+","+this.id+","+this.R.x+","+this.R.y;
+	}
 	
 
 

@@ -49,5 +49,18 @@ public class Message implements Serializable {
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	public String toString(){
+		String s="";
+		
+		for(int i=0;i<pList.size();i++){
+			s+=pList.get(i).toString();
+		}
+		for(int i=0;i<mpList.size();i++){
+			s+=mpList.get(i).toString();
+		}
+		
+		s+="\n";
+		return s;
+	}
 }

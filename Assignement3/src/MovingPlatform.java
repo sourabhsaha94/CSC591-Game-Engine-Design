@@ -21,4 +21,7 @@ public class MovingPlatform extends Thing{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public String toString(){
+		return "MovingPlatform"+","+this.id+","+this.R.x+","+this.R.y;
+	}
 }
