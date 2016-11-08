@@ -1,4 +1,7 @@
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class EventManager implements Runnable{
@@ -7,6 +10,10 @@ public class EventManager implements Runnable{
 
 	Comparator<Event> comparator = new EventComparator();
 	PriorityBlockingQueue<Event> eventQueue = new PriorityBlockingQueue<>(100, comparator);
+	
+	LinkedList<EventHandler> tempList = new LinkedList<>();
+	
+	private Map<EventPriority,LinkedList<EventHandler>> eventList = new HashMap<>();
 
 	//list of events recognized
 	//every event will have list of subscribers
@@ -15,7 +22,18 @@ public class EventManager implements Runnable{
 	private static EventManager em;
 
 	private EventManager(){
+		System.out.println("Event Manager started");
 		this.id=1234;
+	}
+	
+	public synchronized void registerEvent(EventHandler eh){
+		
+		tempList.add(eh);
+		this.eventList.put(EventPriority.COLLISION, tempList);
+		this.eventList.put(EventPriority.DEATH, tempList);
+		this.eventList.put(EventPriority.SPAWN, tempList);
+		this.eventList.put(EventPriority.HID, tempList);
+		System.out.println("event handler registered");
 	}
 
 	public static EventManager getInstance(){
@@ -39,108 +57,6 @@ public class EventManager implements Runnable{
 		return null;
 	}
 
-	private void handleEvent(Event e) {
-		switch(e.priority){
-		case COLLISION:
-			switch(e.id){
-			case 1:
-				
-				if(e.p.motionComponent.getVy()>0){	//coming down
-					e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction = 2;
-				}
-				else if(e.p.motionComponent.getVy()<0){	//going up
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-
-				if(e.p.R.y>e.s.R.y && e.p.motionComponent.getVy()<0){	//going up.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-				if((e.p.R.y<e.s.R.getMaxY() && e.p.R.x<e.s.R.x) && e.p.motionComponent.getVy()>0){	//going down.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-
-				break;
-			case 2:
-
-				if(e.p.motionComponent.getVy()>0){	//coming down
-					e.p.collisionComponent.direction = 2;
-				}
-				else if(e.p.motionComponent.getVy()<0){	//going up
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-
-				if(e.p.R.y>e.m.R.y && e.p.motionComponent.getVy()<0){	//going up.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-				else if((e.p.R.y<e.m.R.getMaxY() && e.p.R.x<e.m.R.x) && e.p.motionComponent.getVy()>0){	//going down.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
-					e.p.collisionComponent.direction=0;
-				}
-
-				break;
-			}
-			break;
-		case DEATH:
-			e.p.jumpComponent.jump_flag=false;
-			e.p.collided=false;
-			EventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), e.p));
-			//System.out.println("spawn: "+Timeline.getInstance().getTime());
-			break;
-		case HID:
-
-			switch (e.x) {
-			case 0:
-				e.p.motionComponent.vx=0;
-				e.p.move();
-				break;
-			case 1:
-				e.p.motionComponent.vx=2;
-				e.p.move();
-				e.p.motionComponent.vx=0;
-				e.p.move();
-				break;
-			case -1:
-
-				e.p.motionComponent.vx=-2;
-				e.p.move();
-				e.p.motionComponent.vx=0;
-				e.p.move();
-				break;
-			case 101:
-				e.p.jumpComponent.jump_flag=true;
-				e.p.move();
-				break;
-			case 666:
-				Timeline.getInstance().tic_size*=50000;
-				break;
-			case 777:
-				Timeline.getInstance().tic_size/=50000;
-				break;
-			default:
-				break;
-			}
-			break;
-		case SPAWN:
-			e.p.Spawn();
-			break;
-		default:
-			break;
-
-		}
-	}
-
 	/*private synchronized void sendEventtoAllClients(Message m){
 
 		for(int i=0;i<clientListener.clients.size();i++){
@@ -154,11 +70,11 @@ public class EventManager implements Runnable{
 
 		while(!Thread.interrupted()){
 		
-				try {
+			try {
 
 					Event e = getNextEventfromQueue();
 					if(e!=null){
-						handleEvent(e);
+						eventList.get(e.priority).peek().handleEvent(e);
 						System.out.println(e.priority);
 					}
 						

@@ -23,7 +23,7 @@ public class Timeline implements Runnable{
 	@Override
 	public void run() {
 		while(true){
-			anchor = System.nanoTime();
+			anchor = System.currentTimeMillis();
 		}
 		
 	}
