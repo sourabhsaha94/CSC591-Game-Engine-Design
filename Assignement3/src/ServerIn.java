@@ -53,6 +53,7 @@ public class ServerIn implements Runnable {
 					p.addSpawnPoint(s);
 					p.collisionComponent.addPlatforms(clientListener.spList, clientListener.mpList);
 					p.collisionComponent.dzones.addAll(clientListener.dzList);
+					EventManager.getInstance().registerEvent(p);
 					clientListener.allPlayerList.add(p);
 					m.pList.clear();
 					m.spList.clear();

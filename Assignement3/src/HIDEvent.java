@@ -3,7 +3,7 @@ public class HIDEvent extends Event{
 
 	HIDEvent(long time,Player p,int x) {
 		super(4);
-		this.priority = EventPriority.HID;
+		this.priority = EventType.HID;
 		this.timestamp = time;
 		this.p = p;
 		this.x = x;
