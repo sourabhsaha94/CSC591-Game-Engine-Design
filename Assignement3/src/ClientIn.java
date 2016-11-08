@@ -26,49 +26,58 @@ public class ClientIn implements Runnable {
 		Message m;
 
 		while (!Thread.interrupted()) {
-			
-				try {
-					m = (Message) in.readObject();
 
-					switch(m.id){
-					case 9090:
-						c.playerList.clear();
-						c.sPlatformList.clear();
-						c.mPlatformList.clear();
-						c.playerList.addAll(m.pList);
-						c.sPlatformList.addAll(m.spList);
-						c.mPlatformList.addAll(m.mpList);
-						System.out.println("got 9090");
-						break;
-					case 9000:
-						if(!ClientReplayManager.getInstance().start_replay && ClientReplayManager.getInstance().stop_replay)
-						{
-							if(ClientReplayManager.getInstance().running){
-								ClientReplayManager.getInstance().running=false;
-								ClientReplayManager.getInstance().bufferedWriter.close();
+			try {
+				m = (Message) in.readObject();
+
+				switch(m.id){
+				case 9090:
+					c.playerList.clear();
+					c.sPlatformList.clear();
+					c.mPlatformList.clear();
+					c.playerList.addAll(m.pList);
+					c.sPlatformList.addAll(m.spList);
+					c.mPlatformList.addAll(m.mpList);
+					System.out.println("got 9090");
+					break;
+				case 9000:
+					if(!ClientReplayManager.getInstance().start_replay && ClientReplayManager.getInstance().stop_replay)
+					{
+						if(ClientReplayManager.getInstance().running){
+							ClientReplayManager.getInstance().running=false;
+							ClientReplayManager.getInstance().bufferedWriter.close();
+						}
+						if(!ClientReplayManager.getInstance().playing){
+							c.playerList.clear();
+							c.playerList.addAll(m.pList);
+							c.mPlatformList.clear();
+							c.mPlatformList.addAll(m.mpList);
+						}else{
+							if(ClientReplayManager.getInstance().getLine()!=null){
+								//do something
 							}
-							c.playerList.clear();
-							c.playerList.addAll(m.pList);
-							c.mPlatformList.clear();
-							c.mPlatformList.addAll(m.mpList);
+							else{
+								ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.PLAYBACK));
+							}
 						}
-						else{
-							System.out.println("Recording started");
-							ClientReplayManager.getInstance().running=true;
-							c.playerList.clear();
-							c.playerList.addAll(m.pList);
-							c.mPlatformList.clear();
-							c.mPlatformList.addAll(m.mpList);
-							ClientReplayManager.getInstance().bufferedWriter.write(m.toString());
-							
-						}
-						break;
-					default:
-						//do nothing
-						break;
 					}
+					else{
+						System.out.println("Recording started");
+						ClientReplayManager.getInstance().running=true;
+						c.playerList.clear();
+						c.playerList.addAll(m.pList);
+						c.mPlatformList.clear();
+						c.mPlatformList.addAll(m.mpList);
+						ClientReplayManager.getInstance().bufferedWriter.write(m.toString());
 
-					/*if((m.id!=playerID))		//update only for other players
+					}
+					break;
+				default:
+					//do nothing
+					break;
+				}
+
+				/*if((m.id!=playerID))		//update only for other players
 				{
 					if(pList.containsKey(m.id)){	//check if player exists
 						player = pList.get(m.id);
@@ -87,10 +96,10 @@ public class ClientIn implements Runnable {
 					}
 				}*/
 
-					//System.out.println(m.id+": "+m.x);
-				} catch (Exception e) {
-					break;
-				}
+				//System.out.println(m.id+": "+m.x);
+			} catch (Exception e) {
+				break;
+			}
 			// System.out.println(newPos);
 		}
 

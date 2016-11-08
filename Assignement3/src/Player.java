@@ -12,7 +12,6 @@ public class Player extends Thing implements EventHandler{
 		this.jumpComponent = new JumpComponent(this);
 		this.motionComponent = new MotionComponent(this);
 		this.collided=false;
-		// TODO Auto-generated constructor stub
 	}
 
 	public void addSpawnPoint(SpawnPoint s){
@@ -48,7 +47,7 @@ public class Player extends Thing implements EventHandler{
 	@Override
 	public void handleEvent(Event e) {
 		if(e.p.id==this.id)
-		switch(e.priority){
+		switch(e.type){
 		case COLLISION:
 			switch(e.id){
 			case 1:

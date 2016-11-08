@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
 
-public class EventManager implements Runnable{
+public class ClientEventManager implements Runnable{
 
 	int id;
 
@@ -17,14 +17,16 @@ public class EventManager implements Runnable{
 	//every event will have list of subscribers
 	//on event raise, list is iterated
 
-	private static EventManager em;
+	private static ClientEventManager em;
 
-	private EventManager(){
+	private ClientEventManager(){
 		this.id=1234;
 		eventList.put(EventType.COLLISION, new ArrayList<>());
 		eventList.put(EventType.HID, new ArrayList<>());
 		eventList.put(EventType.SPAWN, new ArrayList<>());
 		eventList.put(EventType.DEATH, new ArrayList<>());
+		eventList.put(EventType.RECORD_START_STOP, new ArrayList<>());
+		eventList.put(EventType.PLAYBACK, new ArrayList<>());
 	}
 
 	public void registerEvent(EventHandler eh){
@@ -32,11 +34,14 @@ public class EventManager implements Runnable{
 		eventList.get(EventType.HID).add(eh);
 		eventList.get(EventType.SPAWN).add(eh);
 		eventList.get(EventType.DEATH).add(eh);
+		eventList.get(EventType.RECORD_START_STOP).add(eh);
+		eventList.get(EventType.PLAYBACK).add(eh);
+		
 	}
 	
-	public static EventManager getInstance(){
+	public static ClientEventManager getInstance(){
 		if(em == null)
-			em = new EventManager();
+			em = new ClientEventManager();
 
 		return em;
 	}

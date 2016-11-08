@@ -6,14 +6,14 @@ public class CollisionEvent extends Event{
 	
 	CollisionEvent(long time,Player p,StaticPlatform s) {
 		super(1);
-		this.priority = EventType.COLLISION;
+		this.type = EventType.COLLISION;
 		this.timestamp = time;
 		this.p = p;
 		this.s = s;
 	}
 	CollisionEvent(long time,Player p,MovingPlatform m) {
 		super(2);
-		this.priority = EventType.COLLISION;
+		this.type = EventType.COLLISION;
 		this.timestamp = time;
 		this.p = p;
 		this.m = m;

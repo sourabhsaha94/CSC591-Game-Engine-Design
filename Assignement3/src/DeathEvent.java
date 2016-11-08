@@ -8,7 +8,7 @@ public class DeathEvent extends Event{
 
 	DeathEvent(long time,Player p,DeathZone d) {
 		super(3);
-		this.priority = EventType.DEATH;
+		this.type = EventType.DEATH;
 		this.timestamp = time;
 		this.p = p;
 		this.d = d;

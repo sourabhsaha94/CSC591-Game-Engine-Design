@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ClientReplayManager{
+public class ClientReplayManager implements EventHandler{
 	
 	int id;
 	FileWriter fout;
@@ -36,12 +36,15 @@ public class ClientReplayManager{
 		}
 		this.bufferedWriter = new BufferedWriter(fout);
 		this.bufferedReader = new BufferedReader(input);
+		
 	}
 
 	public static ClientReplayManager getInstance(){
-		if(crm == null)
+		if(crm == null){
 			crm = new ClientReplayManager();
-
+			ClientEventManager.getInstance().registerEvent(crm);
+		}
+		
 		return crm;
 	}
 	
@@ -50,6 +53,44 @@ public class ClientReplayManager{
 	}
 	
 	public void convertFile(){
+		
+	}
+
+	@Override
+	public void handleEvent(Event e) {
+		switch(e.type){
+		case COLLISION:
+			break;
+		case DEATH:
+			break;
+		case HID:
+			break;
+		case PLAYBACK:
+			if(!this.playing){
+				this.playing = true;
+			}
+			else{
+				this.playing = false;
+			}
+
+			break;
+		case RECORD_START_STOP:
+			if(!this.running)
+			{
+				this.start_replay=true;
+				this.stop_replay=false;
+			}
+			else{
+				this.start_replay=false;
+				this.stop_replay=true;
+			}
+			break;
+		case SPAWN:
+			break;
+		default:
+			break;
+		
+		}
 		
 	}
 	

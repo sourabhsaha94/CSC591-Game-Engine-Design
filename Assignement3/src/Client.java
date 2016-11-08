@@ -61,6 +61,9 @@ public class Client extends PApplet {
 		t_em.setDaemon(true);
 		t_em.start();*/
 
+		Thread t_eventManager = new Thread(ClientEventManager.getInstance());
+		t_eventManager.setDaemon(true);
+		t_eventManager.start();
 
 		this.sender = new ClientOut(out, playerList); // start
 		// sender
@@ -136,24 +139,10 @@ public class Client extends PApplet {
 			this.sender.sendMessage(eventMessage);
 		}
 		else if(key == 'r' || key == 'R'){
-			if(!ClientReplayManager.getInstance().running)
-			{
-				ClientReplayManager.getInstance().start_replay=true;
-				ClientReplayManager.getInstance().stop_replay=false;
-			}
-			else{
-				ClientReplayManager.getInstance().start_replay=false;
-				ClientReplayManager.getInstance().stop_replay=true;
-			}
+			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.RECORD_START_STOP));
 		}
 		else if(key == 'p' || key == 'P'){
-			if(!ClientReplayManager.getInstance().playing){
-				ClientReplayManager.getInstance().playing = true;
-			}
-			else{
-				ClientReplayManager.getInstance().playing = false;
-			}
-				
+			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.PLAYBACK));	
 		}
 	}
 	/*

@@ -12,7 +12,7 @@ public abstract class Event implements Serializable {
 	DeathZone d;	
 	int id;
 	long timestamp=0;
-	EventType priority;
+	EventType type;
 	int x;
 	Event(int id){
 		this.id = id;
