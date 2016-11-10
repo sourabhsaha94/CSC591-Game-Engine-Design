@@ -53,8 +53,6 @@ public class ClientEventManager implements Runnable{
 	}
 	public synchronized void addEvent(Event e){
 
-		//Socket socket = c.socket;
-		//message = socket.getRemoteSocketAddress()+" : "+message;
 		eventQueue.add(e);
 	}
 
@@ -67,15 +65,6 @@ public class ClientEventManager implements Runnable{
 	}
 
 	
-
-	/*private synchronized void sendEventtoAllClients(Message m){
-
-		for(int i=0;i<clientListener.clients.size();i++){
-			ClientInfo c = (ClientInfo)clientListener.clients.get(i);
-			c.out.sendMessage(m);
-		}
-	}*/
-
 	@Override
 	public void run() {
 
@@ -85,8 +74,7 @@ public class ClientEventManager implements Runnable{
 
 					Event e = getNextEventfromQueue();
 					if(e!=null){
-						//handleEvent(e);
-						//e.p.handleEvent(e);
+			
 						eventList.get(e.type).forEach(v->v.handleEvent(e));
 						
 						System.out.println(e.type);

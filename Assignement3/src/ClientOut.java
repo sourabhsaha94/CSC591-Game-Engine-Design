@@ -6,7 +6,6 @@
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientOut implements Runnable {
@@ -75,7 +74,7 @@ public class ClientOut implements Runnable {
 			// Communication is broken
 
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 

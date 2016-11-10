@@ -30,7 +30,7 @@ public class ClientReplayManager implements EventHandler{
 			this.fout = new FileWriter("replays"+id+".txt");
 			this.input = new FileReader("replays"+id+".txt");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		this.bufferedWriter = new BufferedWriter(fout);

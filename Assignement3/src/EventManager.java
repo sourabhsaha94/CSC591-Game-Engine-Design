@@ -58,6 +58,7 @@ public class EventManager implements Runnable{
 					Event e = getNextEventfromQueue();
 					if(e!=null){
 						eventList.get(e.type).forEach(v->v.handleEvent(e));
+						System.out.println(e.type);
 					}
 						
 				} catch (InterruptedException e) {

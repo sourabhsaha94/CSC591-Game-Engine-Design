@@ -7,7 +7,7 @@ public class HIDEvent extends Event{
 		this.timestamp = time;
 		this.p = p;
 		this.x = x;
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**

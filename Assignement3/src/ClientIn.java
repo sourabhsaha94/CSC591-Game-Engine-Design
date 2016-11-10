@@ -55,7 +55,7 @@ public class ClientIn implements Runnable {
 							if(ReplayTimeline.getInstance().rightTime())
 							{
 								if((msg = ClientReplayManager.getInstance().getLine())!=null){
-									m = ClientReplayManager.getInstance().playReplay(m,msg,c);//do something
+									m = ClientReplayManager.getInstance().playReplay(m,msg,c);
 									c.playerList.clear();
 									c.mPlatformList.clear();
 									c.playerList.addAll(m.pList);

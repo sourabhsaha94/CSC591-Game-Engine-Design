@@ -10,7 +10,6 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.LinkedList;
 
 public class ClientWorker implements Runnable {
 
@@ -53,7 +52,6 @@ public class ClientWorker implements Runnable {
 			scl.addClient(c);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

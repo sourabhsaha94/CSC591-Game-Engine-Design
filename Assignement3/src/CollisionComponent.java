@@ -58,7 +58,7 @@ public class CollisionComponent implements Serializable{
 		for(DeathZone d:dzones){
 			if(player.R.intersects(d.R)){
 				EventManager.getInstance().addEvent(new DeathEvent(Timeline.getInstance().getTime(), player, d));
-				//System.out.println("death: "+Timeline.getInstance().getTime());
+	
 			}
 		}
 
@@ -71,7 +71,7 @@ public class CollisionComponent implements Serializable{
 					{
 						EventManager.getInstance().addEvent(new CollisionEvent(Timeline.getInstance().getTime(), player, t));
 						player.collided = true;
-					}//System.out.println("collision: "+Timeline.getInstance().getTime());
+					}
 					s_int=true;
 					m_int=false;
 					break;
@@ -88,7 +88,7 @@ public class CollisionComponent implements Serializable{
 						EventManager.getInstance().addEvent(new CollisionEvent(Timeline.getInstance().getTime(), player, t));
 						player.collided=true;
 					}
-					//System.out.println("collision: "+Timeline.getInstance().getTime());
+					
 					m_int=true;
 					s_int=false;
 					break;
@@ -97,7 +97,7 @@ public class CollisionComponent implements Serializable{
 			}
 		if(direction==2){	//stop downward motion while coming down
 			player.motionComponent.setVy(0);
-			//player.jumpComponent.jump_flag=false;
+		
 			direction=0;
 		}
 

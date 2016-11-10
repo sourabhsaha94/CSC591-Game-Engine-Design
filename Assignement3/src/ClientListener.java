@@ -44,9 +44,6 @@ public class ClientListener implements Runnable {
 
 	public synchronized void sendMessage(ClientInfo c, Message m){
 
-		//Socket socket = c.socket;
-		//message = socket.getRemoteSocketAddress()+" : "+message;
-
 		messageQueue.add(m);
 
 	}
