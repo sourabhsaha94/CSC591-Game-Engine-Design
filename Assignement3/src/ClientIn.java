@@ -1,8 +1,5 @@
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,6 +21,7 @@ public class ClientIn implements Runnable {
 	public void run() {
 
 		Message m;
+		String msg;
 
 		while (!Thread.interrupted()) {
 
@@ -53,54 +51,40 @@ public class ClientIn implements Runnable {
 							c.mPlatformList.clear();
 							c.mPlatformList.addAll(m.mpList);
 						}else{
-							if(ClientReplayManager.getInstance().getLine()!=null){
-								//do something
-							}
-							else{
-								ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.PLAYBACK));
+
+							if(ReplayTimeline.getInstance().rightTime())
+							{
+								if((msg = ClientReplayManager.getInstance().getLine())!=null){
+									m = ClientReplayManager.getInstance().playReplay(m,msg,c);//do something
+									c.playerList.clear();
+									c.mPlatformList.clear();
+									c.playerList.addAll(m.pList);
+									c.mPlatformList.addAll(m.mpList);
+								}
+								else{
+									ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.PLAYBACK));
+								}
 							}
 						}
 					}
 					else{
-						System.out.println("Recording started");
 						ClientReplayManager.getInstance().running=true;
 						c.playerList.clear();
 						c.playerList.addAll(m.pList);
 						c.mPlatformList.clear();
 						c.mPlatformList.addAll(m.mpList);
 						ClientReplayManager.getInstance().bufferedWriter.write(m.toString());
-
 					}
 					break;
 				default:
 					//do nothing
 					break;
 				}
-
-				/*if((m.id!=playerID))		//update only for other players
-				{
-					if(pList.containsKey(m.id)){	//check if player exists
-						player = pList.get(m.id);
-						player.R.x=m.x;
-						player.R.y=m.y;
-						pList.put(m.id, player);
-					}
-
-					else{
-
-						player = new Player(m.id);	//create a new player
-						player.R = new Rectangle(m.x,m.y,50,50);
-						player.setPlayerVelocity(0, 0);
-						player.setPlayerColor(m.r, m.g, m.b);
-						pList.put(m.id, player);
-					}
-				}*/
-
-				//System.out.println(m.id+": "+m.x);
+				
 			} catch (Exception e) {
 				break;
 			}
-			// System.out.println(newPos);
+			
 		}
 
 	}

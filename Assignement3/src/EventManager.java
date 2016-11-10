@@ -13,10 +13,6 @@ public class EventManager implements Runnable{
 	
 	Map<EventType,ArrayList<EventHandler>> eventList = new HashMap<>(); 
 
-	//list of events recognized
-	//every event will have list of subscribers
-	//on event raise, list is iterated
-
 	private static EventManager em;
 
 	private EventManager(){
@@ -41,9 +37,6 @@ public class EventManager implements Runnable{
 		return em;
 	}
 	public synchronized void addEvent(Event e){
-
-		//Socket socket = c.socket;
-		//message = socket.getRemoteSocketAddress()+" : "+message;
 		eventQueue.add(e);
 	}
 
@@ -55,16 +48,6 @@ public class EventManager implements Runnable{
 		return null;
 	}
 
-	
-
-	/*private synchronized void sendEventtoAllClients(Message m){
-
-		for(int i=0;i<clientListener.clients.size();i++){
-			ClientInfo c = (ClientInfo)clientListener.clients.get(i);
-			c.out.sendMessage(m);
-		}
-	}*/
-
 	@Override
 	public void run() {
 
@@ -74,11 +57,7 @@ public class EventManager implements Runnable{
 
 					Event e = getNextEventfromQueue();
 					if(e!=null){
-						//handleEvent(e);
-						//e.p.handleEvent(e);
 						eventList.get(e.type).forEach(v->v.handleEvent(e));
-						
-						System.out.println(e.type);
 					}
 						
 				} catch (InterruptedException e) {

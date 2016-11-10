@@ -18,6 +18,7 @@ public class SpawnPoint extends Thing{
 		player.R.x = this.R.x;
 		player.R.y = this.R.y;
 		player.setPlayerVelocity(0, 0);
+		player.collided=false;
 	}
 	
 	public void setSpawnPoint(int x,int y){

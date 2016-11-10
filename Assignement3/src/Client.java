@@ -23,7 +23,7 @@ public class Client extends PApplet {
 	ClientOut sender;
 	ClientIn recieve;
 
-	CopyOnWriteArrayList<Player> playerList;
+	CopyOnWriteArrayList<Player> playerList= new CopyOnWriteArrayList<>();
 	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();	//clients copy of platforms and players
 	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
 
@@ -32,8 +32,6 @@ public class Client extends PApplet {
 	}
 
 	public void setup() {
-
-		playerList = new CopyOnWriteArrayList<>();	//init player list
 
 		ObjectInputStream in = null;
 		ObjectOutputStream out = null;
@@ -56,14 +54,12 @@ public class Client extends PApplet {
 			e.printStackTrace();
 		}
 
-		/*ClientEventManager clientEventManager = new ClientEventManager();
-		Thread t_em = new Thread(clientEventManager);
-		t_em.setDaemon(true);
-		t_em.start();*/
-
 		Thread t_eventManager = new Thread(ClientEventManager.getInstance());
 		t_eventManager.setDaemon(true);
 		t_eventManager.start();
+		
+		Thread timeline = new Thread(ReplayTimeline.getInstance());
+		timeline.start();
 
 		this.sender = new ClientOut(out, playerList); // start
 		// sender
@@ -89,6 +85,32 @@ public class Client extends PApplet {
 	
 			clear();
 
+			if(!ClientReplayManager.getInstance().running && !ClientReplayManager.getInstance().playing){
+				fill(0,255,0);
+				ellipse(40,40,20,20);
+			}
+			else if(ClientReplayManager.getInstance().running && !ClientReplayManager.getInstance().playing){
+				fill(255,0,0);
+				ellipse(40,40,20,20);
+			}
+			else if(ClientReplayManager.getInstance().playing){
+				fill(0,0,255);
+				ellipse(40,40,20,20);
+			}
+			
+			if(ReplayTimeline.getInstance().tic_size==1000000){ //normal
+				fill(0,255,0);
+				ellipse(70,40,20,20);
+			}
+			else if(ReplayTimeline.getInstance().tic_size==10000000){ //slow
+				fill(255,0,0);
+				ellipse(70,40,20,20);
+			}
+			else if(ReplayTimeline.getInstance().tic_size==1000){ //fast
+				fill(0,0,255);
+				ellipse(70,40,20,20);
+			}
+			
 			for(Player tempPlayer:playerList) {		//loops to display
 				fill(tempPlayer.colorComponent.getR(), tempPlayer.colorComponent.getG(), tempPlayer.colorComponent.getB());
 				rect(tempPlayer.R.x, tempPlayer.R.y, tempPlayer.R.width, tempPlayer.R.height);
@@ -122,44 +144,24 @@ public class Client extends PApplet {
 				this.sender.sendMessage(eventMessage);		
 			}
 			else if (keyCode == UP) {	//jump
-				//player.jumpComponent.jump_flag=true;
 				eventMessage.putValues(9100, 101, 0);
 				eventMessage.messagePriority=MessagePriority.EVENT;
 				this.sender.sendMessage(eventMessage);
 			}
 		}
-		else if(key == 's' ||key =='S'){	//reset
-			eventMessage.putValues(9100, 666, 0);
-			eventMessage.messagePriority=MessagePriority.EVENT;
-			this.sender.sendMessage(eventMessage);
+		else if(key == 's' ||key =='S'){	//slow
+			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.SLOW));
 		}
-		else if(key == 'f' ||key =='F'){	//reset
-			eventMessage.putValues(9100, 777, 0);
-			eventMessage.messagePriority=MessagePriority.EVENT;
-			this.sender.sendMessage(eventMessage);
+		else if(key == 'n' ||key =='N'){	//slow
+			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.NORMAL));
 		}
-		else if(key == 'r' || key == 'R'){
+		else if(key == 'f' ||key =='F'){	//fast
+			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.FAST));
+		}else if(key == 'r' || key == 'R'){	//record
 			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.RECORD_START_STOP));
 		}
-		else if(key == 'p' || key == 'P'){
+		else if(key == 'p' || key == 'P'){ //playback
 			ClientEventManager.getInstance().addEvent(new REPLAYEvent(System.nanoTime(), EventType.PLAYBACK));	
 		}
 	}
-	/*
-	public void keyReleased() {
-		if (key == CODED) {
-			if (keyCode == RIGHT) {
-				eventMessage.putValues(9100, 0, 0);
-				eventMessage.messagePriority=MessagePriority.EVENT;
-				this.sender.sendMessage(eventMessage);
-				System.out.println("Event sent");
-
-			} else if (keyCode == LEFT) {
-				eventMessage.putValues(9100, 0, 0);
-				eventMessage.messagePriority=MessagePriority.EVENT;
-				this.sender.sendMessage(eventMessage);
-			}
-		}
-
-	}*/
 }

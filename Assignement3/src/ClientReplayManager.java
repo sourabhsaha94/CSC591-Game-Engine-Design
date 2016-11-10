@@ -1,11 +1,9 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Random;
 
 public class ClientReplayManager implements EventHandler{
 	
@@ -18,18 +16,19 @@ public class ClientReplayManager implements EventHandler{
 	boolean stop_replay=true;
 	boolean running = false;
 	boolean playing =false;
-	ArrayList<Player> playerList = new ArrayList<>();;
-	ArrayList<MovingPlatform> mPlatformList = new ArrayList<>();
-
+	String sArray[] = new String[10];
 	
+	int pcount=0;
+	
+	Random r = new Random();
 	
 	private static ClientReplayManager crm;
 
 	private ClientReplayManager(){
-		this.id=1234;
+		this.id=r.nextInt(10);
 		try {
-			this.fout = new FileWriter("replays.txt");
-			this.input = new FileReader("replays.txt");
+			this.fout = new FileWriter("replays"+id+".txt");
+			this.input = new FileReader("replays"+id+".txt");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,10 +51,6 @@ public class ClientReplayManager implements EventHandler{
 		return this.bufferedReader.readLine();
 	}
 	
-	public void convertFile(){
-		
-	}
-
 	@Override
 	public void handleEvent(Event e) {
 		switch(e.type){
@@ -87,11 +82,39 @@ public class ClientReplayManager implements EventHandler{
 			break;
 		case SPAWN:
 			break;
+		case SLOW:ReplayTimeline.getInstance().tic_size=10000000;
+			break;
+		case FAST:ReplayTimeline.getInstance().tic_size=1000;
+			break;
+		case NORMAL:ReplayTimeline.getInstance().tic_size=1000000;
+			break;
 		default:
 			break;
 		
 		}
 		
+	}
+	
+	public Message playReplay(Message m,String s,Client c){
+		this.sArray = s.split(",");
+		pcount=0;
+		for(int i=0;i<this.sArray.length;i++){
+			if(this.sArray[i].equalsIgnoreCase("player")){
+				pcount++;
+				m.pList.get(Integer.parseInt(this.sArray[i+1])-1).R.x=Integer.parseInt(this.sArray[i+2]);
+				m.pList.get(Integer.parseInt(this.sArray[i+1])-1).R.y=Integer.parseInt(this.sArray[i+3]);
+			}
+			else if(this.sArray[i].equalsIgnoreCase("movingplatform")){
+				m.mpList.get(Integer.parseInt(this.sArray[i+1])).R.x=Integer.parseInt(this.sArray[i+2]);
+				m.mpList.get(Integer.parseInt(this.sArray[i+1])).R.y=Integer.parseInt(this.sArray[i+3]);
+			}
+		}
+		if(m.pList.size()>pcount){
+			while((m.pList.size()-pcount)!=0){
+				m.pList.remove(m.pList.size()-1);
+			}
+		}
+		return m;
 	}
 	
 }

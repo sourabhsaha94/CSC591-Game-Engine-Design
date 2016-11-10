@@ -41,7 +41,7 @@ public class Player extends Thing implements EventHandler{
 	private static final long serialVersionUID = 1L;
 	
 	public String toString(){
-		return "Player"+","+this.id+","+this.R.x+","+this.R.y;
+		return "Player"+","+this.id+","+this.R.x+","+this.R.y+",";
 	}
 
 	@Override
@@ -103,7 +103,6 @@ public class Player extends Thing implements EventHandler{
 			this.jumpComponent.jump_flag=false;
 			this.collided=false;
 			EventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
-			//System.out.println("spawn: "+Timeline.getInstance().getTime());
 			break;
 		case HID:
 
@@ -128,12 +127,6 @@ public class Player extends Thing implements EventHandler{
 			case 101:
 				this.jumpComponent.jump_flag=true;
 				this.move();
-				break;
-			case 666:
-				Timeline.getInstance().tic_size*=50000;
-				break;
-			case 777:
-				Timeline.getInstance().tic_size/=50000;
 				break;
 			default:
 				break;

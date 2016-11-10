@@ -57,7 +57,7 @@ public class Server extends PApplet {
 
 		clientListener.spList.add(s2);
 
-		id = r.nextInt(1000) + 1500; // mid
+		id = 0; // mid
 		MovingPlatform m1 = new MovingPlatform(id);
 		m1.setPlatformColor(0, 255, 0);
 		m1.setPlatformVelocity(1, 0);
@@ -65,7 +65,7 @@ public class Server extends PApplet {
 
 		clientListener.mpList.add(m1);
 
-		id = r.nextInt(1000) + 1500; // bottom
+		id = 1; // bottom
 		MovingPlatform m2 = new MovingPlatform(id);
 		m2.setPlatformColor(0, 255, 0);
 		m2.setPlatformVelocity(1, 0);
@@ -97,10 +97,9 @@ public class Server extends PApplet {
 
 	public void draw() {
 		if(Timeline.getInstance().rightTime()){
-			for (MovingPlatform t : scl.mpList) { // maintain the position of the
-				// moving platform and send
-				// updated loc info to new
-				// clients
+
+			for (MovingPlatform t : scl.mpList) {
+
 				rect(t.R.x += t.motionComponent.vx, t.R.y += t.motionComponent.vy, t.R.width, t.R.height);
 				t.motionComponent.update();
 			}
