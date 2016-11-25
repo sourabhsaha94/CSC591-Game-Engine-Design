@@ -123,5 +123,10 @@ public class Client extends PApplet {
 				this.sender.sendMessage(eventMessage);
 			}
 		}
+		else if(key == 'j'){//jump higher
+			eventMessage.putValues(9100, 102, 0);
+			eventMessage.messagePriority=MessagePriority.EVENT;
+			this.sender.sendMessage(eventMessage);
+		}
 	}
 }

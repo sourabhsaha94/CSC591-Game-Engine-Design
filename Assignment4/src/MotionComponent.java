@@ -11,7 +11,7 @@ public class MotionComponent implements Serializable{
 	private static final long serialVersionUID = 1L;
 	Thing t;
 	int vx,vy;
-	
+	int border=800;
 	public MotionComponent(Thing t){
 		vx=0;
 		vy=0;
@@ -33,8 +33,6 @@ public class MotionComponent implements Serializable{
 	
 	public void setVx(int vx){
 		this.vx=vx;
-		
-		
 	}
 	
 	public void setVy(int vy){
@@ -42,9 +40,10 @@ public class MotionComponent implements Serializable{
 		
 	}
 	
-	public void update(){
-		if(t.R.getMaxX()==800 || t.R.x==0){
+	/*public void update(){
+		if(t.R.getMaxX()==border || t.R.x==0){
 			vx=-vx;
+			t.direction = -t.direction;
 		}
-	}
+	}*/
 }

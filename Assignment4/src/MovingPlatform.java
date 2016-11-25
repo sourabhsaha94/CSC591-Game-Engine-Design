@@ -15,6 +15,14 @@ public class MovingPlatform extends Thing{
 	public void setPlatformVelocity(int vx,int vy){
 		this.motionComponent.setVelocity(vx, vy);
 	}
+	
+	public int getXVelocity(){
+		return this.motionComponent.vx;
+	}
+	
+	public int getYVelocity(){
+		return this.motionComponent.vy;
+	}
 
 	/**
 	 * 

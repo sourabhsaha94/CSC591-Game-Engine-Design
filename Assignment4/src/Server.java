@@ -19,6 +19,8 @@ public class Server extends PApplet {
 	}
 
 	public void setup() {
+	
+		ScriptManager.loadScript("platform.js");
 		ServerSocket serverSocket = null;
 
 		try {
@@ -71,6 +73,9 @@ public class Server extends PApplet {
 		m2.setPlatformVelocity(1, 0);
 		m2.R = new Rectangle(150, 700, 300, 20);
 
+		//ScriptManager.bindArgument("game_object", m2);
+		
+		
 		clientListener.mpList.add(m2);
 
 		DeathZone downDZ = new DeathZone(1);
@@ -100,7 +105,10 @@ public class Server extends PApplet {
 		for (MovingPlatform t : scl.mpList) {
 
 			rect(t.R.x += t.motionComponent.vx, t.R.y += t.motionComponent.vy, t.R.width, t.R.height);
-			t.motionComponent.update();
+			ScriptManager.loadScript("platform.js");
+			ScriptManager.bindArgument("rectangle", t.R);
+			ScriptManager.bindArgument("velocity", t.motionComponent);
+			ScriptManager.executeScript();	//event updates
 		}
 		for(Player player:scl.allPlayerList){
 			player.move();

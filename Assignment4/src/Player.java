@@ -86,13 +86,9 @@ public class Player extends Thing implements EventHandler{
 				}
 
 				if(this.R.y>e.m.R.y && this.motionComponent.getVy()<0){	//going up.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 				else if((this.R.y<e.m.R.getMaxY() && this.R.x<e.m.R.x) && this.motionComponent.getVy()>0){	//going down.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 
@@ -118,7 +114,6 @@ public class Player extends Thing implements EventHandler{
 				this.move();
 				break;
 			case -1:
-
 				this.motionComponent.vx=-5;
 				this.move();
 				this.motionComponent.vx=0;
@@ -127,6 +122,11 @@ public class Player extends Thing implements EventHandler{
 			case 101:
 				this.jumpComponent.jump_flag=true;
 				this.move();
+				break;
+			case 102:
+				//ScriptManager.loadScript("increaseheight.js");
+				//ScriptManager.bindArgument("jump_object", this.jumpComponent);
+				//ScriptManager.executeScript();
 				break;
 			default:
 				break;
