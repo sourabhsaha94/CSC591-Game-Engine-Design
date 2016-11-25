@@ -40,10 +40,12 @@ public class MotionComponent implements Serializable{
 		
 	}
 	
-	public void update(){
-		if(t.R.getMaxX()==border || t.R.x==0){
-			vx=-vx;
-			t.direction = -t.direction;
+	public void update(int direction){
+		if(direction==1){
+			this.vx = 2;
+		}
+		else{
+			this.vx = -2;
 		}
 	}
 }

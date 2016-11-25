@@ -53,23 +53,17 @@ public class Player extends Thing implements EventHandler{
 			case 1:
 				
 				if(this.motionComponent.getVy()>0){	//coming down
-					this.fireComponent.jump_flag=false;
+					this.fireComponent.fire_flag=false;
 					this.collisionComponent.direction = 2;
 				}
 				else if(this.motionComponent.getVy()<0){	//going up
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 
 				if(this.R.y>e.s.R.y && this.motionComponent.getVy()<0){	//going up.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 				if((this.R.y<e.s.R.getMaxY() && this.R.x<e.s.R.x) && this.motionComponent.getVy()>0){	//going down.. hit on side
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 
@@ -77,11 +71,9 @@ public class Player extends Thing implements EventHandler{
 			case 2:
 
 				if(this.motionComponent.getVy()>0){	//coming down
-					this.collisionComponent.direction = 2;
+					this.collisionComponent.direction=2;
 				}
 				else if(this.motionComponent.getVy()<0){	//going up
-					//e.p.Spawn();
-					//e.p.jumpComponent.jump_flag=false;
 					this.collisionComponent.direction=0;
 				}
 
@@ -96,7 +88,7 @@ public class Player extends Thing implements EventHandler{
 			}
 			break;
 		case DEATH:
-			this.fireComponent.jump_flag=false;
+			this.fireComponent.fire_flag=false;
 			this.collided=false;
 			ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
 			break;
@@ -120,7 +112,7 @@ public class Player extends Thing implements EventHandler{
 				this.move();
 				break;
 			case 101:
-				this.fireComponent.jump_flag=true;
+				this.fireComponent.fire_flag=true;
 				this.move();
 				break;
 			case 102:

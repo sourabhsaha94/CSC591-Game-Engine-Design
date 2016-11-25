@@ -17,6 +17,8 @@ public class Client extends PApplet {
 
 	Message eventMessage = new Message(9100);
 
+	int direction=1;
+	
 	ClientOut sender;
 	ClientIn recieve;
 	int distance_from_ground;
@@ -92,13 +94,22 @@ public class Client extends PApplet {
 			player.collisionComponent.update(800,800);
 
 
-			if(player.fireComponent.jump_flag){	
+			if(player.fireComponent.fire_flag){	
 				player.fireComponent.fire();
 			}
 			for(Enemy t:enemyList){
 				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 				rect(t.R.x+=t.motionComponent.vx,t.R.y,t.R.width,t.R.height);
-				t.motionComponent.update();
+				System.out.println("direction "+direction+ "t.R.getMaxX()"+ t.R.getMaxX());
+				if(direction==1 && t.R.getMaxX()>=800){
+					direction = -1;
+					System.out.println("direction changed -1");
+				}
+				else if(direction==-1 && t.R.x<=0){
+					direction = 1;
+					System.out.println("direction changed 1");
+				}
+				t.motionComponent.update(direction);
 			}
 		}
 	}
