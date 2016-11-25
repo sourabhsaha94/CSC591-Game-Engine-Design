@@ -29,14 +29,12 @@ public class ClientIn implements Runnable {
 					c.sPlatformList.clear();
 					c.mPlatformList.clear();
 					c.player = m.player;
+					ClientEventManager.getInstance().registerEvent(c.player);
 					c.sPlatformList.addAll(m.spList);
 					c.mPlatformList.addAll(m.mpList);
 					System.out.println("got 9090");
 					break;
 				case 9000:
-					c.mPlatformList.clear();
-					c.player = m.player;
-					c.mPlatformList.addAll(m.mpList);
 					break;
 				default:
 					//do nothing

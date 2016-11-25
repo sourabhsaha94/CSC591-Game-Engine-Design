@@ -19,7 +19,7 @@ public class Client extends PApplet {
 
 	ClientOut sender;
 	ClientIn recieve;
-
+	int distance_from_ground;
 	//CopyOnWriteArrayList<Player> playerList= new CopyOnWriteArrayList<>();
 	Player player;
 	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();	//clients copy of platforms and players
@@ -55,7 +55,7 @@ public class Client extends PApplet {
 		Thread t_eventManager = new Thread(ClientEventManager.getInstance());
 		t_eventManager.setDaemon(true);
 		t_eventManager.start();
-		
+
 		Thread timeline = new Thread(ReplayTimeline.getInstance());
 		timeline.start();
 
@@ -80,12 +80,23 @@ public class Client extends PApplet {
 	}
 
 	public void draw() {
-	
-			clear();
-			if(player!=null){
+
+		clear();
+		if(player!=null){
+
 			fill(player.colorComponent.getR(), player.colorComponent.getG(), player.colorComponent.getB());
 			rect(player.R.x, player.R.y, player.R.width, player.R.height);
 			
+			player.move();
+
+			distance_from_ground = (int) (800 - player.R.getMaxY());
+
+			player.collisionComponent.update(distance_from_ground,800,800);
+
+
+			if(player.jumpComponent.jump_flag){	
+				player.jumpComponent.jump();
+			}
 			for(StaticPlatform t:sPlatformList){		
 				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 				rect(t.R.x,t.R.y,t.R.width,t.R.height);
@@ -93,9 +104,10 @@ public class Client extends PApplet {
 
 			for(MovingPlatform t:mPlatformList){
 				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-				rect(t.R.x,t.R.y,t.R.width,t.R.height);
+				rect(t.R.x+=t.motionComponent.vx,t.R.y,t.R.width,t.R.height);
+				t.motionComponent.update();
 			}
-			}
+		}
 	}
 
 	public static void main(String argv[]) {
@@ -106,25 +118,17 @@ public class Client extends PApplet {
 		if (key == CODED) {
 
 			if (keyCode == RIGHT) {	//move right
-				eventMessage.putValues(9100, 1, 0);
-				eventMessage.messagePriority=MessagePriority.EVENT;
-				this.sender.sendMessage(eventMessage);
+				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,1));
 
 			} else if (keyCode == LEFT) {	//move left
-				eventMessage.putValues(9100, -1, 0);
-				eventMessage.messagePriority=MessagePriority.EVENT;
-				this.sender.sendMessage(eventMessage);		
+				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,-1));
 			}
 			else if (keyCode == UP) {	//jump
-				eventMessage.putValues(9100, 101, 0);
-				eventMessage.messagePriority=MessagePriority.EVENT;
-				this.sender.sendMessage(eventMessage);
+				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,101));
 			}
 		}
-		else if(key == 'j'){//jump higher
-			eventMessage.putValues(9100, 102, 0);
-			eventMessage.messagePriority=MessagePriority.EVENT;
-			this.sender.sendMessage(eventMessage);
+		else if(key == 'c'){//color change
+			ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,102));
 		}
 	}
 }

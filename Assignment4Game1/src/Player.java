@@ -98,7 +98,7 @@ public class Player extends Thing implements EventHandler{
 		case DEATH:
 			this.jumpComponent.jump_flag=false;
 			this.collided=false;
-			EventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
+			ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
 			break;
 		case HID:
 
@@ -124,9 +124,9 @@ public class Player extends Thing implements EventHandler{
 				this.move();
 				break;
 			case 102:
-				//ScriptManager.loadScript("increaseheight.js");
-				//ScriptManager.bindArgument("jump_object", this.jumpComponent);
-				//ScriptManager.executeScript();
+				ScriptManager.loadScript("changecolor.js");
+				ScriptManager.bindArgument("color_object", this.colorComponent);
+				ScriptManager.executeScript();
 				break;
 			default:
 				break;

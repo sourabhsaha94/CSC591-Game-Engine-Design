@@ -55,25 +55,17 @@ public class ClientOut implements Runnable {
 						player_info_message.messagePriority = MessagePriority.HIGH;
 						out.writeObject(player_info_message);
 						out.reset();
-					} else {
-						Message m = getNextMessagefromQueue();
-						if(m!=null){
-							sendMessageToServer(m);
-						}
-						else
-							sendMessageToServer(message);
-					}
-			
+					} 
 			}
 
 		} catch (IOException ioe) {
 
 			// Communication is broken
 
-		} catch (InterruptedException e) {
+		} /*catch (InterruptedException e) {
 
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 }

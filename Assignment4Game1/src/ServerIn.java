@@ -53,7 +53,6 @@ public class ServerIn implements Runnable {
 					p.addSpawnPoint(s);
 					p.collisionComponent.addPlatforms(clientListener.spList, clientListener.mpList);
 					p.collisionComponent.dzones.addAll(clientListener.dzList);
-					EventManager.getInstance().registerEvent(p);
 					clientListener.player = p;
 					m.spList.clear();
 					m.mpList.clear();
@@ -63,16 +62,11 @@ public class ServerIn implements Runnable {
 					clientListener.sendMessage(c, m);
 					break;
 				case 9000:
-					m.player = clientListener.player;
-					m.mpList.addAll(clientListener.mpList);
-					clientListener.sendMessage(c, m);
 					break;
 				case 9100:
 					EventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), clientListener.player,m.x));
-					//System.out.println("HID: "+Timeline.getInstance().getTime());
 					break;
 				default:
-					//do nothing
 					break;
 				}
 				/*
