@@ -9,7 +9,7 @@ public class Player extends Thing implements EventHandler{
 		super(id);
 		this.collisionComponent = new CollisionComponent(this);
 		this.colorComponent = new ColorComponent(0,0,0);
-		this.jumpComponent = new JumpComponent(this);
+		this.fireComponent = new fireComponent(this);
 		this.motionComponent = new MotionComponent(this);
 		this.collided=false;
 	}
@@ -53,7 +53,7 @@ public class Player extends Thing implements EventHandler{
 			case 1:
 				
 				if(this.motionComponent.getVy()>0){	//coming down
-					this.jumpComponent.jump_flag=false;
+					this.fireComponent.jump_flag=false;
 					this.collisionComponent.direction = 2;
 				}
 				else if(this.motionComponent.getVy()<0){	//going up
@@ -96,7 +96,7 @@ public class Player extends Thing implements EventHandler{
 			}
 			break;
 		case DEATH:
-			this.jumpComponent.jump_flag=false;
+			this.fireComponent.jump_flag=false;
 			this.collided=false;
 			ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
 			break;
@@ -120,7 +120,7 @@ public class Player extends Thing implements EventHandler{
 				this.move();
 				break;
 			case 101:
-				this.jumpComponent.jump_flag=true;
+				this.fireComponent.jump_flag=true;
 				this.move();
 				break;
 			case 102:

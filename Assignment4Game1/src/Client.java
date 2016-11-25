@@ -20,10 +20,8 @@ public class Client extends PApplet {
 	ClientOut sender;
 	ClientIn recieve;
 	int distance_from_ground;
-	//CopyOnWriteArrayList<Player> playerList= new CopyOnWriteArrayList<>();
 	Player player;
-	CopyOnWriteArrayList<StaticPlatform> sPlatformList = new CopyOnWriteArrayList<>();	//clients copy of platforms and players
-	CopyOnWriteArrayList<MovingPlatform> mPlatformList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<Enemy> enemyList = new CopyOnWriteArrayList<>();
 
 	public void settings() {
 		size(800, 800);
@@ -91,18 +89,13 @@ public class Client extends PApplet {
 
 			distance_from_ground = (int) (800 - player.R.getMaxY());
 
-			player.collisionComponent.update(distance_from_ground,800,800);
+			player.collisionComponent.update(800,800);
 
 
-			if(player.jumpComponent.jump_flag){	
-				player.jumpComponent.jump();
+			if(player.fireComponent.jump_flag){	
+				player.fireComponent.fire();
 			}
-			for(StaticPlatform t:sPlatformList){		
-				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-				rect(t.R.x,t.R.y,t.R.width,t.R.height);
-			}
-
-			for(MovingPlatform t:mPlatformList){
+			for(Enemy t:enemyList){
 				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 				rect(t.R.x+=t.motionComponent.vx,t.R.y,t.R.width,t.R.height);
 				t.motionComponent.update();

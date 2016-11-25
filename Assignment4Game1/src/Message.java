@@ -18,8 +18,7 @@ public class Message implements Serializable {
 	int b=0;
 	MessagePriority messagePriority = MessagePriority.LOW;
 	Player player;
-	ArrayList<StaticPlatform> spList=new ArrayList<>();
-	ArrayList<MovingPlatform> mpList=new ArrayList<>();
+	ArrayList<Enemy> mpList=new ArrayList<>();
 		
 	Message(int id,int x,int y,int r,int g,int b){
 		this.id = id;

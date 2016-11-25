@@ -1,8 +1,8 @@
 
 
-public class StaticPlatform extends Thing{
+public class Bullet extends Thing{
 
-	public StaticPlatform(int id) {
+	public Bullet(int id) {
 		super(id);
 		this.collisionComponent = new CollisionComponent(null);
 		this.colorComponent = new ColorComponent(0,0,0);

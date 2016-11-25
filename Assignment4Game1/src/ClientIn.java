@@ -17,8 +17,7 @@ public class ClientIn implements Runnable {
 	public void run() {
 
 		Message m;
-		String msg;
-
+		
 		while (!Thread.interrupted()) {
 
 			try {
@@ -26,12 +25,10 @@ public class ClientIn implements Runnable {
 
 				switch(m.id){
 				case 9090:
-					c.sPlatformList.clear();
-					c.mPlatformList.clear();
+					c.enemyList.clear();
 					c.player = m.player;
 					ClientEventManager.getInstance().registerEvent(c.player);
-					c.sPlatformList.addAll(m.spList);
-					c.mPlatformList.addAll(m.mpList);
+					c.enemyList.addAll(m.mpList);
 					System.out.println("got 9090");
 					break;
 				case 9000:

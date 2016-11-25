@@ -1,8 +1,8 @@
 
 
-public class MovingPlatform extends Thing{
+public class Enemy extends Thing{
 
-	public MovingPlatform(int id) {
+	public Enemy(int id) {
 		super(id);
 		this.colorComponent = new ColorComponent(0,0,0);
 		this.motionComponent = new MotionComponent(this);

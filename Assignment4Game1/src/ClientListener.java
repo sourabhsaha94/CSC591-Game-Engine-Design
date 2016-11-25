@@ -21,9 +21,7 @@ public class ClientListener implements Runnable {
 	ClientInfo c;
 	Player player;
 	Set<Integer> tempSet = null;
-	CopyOnWriteArrayList<StaticPlatform> spList = new CopyOnWriteArrayList<>();
-	CopyOnWriteArrayList<MovingPlatform> mpList = new CopyOnWriteArrayList<>();
-	CopyOnWriteArrayList<DeathZone> dzList = new CopyOnWriteArrayList<>();
+	CopyOnWriteArrayList<Enemy> mpList = new CopyOnWriteArrayList<>();
 	ConcurrentHashMap<Integer,Set<Integer>> pInfo = new ConcurrentHashMap<>();
 
 	public synchronized void addClient(ClientInfo c){

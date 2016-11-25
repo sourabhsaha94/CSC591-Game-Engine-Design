@@ -41,8 +41,6 @@ public class ServerIn implements Runnable {
 					break;
 				}
 
-				//clientListener.pInfo.put(c, m);
-
 				switch(m.id){
 				case 9090:
 					Player p = new Player(c.id);
@@ -51,13 +49,10 @@ public class ServerIn implements Runnable {
 					SpawnPoint s = new SpawnPoint(1);
 					s.setSpawnPoint(500, 10);
 					p.addSpawnPoint(s);
-					p.collisionComponent.addPlatforms(clientListener.spList, clientListener.mpList);
-					p.collisionComponent.dzones.addAll(clientListener.dzList);
+					p.collisionComponent.addPlatforms(clientListener.mpList);
 					clientListener.player = p;
-					m.spList.clear();
 					m.mpList.clear();
 					m.player = p;
-					m.spList.addAll(clientListener.spList);
 					m.mpList.addAll(clientListener.mpList);
 					clientListener.sendMessage(c, m);
 					break;
@@ -69,13 +64,6 @@ public class ServerIn implements Runnable {
 				default:
 					break;
 				}
-				/*
-				if(m.x==999){
-					c.id=m.id;
-					clientListener.allPlayerList.add(m.id);	//add player id to main list
-				}
-				else
-				clientListener.sendMessage(c, m);*/
 		}
 
 		Thread.currentThread().interrupt();

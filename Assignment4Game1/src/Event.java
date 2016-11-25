@@ -7,8 +7,8 @@ public abstract class Event implements Serializable {
 	private static final long serialVersionUID = 8698764155288795074L;
 	
 	Player p;
-	StaticPlatform s;
-	MovingPlatform m;
+	Bullet s;
+	Enemy m;
 	DeathZone d;	
 	int id;
 	long timestamp=0;

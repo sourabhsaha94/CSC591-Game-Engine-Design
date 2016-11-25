@@ -14,7 +14,7 @@ public abstract class Thing implements Serializable {	//class encapsulating a ga
 	int direction;
 	protected CollisionComponent collisionComponent;
 	protected MotionComponent motionComponent;
-	protected JumpComponent jumpComponent;
+	protected fireComponent fireComponent;
 	protected ColorComponent colorComponent;
 	
 	public Thing(int id){
@@ -22,7 +22,7 @@ public abstract class Thing implements Serializable {	//class encapsulating a ga
 		this.direction = 1;
 		collisionComponent = null;
 		motionComponent = null;
-		jumpComponent = null;
+		fireComponent = null;
 		colorComponent = null;
 	}
 }
