@@ -18,11 +18,12 @@ public class Client extends PApplet {
 	Message eventMessage = new Message(9100);
 
 	int direction=1;
-	
+
 	ClientOut sender;
 	ClientIn recieve;
-	int distance_from_ground;
+	int down_speed=1;
 	Player player;
+	CopyOnWriteArrayList<Bullet> bulletList = new CopyOnWriteArrayList<>();
 	CopyOnWriteArrayList<Enemy> enemyList = new CopyOnWriteArrayList<>();
 
 	public void settings() {
@@ -56,7 +57,7 @@ public class Client extends PApplet {
 		t_eventManager.setDaemon(true);
 		t_eventManager.start();
 
-		Thread timeline = new Thread(ReplayTimeline.getInstance());
+		Thread timeline = new Thread(ClientTimeline.getInstance());
 		timeline.start();
 
 		this.sender = new ClientOut(out); // start
@@ -84,30 +85,80 @@ public class Client extends PApplet {
 		clear();
 		if(player!=null){
 
+			textSize(32);
+			text("Score", 10, 30);
+			textSize(32);
+			text(String.valueOf(player.score), 10, 60);
+			
+			textSize(32);
+			text("Bullets", 700, 30);
+			textSize(32);
+			text(String.valueOf(player.num_bullets), 700, 60);
+			
+			
 			fill(player.colorComponent.getR(), player.colorComponent.getG(), player.colorComponent.getB());
 			rect(player.R.x, player.R.y, player.R.width, player.R.height);
 			
 			player.move();
 
-			distance_from_ground = (int) (800 - player.R.getMaxY());
+			player.collisionComponent.update();
 
-			player.collisionComponent.update(800,800);
+			
 
-
-			if(player.fireComponent.fire_flag){	
-				player.fireComponent.fire();
+			if(player.fireComponent.fire_flag){
+				fill(player.bullet.colorComponent.getR(), player.bullet.colorComponent.getG(), player.bullet.colorComponent.getB());
+				rect(player.bullet.R.x, player.bullet.R.y, player.bullet.R.width, player.bullet.R.height);
+				player.fireComponent.fire(player.bullet);
 			}
-			for(Enemy t:enemyList){
+			
+			if(ClientTimeline.getInstance().rightTimeMillis() && !player.collided){
+				ScriptManager.loadScript("platform.js");
+				for(Enemy t:player.collisionComponent.mPlatformList){
+					ScriptManager.bindArgument("enemy", t.R);
+					ScriptManager.executeScript();
+				}
+			}
+			else{
+				for(Enemy t:player.collisionComponent.mPlatformList){
+					t.motionComponent.vy=0;
+				}
+			}
+			
+			if(player.collisionComponent.mPlatformList.size()==0){
+				fill(0, 255, 0);
+				System.out.println("Exit");
+				textSize(32);
+				text("YOU WON!!", 350, 400);
+				
+
+			}
+			
+			if(player.collided){
+				fill(0, 255, 0);
+				System.out.println("Exit");
+				textSize(32);
+				text("GAME OVER", 350, 60);
+				
+			}
+			else{
+				fill(0, 255, 0);
+				textSize(20);
+				text("HIT:+5 MISS:-1", 300, 30);
+				fill(0, 255, 0);
+				textSize(20);
+				text("MOVE:RIGHT/LEFT ARROW FIRE:UP ARROW", 200, 60);
+				
+			}
+			
+			if(!player.collided)
+			for(Enemy t:player.collisionComponent.mPlatformList){
 				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
 				rect(t.R.x+=t.motionComponent.vx,t.R.y,t.R.width,t.R.height);
-				System.out.println("direction "+direction+ "t.R.getMaxX()"+ t.R.getMaxX());
 				if(direction==1 && t.R.getMaxX()>=800){
 					direction = -1;
-					System.out.println("direction changed -1");
 				}
 				else if(direction==-1 && t.R.x<=0){
 					direction = 1;
-					System.out.println("direction changed 1");
 				}
 				t.motionComponent.update(direction);
 			}
@@ -128,7 +179,8 @@ public class Client extends PApplet {
 				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,-1));
 			}
 			else if (keyCode == UP) {	//jump
-				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,101));
+				if(!player.fireComponent.fire_flag)
+					ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,101));
 			}
 		}
 		else if(key == 'c'){//color change

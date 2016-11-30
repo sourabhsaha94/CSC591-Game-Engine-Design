@@ -4,6 +4,7 @@ public class CollisionEvent extends Event{
 
 	private static final long serialVersionUID = -5375591426960984485L;
 	
+		
 	CollisionEvent(long time,Player p,Bullet s) {
 		super(1);
 		this.type = EventType.COLLISION;

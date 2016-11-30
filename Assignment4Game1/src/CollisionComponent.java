@@ -33,9 +33,22 @@ public class CollisionComponent implements Serializable{
 		this.mPlatformList = mpList;
 	}
 
-	public void update(int displayx,int displayy){
-
-
-		
+	public void update(Bullet bullet){
+		for(Enemy e:mPlatformList){
+			if(bullet.R.intersects(e.R)){
+				System.out.println("hit enemy "+ e.id);
+				ClientEventManager.getInstance().addEvent(new CollisionEvent(ClientTimeline.getInstance().getTime(), bullet.p, e));
+				break;
+			}
+		}
+	}
+	
+	public void update(){
+		for(Enemy e:mPlatformList){
+			if(player.R.intersects(e.R)){
+				ClientEventManager.getInstance().addEvent(new DeathEvent(ClientTimeline.getInstance().getTime(),player));
+				break;
+			}
+		}
 	}
 }

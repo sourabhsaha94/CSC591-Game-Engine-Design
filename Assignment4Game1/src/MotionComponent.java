@@ -41,6 +41,7 @@ public class MotionComponent implements Serializable{
 	}
 	
 	public void update(int direction){
+	
 		if(direction==1){
 			this.vx = 2;
 		}

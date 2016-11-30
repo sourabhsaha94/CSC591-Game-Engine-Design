@@ -25,11 +25,7 @@ public class ClientEventManager implements Runnable{
 		eventList.put(EventType.HID, new ArrayList<>());
 		eventList.put(EventType.SPAWN, new ArrayList<>());
 		eventList.put(EventType.DEATH, new ArrayList<>());
-		eventList.put(EventType.RECORD_START_STOP, new ArrayList<>());
-		eventList.put(EventType.PLAYBACK, new ArrayList<>());
-		eventList.put(EventType.SLOW, new ArrayList<>());
-		eventList.put(EventType.FAST, new ArrayList<>());
-		eventList.put(EventType.NORMAL, new ArrayList<>());
+		
 	}
 
 	public void registerEvent(EventHandler eh){
@@ -37,11 +33,7 @@ public class ClientEventManager implements Runnable{
 		eventList.get(EventType.HID).add(eh);
 		eventList.get(EventType.SPAWN).add(eh);
 		eventList.get(EventType.DEATH).add(eh);
-		eventList.get(EventType.RECORD_START_STOP).add(eh);
-		eventList.get(EventType.PLAYBACK).add(eh);
-		eventList.get(EventType.SLOW).add(eh);
-		eventList.get(EventType.FAST).add(eh);
-		eventList.get(EventType.NORMAL).add(eh);
+		
 		
 	}
 	

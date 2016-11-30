@@ -21,6 +21,12 @@ public class SpawnPoint extends Thing{
 		player.collided=false;
 	}
 	
+	public void reset(Bullet bullet){
+		bullet.R.x = this.R.x;
+		bullet.R.y = this.R.y;
+		bullet.setBulletVelocity(0, -2);
+	}
+	
 	public void setSpawnPoint(int x,int y){
 		this.R.x =x;
 		this.R.y =y;

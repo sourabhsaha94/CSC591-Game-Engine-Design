@@ -19,8 +19,15 @@ public class fireComponent implements Serializable{
 		jump_start = 0;
 	}
 	
-	public void fire(){
-		
+	public void fire(Bullet bullet){
+		if(bullet.R.y<=0){
+			bullet.p.score--;
+			this.fire_flag=false;
+		}
+		else{
+			bullet.move();
+		}
+		bullet.collisionComponent.update(bullet);
 	}
 	
 }

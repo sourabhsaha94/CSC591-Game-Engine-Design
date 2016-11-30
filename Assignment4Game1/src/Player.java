@@ -1,10 +1,12 @@
-
+import java.awt.Rectangle;
 
 public class Player extends Thing implements EventHandler{
 	
 	SpawnPoint s;
 	boolean collided = false;
 	
+	Bullet bullet;
+	int score=0,num_bullets=13;
 	public Player(int id) {
 		super(id);
 		this.collisionComponent = new CollisionComponent(this);
@@ -48,49 +50,15 @@ public class Player extends Thing implements EventHandler{
 	public void handleEvent(Event e) {
 		if(e.p.id==this.id)
 		switch(e.type){
-		case COLLISION:
-			switch(e.id){
-			case 1:
-				
-				if(this.motionComponent.getVy()>0){	//coming down
-					this.fireComponent.fire_flag=false;
-					this.collisionComponent.direction = 2;
-				}
-				else if(this.motionComponent.getVy()<0){	//going up
-					this.collisionComponent.direction=0;
-				}
-
-				if(this.R.y>e.s.R.y && this.motionComponent.getVy()<0){	//going up.. hit on side
-					this.collisionComponent.direction=0;
-				}
-				if((this.R.y<e.s.R.getMaxY() && this.R.x<e.s.R.x) && this.motionComponent.getVy()>0){	//going down.. hit on side
-					this.collisionComponent.direction=0;
-				}
-
-				break;
-			case 2:
-
-				if(this.motionComponent.getVy()>0){	//coming down
-					this.collisionComponent.direction=2;
-				}
-				else if(this.motionComponent.getVy()<0){	//going up
-					this.collisionComponent.direction=0;
-				}
-
-				if(this.R.y>e.m.R.y && this.motionComponent.getVy()<0){	//going up.. hit on side
-					this.collisionComponent.direction=0;
-				}
-				else if((this.R.y<e.m.R.getMaxY() && this.R.x<e.m.R.x) && this.motionComponent.getVy()>0){	//going down.. hit on side
-					this.collisionComponent.direction=0;
-				}
-
-				break;
-			}
-			break;
-		case DEATH:
+			case COLLISION:
+			e.p.collisionComponent.mPlatformList.remove(e.m);
+			score+=5;
 			this.fireComponent.fire_flag=false;
-			this.collided=false;
-			ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
+			break;	
+			case DEATH:
+			this.fireComponent.fire_flag=false;
+			this.collided=true;
+			//ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
 			break;
 		case HID:
 
@@ -111,9 +79,22 @@ public class Player extends Thing implements EventHandler{
 				this.motionComponent.vx=0;
 				this.move();
 				break;
-			case 101:
+			case 101://fire
+				System.out.println("creating bullet");
+				Bullet bullet = new Bullet(0);
+				bullet.R = new Rectangle((int)this.R.getCenterX(), (int)this.R.getCenterY(), 10, 10);
+				bullet.setBulletColor(125, 125, 125);
+				bullet.setBulletVelocity(0, -5);
+				bullet.collisionComponent.mPlatformList.addAll(this.collisionComponent.mPlatformList);
+				bullet.move();
+				bullet.p = this;
+				this.bullet = bullet;
 				this.fireComponent.fire_flag=true;
-				this.move();
+				this.fireComponent.fire(this.bullet);
+				num_bullets--;
+				if(num_bullets<0){
+					ClientEventManager.getInstance().addEvent(new DeathEvent(Timeline.getInstance().getTime(), this));
+				}
 				break;
 			case 102:
 				ScriptManager.loadScript("changecolor.js");
