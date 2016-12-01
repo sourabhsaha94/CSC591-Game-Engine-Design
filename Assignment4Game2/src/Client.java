@@ -4,6 +4,7 @@
 
 
 
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,9 +22,8 @@ public class Client extends PApplet {
 
 	ClientOut sender;
 	ClientIn recieve;
-	int down_speed=1;
 	Player player;
-	CopyOnWriteArrayList<Bullet> bulletList = new CopyOnWriteArrayList<>();
+	Bullet bullet;
 	CopyOnWriteArrayList<Enemy> enemyList = new CopyOnWriteArrayList<>();
 
 	public void settings() {
@@ -35,6 +35,15 @@ public class Client extends PApplet {
 		ObjectInputStream in = null;
 		ObjectOutputStream out = null;
 
+		bullet = new Bullet(1);
+		bullet.R = new Rectangle(350,350,20,20);
+		bullet.setBulletColor(255, 255, 255);
+		bullet.setBulletVelocity(2, 6);
+		bullet.collisionComponent.cSPlatform = bullet;
+		
+		bullet.addSpawnPoint(new SpawnPoint(1));
+		bullet.s.setSpawnPoint(300, 300);
+		
 		Socket socket = null;
 		try {
 			socket = new Socket("localhost", 9000);
@@ -84,83 +93,44 @@ public class Client extends PApplet {
 
 		clear();
 		if(player!=null){
+			
+			if(bullet.ai_score<30 && bullet.player_score<30){
 
 			textSize(32);
-			text("Score", 10, 30);
+			text("Score", 350, 40);
 			textSize(32);
-			text(String.valueOf(player.score), 10, 60);
-			
+			text(String.valueOf(bullet.player_score), 250, 40);
 			textSize(32);
-			text("Bullets", 700, 30);
-			textSize(32);
-			text(String.valueOf(player.num_bullets), 700, 60);
-			
+			text(String.valueOf(bullet.ai_score), 550, 40);
 			
 			fill(player.colorComponent.getR(), player.colorComponent.getG(), player.colorComponent.getB());
 			rect(player.R.x, player.R.y, player.R.width, player.R.height);
 			
 			player.move();
 
-			player.collisionComponent.update();
-
+			fill(bullet.colorComponent.getR(), bullet.colorComponent.getG(), bullet.colorComponent.getB());
+			rect(bullet.R.x, bullet.R.y, bullet.R.width, bullet.R.height);
 			
-
-			if(player.fireComponent.fire_flag){
-				fill(player.bullet.colorComponent.getR(), player.bullet.colorComponent.getG(), player.bullet.colorComponent.getB());
-				rect(player.bullet.R.x, player.bullet.R.y, player.bullet.R.width, player.bullet.R.height);
-				player.fireComponent.fire(player.bullet);
-			}
+			bullet.move();
 			
-			if(ClientTimeline.getInstance().rightTimeMillis() && !player.collided){
-				ScriptManager.loadScript("platform.js");
-				for(Enemy t:player.collisionComponent.mPlatformList){
-					ScriptManager.bindArgument("enemy", t.R);
-					ScriptManager.executeScript();
-				}
+			bullet.collisionComponent.update();
+
+			fill(this.enemyList.get(0).colorComponent.getR(), this.enemyList.get(0).colorComponent.getG(), this.enemyList.get(0).colorComponent.getB());
+			rect(this.enemyList.get(0).R.x, this.enemyList.get(0).R.y, this.enemyList.get(0).R.width, this.enemyList.get(0).R.height);
+			
+			this.enemyList.get(0).move(bullet);
+
 			}
 			else{
-				for(Enemy t:player.collisionComponent.mPlatformList){
-					t.motionComponent.vy=0;
-				}
-			}
-			
-			if(player.collisionComponent.mPlatformList.size()==0){
-				fill(0, 255, 0);
-				System.out.println("Exit");
 				textSize(32);
-				text("YOU WON!!", 350, 400);
-				
-
-			}
-			
-			if(player.collided){
-				fill(0, 255, 0);
-				System.out.println("Exit");
+				text("Score", 350, 40);
 				textSize(32);
-				text("GAME OVER", 350, 60);
-				
-			}
-			else{
-				fill(0, 255, 0);
-				textSize(20);
-				text("HIT:+5 MISS:-1", 300, 30);
-				fill(0, 255, 0);
-				textSize(20);
-				text("MOVE:RIGHT/LEFT ARROW FIRE:UP ARROW", 200, 60);
-				
-			}
-			
-			if(!player.collided)
-			for(Enemy t:player.collisionComponent.mPlatformList){
-				fill(t.colorComponent.getR(),t.colorComponent.getG(),t.colorComponent.getB());
-				rect(t.R.x+=t.motionComponent.vx,t.R.y,t.R.width,t.R.height);
-				if(direction==1 && t.R.getMaxX()>=800){
-					direction = -1;
-				}
-				else if(direction==-1 && t.R.x<=0){
-					direction = 1;
-				}
-				t.motionComponent.update(direction);
+				text(String.valueOf(bullet.player_score), 250, 40);
+				textSize(32);
+				text(String.valueOf(bullet.ai_score), 550, 40);
+				textSize(50);
+				text("Game Over", 320, 340);
+				fill(player.colorComponent.getR(), player.colorComponent.getG(), player.colorComponent.getB());
 			}
 		}
 	}
@@ -172,15 +142,11 @@ public class Client extends PApplet {
 	public void keyPressed(){
 		if (key == CODED) {
 
-			if (keyCode == RIGHT) {	//move right
+			if (keyCode == UP) {	//move up
 				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,1));
 
-			} else if (keyCode == LEFT) {	//move left
+			} else if (keyCode == DOWN) {	//move down
 				ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,-1));
-			}
-			else if (keyCode == UP) {	//jump
-				if(!player.fireComponent.fire_flag)
-					ClientEventManager.getInstance().addEvent(new HIDEvent(Timeline.getInstance().getTime(), player,101));
 			}
 		}
 		else if(key == 'c'){//color change

@@ -44,19 +44,12 @@ public class Server extends PApplet {
 		int id;
 		/************************************************ world_init *****************************************/
 
-		for(int i=0;i<5;i++){
-			Enemy m1 = new Enemy(i);
-			m1.setPlatformColor(0, 255, 0);
-			m1.setPlatformVelocity(1, 0);
-			m1.R = new Rectangle(i*100, 200, 50, 50);
-			clientListener.mpList.add(m1);
-			Enemy m2 = new Enemy(i);
-			m2.setPlatformColor(0, 255, 0);
-			m2.setPlatformVelocity(1, 0);
-			m2.R = new Rectangle(i*100, 280, 50, 50);
-			clientListener.mpList.add(m2);
-
-		}
+		Enemy m1 = new Enemy(1);
+		m1.setPlatformColor(0, 255, 0);
+		m1.setPlatformVelocity(0, 2);
+		m1.R = new Rectangle(750, 100, 10, 150);
+		clientListener.mpList.add(m1);
+		
 		
 		ClientWorker clientWorker = new ClientWorker(serverSocket, clientListener); 
 

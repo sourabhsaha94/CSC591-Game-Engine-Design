@@ -108,7 +108,7 @@ public class Server extends PApplet {
 			ScriptManager.loadScript("platform.js");
 			ScriptManager.bindArgument("rectangle", t.R);
 			ScriptManager.bindArgument("velocity", t.motionComponent);
-			ScriptManager.executeScript();	//event updates
+			ScriptManager.executeScript();	
 		}
 		for(Player player:scl.allPlayerList){
 			player.move();

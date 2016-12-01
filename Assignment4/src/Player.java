@@ -124,9 +124,9 @@ public class Player extends Thing implements EventHandler{
 				this.move();
 				break;
 			case 102:
-				//ScriptManager.loadScript("increaseheight.js");
-				//ScriptManager.bindArgument("jump_object", this.jumpComponent);
-				//ScriptManager.executeScript();
+				ScriptManager.loadScript("increaseheight.js");
+				ScriptManager.bindArgument("jump_object", this.jumpComponent);
+				ScriptManager.executeScript();
 				break;
 			default:
 				break;

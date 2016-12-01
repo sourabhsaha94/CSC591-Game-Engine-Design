@@ -6,17 +6,24 @@ public class CollisionEvent extends Event{
 	
 		
 	CollisionEvent(long time,Player p,Bullet s) {
-		super(1);
+		super(997);
 		this.type = EventType.COLLISION;
 		this.timestamp = time;
 		this.p = p;
 		this.s = s;
 	}
 	CollisionEvent(long time,Player p,Enemy m) {
-		super(2);
+		super(998);
 		this.type = EventType.COLLISION;
 		this.timestamp = time;
 		this.p = p;
+		this.m = m;
+	}
+	CollisionEvent(long time,Bullet s,Enemy m) {
+		super(999);
+		this.type = EventType.COLLISION;
+		this.timestamp = time;
+		this.s = s;
 		this.m = m;
 	}
 	

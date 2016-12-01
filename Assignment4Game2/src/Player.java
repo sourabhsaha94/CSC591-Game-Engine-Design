@@ -1,12 +1,11 @@
-import java.awt.Rectangle;
-
 public class Player extends Thing implements EventHandler{
 	
 	SpawnPoint s;
 	boolean collided = false;
-	
+	int velocity;
 	Bullet bullet;
-	int score=0,num_bullets=13;
+	int score=0;
+	
 	public Player(int id) {
 		super(id);
 		this.collisionComponent = new CollisionComponent(this);
@@ -25,6 +24,7 @@ public class Player extends Thing implements EventHandler{
 	}
 	
 	public void move(){
+		
 		this.R.x+=this.motionComponent.vx;
 		this.R.y+=this.motionComponent.vy;
 		
@@ -48,58 +48,37 @@ public class Player extends Thing implements EventHandler{
 
 	@Override
 	public void handleEvent(Event e) {
-		if(e.p.id==this.id)
+		if(e.id == 4)
 		switch(e.type){
-			case COLLISION:
-			e.p.collisionComponent.mPlatformList.remove(e.m);
-			score+=5;
-			this.fireComponent.fire_flag=false;
+		case COLLISION:
 			break;	
-			case DEATH:
-			this.fireComponent.fire_flag=false;
-			this.collided=true;
-			//ClientEventManager.getInstance().addEvent(new SpawnEvent(Timeline.getInstance().getTime(), this));
+		case DEATH:
 			break;
 		case HID:
-
 			switch (e.x) {
 			case 0:
-				this.motionComponent.vx=0;
+				this.motionComponent.vy=0;
 				this.move();
 				break;
 			case 1:
-				this.motionComponent.vx=5;
+				ScriptManager.loadScript("player_difficulty.js");
+				ScriptManager.bindArgument("player", this.motionComponent);
+				ScriptManager.executeScript();
+				//System.out.println("Outside script velocity = "+velocity);
+				this.motionComponent.vy=-this.motionComponent.vy;
 				this.move();
-				this.motionComponent.vx=0;
+				this.motionComponent.vy=0;
 				this.move();
 				break;
 			case -1:
-				this.motionComponent.vx=-5;
-				this.move();
-				this.motionComponent.vx=0;
-				this.move();
-				break;
-			case 101://fire
-				System.out.println("creating bullet");
-				Bullet bullet = new Bullet(0);
-				bullet.R = new Rectangle((int)this.R.getCenterX(), (int)this.R.getCenterY(), 10, 10);
-				bullet.setBulletColor(125, 125, 125);
-				bullet.setBulletVelocity(0, -5);
-				bullet.collisionComponent.mPlatformList.addAll(this.collisionComponent.mPlatformList);
-				bullet.move();
-				bullet.p = this;
-				this.bullet = bullet;
-				this.fireComponent.fire_flag=true;
-				this.fireComponent.fire(this.bullet);
-				num_bullets--;
-				if(num_bullets<0){
-					ClientEventManager.getInstance().addEvent(new DeathEvent(Timeline.getInstance().getTime(), this));
-				}
-				break;
-			case 102:
-				ScriptManager.loadScript("changecolor.js");
-				ScriptManager.bindArgument("color_object", this.colorComponent);
+				ScriptManager.loadScript("player_difficulty.js");
+				ScriptManager.bindArgument("player", this.motionComponent);
 				ScriptManager.executeScript();
+				//System.out.println("Outside script velocity = "+velocity);
+				this.motionComponent.vy=this.motionComponent.vy;
+				this.move();
+				this.motionComponent.vy=0;
+				this.move();
 				break;
 			default:
 				break;

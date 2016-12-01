@@ -44,7 +44,7 @@ public class ServerIn implements Runnable {
 				switch(m.id){
 				case 9090:
 					Player p = new Player(c.id);
-					p.R = new Rectangle(random.nextInt(800),random.nextInt(100)+600,50,50);
+					p.R = new Rectangle(50,100,10,150);
 					p.setPlayerColor(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 					SpawnPoint s = new SpawnPoint(1);
 					s.setSpawnPoint(500, 10);

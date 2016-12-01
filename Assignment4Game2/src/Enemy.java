@@ -2,6 +2,8 @@
 
 public class Enemy extends Thing{
 
+	int score=0;
+	
 	public Enemy(int id) {
 		super(id);
 		this.colorComponent = new ColorComponent(0,0,0);
@@ -22,6 +24,36 @@ public class Enemy extends Thing{
 	
 	public int getYVelocity(){
 		return this.motionComponent.vy;
+	}
+	
+	public void move(Bullet bullet){
+		ScriptManager.loadScript("ai_difficulty.js");
+		ScriptManager.bindArgument("ai", this.motionComponent);
+		ScriptManager.executeScript();
+		
+		if(bullet.motionComponent.vx>0){
+			if(this.R.getCenterY()<bullet.R.getCenterY()){
+				this.R.y+=this.motionComponent.vy;
+			}
+			else if(this.R.getCenterY()>bullet.R.getCenterY()){
+				this.R.y-=this.motionComponent.vy;
+			}
+			else{
+				this.R.y = this.R.y;
+			}
+		}
+		else{
+			if(this.R.getCenterY()<310){
+				this.R.y+=this.motionComponent.vy;
+			}
+			else if(this.R.getCenterY()>390){
+				this.R.y-=this.motionComponent.vy;
+			}
+			else{
+				this.R.y = this.R.y;
+			}
+		}
+		
 	}
 
 	/**

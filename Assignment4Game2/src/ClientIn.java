@@ -29,6 +29,11 @@ public class ClientIn implements Runnable {
 					c.player = m.player;
 					ClientEventManager.getInstance().registerEvent(c.player);
 					c.enemyList.addAll(m.mpList);
+					c.bullet.collisionComponent.cSPlatform = c.bullet;
+					c.bullet.collisionComponent.player = m.player;
+					c.bullet.collisionComponent.mPlatformList.add(m.mpList.get(0));
+					c.bullet.p = m.player;
+					ClientEventManager.getInstance().registerEvent(c.bullet);
 					System.out.println("got 9090");
 					break;
 				case 9000:
